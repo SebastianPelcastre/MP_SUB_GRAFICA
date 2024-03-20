@@ -10,6 +10,8 @@ require '../../utils/PHPMailer/src/SMTP.php';
 // Credenciales para el correo
 require '../../utils/credenciales_correo.php';
 
+$semanasAlerta = json_decode($_POST['semanas'], true);
+
 $LOCAL_URL = 'http://localhost';
 $PROD_URL = 'https://cananaliticadv.bimboconnect.com';
 $FECHA_EMISION = date('Y-m-d');
@@ -24,6 +26,25 @@ if ($_POST['id_tipo'] == 1) {
 
 // echo json_encode($_POST);
 // die;
+
+// $query = '
+// SELECT 
+//     fixed_aniosem_bimbo
+// FROM
+//     MKS_MP_SUB.SEMANAS_BIMBO
+// WHERE
+//     dia BETWEEN CAST(GETDATE() -53 AS DATE) AND CAST(GETDATE() -5 AS DATE)
+// GROUP BY
+//     fixed_aniosem_bimbo
+// ORDER BY
+//     fixed_aniosem_bimbo';
+
+// $result = sqlsrv_query($conn_sql_azure, $query);
+
+// $semanasAlerta = array();
+// while ($row = sqlsrv_fetch_array($result)) {
+//     $semanasAlerta[] = $row['fixed_aniosem_bimbo'];
+// }
 
 $query = '
 SELECT 
@@ -54,7 +75,7 @@ while ($row = sqlsrv_fetch_array($result)) {
     $siguienteSemana = $row['next_bimboweek'];
 }
 
-$siguienteSemana = 202409;
+// $siguienteSemana = 202409;
 
 $itemsTabla = json_decode($_POST['datosGrafica'], true);
 
@@ -86,7 +107,6 @@ while ($row = sqlsrv_fetch_array($result)) {
 }
 
 $items = array_column($itemsTabla, 'id_item');
-$semanasAlerta = json_decode($_POST['semanasAlerta'], true);
 
 // echo json_encode($itemsTabla);
 // die;
@@ -217,7 +237,7 @@ foreach ($items as $item) {
 
             $columnaItemId = '<td>' . $item . '</td>';
             if ($contador == 0) {
-                $columnaLink = '<td rowspan="' . sizeof($items) . '"><a href="' . $LOCAL_URL . '/mp_sub_grafica/portales/predictiva/index.php?idPlanta=' . $_POST['idPlanta'] . '&semanaAlerta=' . $siguienteSemana . '&fechaEmision=' . $FECHA_EMISION . '&items=' . implode(',', $items) . '&id_tipo=' . $_POST['id_tipo'] . ' " target="_blank">LINK</a></td>';
+                $columnaLink = '<td rowspan="' . sizeof($items) . '"><a href="' . $PROD_URL . '/mp_sub_grafica/portales/predictiva/index.php?idPlanta=' . $_POST['idPlanta'] . '&semanaAlerta=' . $siguienteSemana . '&fechaEmision=' . $FECHA_EMISION . '&items=' . implode(',', $items) . '&id_tipo=' . $_POST['id_tipo'] . ' " target="_blank">LINK</a></td>';
             }
 
             $filasTabla = $filasTabla . '
@@ -272,7 +292,7 @@ if (!imagecopyresampled($thumb, $grafica, 0, 0, 0, 0, $newwidth, $newheight, $wi
     die('Error al copiar y redimensionar la imagen');
 }
 
-$name = $_POST['idPlanta'] . '_1.png';
+$name = $_POST['idPlanta'] . '_' . $_POST['id_tipo'] . '.png';
 $file = $folderPath . $name;
 
 $output = imagepng($thumb, $file, 9); // Usa el tercer parámetro para la calidad de compresión
@@ -280,7 +300,7 @@ $output = imagepng($thumb, $file, 9); // Usa el tercer parámetro para la calida
 if (!$output) {
     echo json_encode(["status" => 500, "mensaje" => "Error al guardar la imagen"]);
     die;
-}  // else {
+} // else {
 //     echo json_encode(['status' => 200, 'mensaje' => 'Correo enviado con éxito']);
 // }
 
@@ -303,7 +323,7 @@ $mail->Subject = $subject;
 $mail->Body = $correoCompleto;
 
 $basePath = __DIR__;
-$imagen = $basePath . '/../uploads/' . $_POST['idPlanta'] . '_1.png';
+$imagen = $basePath . '/../uploads/' . $_POST['idPlanta'] . '_' . $_POST['id_tipo'] . '.png';
 $cid = md5($imagen);
 $mail->AddEmbeddedImage($imagen, $cid, 'gráfica.png');
 $mail->Body .= '<center><img src="cid:' . $cid . '" alt="Grafica"></center>';
@@ -348,36 +368,36 @@ foreach ($correos as $correo) {
 
 // Copia a Analítica Avanzada
 // $mail->addBCC('ana.segovia@grupobimbo.com');
-// $mail->addBCC('daniel.robles@grupobimbo.com');
+$mail->addBCC('daniel.robles@grupobimbo.com');
 $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
 // $mail->addBCC('israel.gonzalez@grupobimbo.com');
 
-if (!$mail->send()) {
-    // $query = '
-    //     INSERT INTO
-    //         MKS_Datos_Complementarios.ALERTAS_EMITIDAS
-    //     VALUES
-    //         (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
-} else {
-    // $query = '
-    //     INSERT INTO
-    //         MKS_Datos_Complementarios.ALERTAS_EMITIDAS
-    //     VALUES
-    //         (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
+// if (!$mail->send()) {
+//     // $query = '
+//     //     INSERT INTO
+//     //         MKS_Datos_Complementarios.ALERTAS_EMITIDAS
+//     //     VALUES
+//     //         (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
+// } else {
+//     // $query = '
+//     //     INSERT INTO
+//     //         MKS_Datos_Complementarios.ALERTAS_EMITIDAS
+//     //     VALUES
+//     //         (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
 
-    $mail->clearAllRecipients();
-    $mail->clearAttachments();
-    $mail->clearCustomHeaders();
-    $mail->clearBCCs();
-    $mail->clearCCs();
-    $mail->clearReplyTos();
-    $mail->Subject = '';
-    $mail->Body = '';
-    unlink($imagen);
+//     $mail->clearAllRecipients();
+//     $mail->clearAttachments();
+//     $mail->clearCustomHeaders();
+//     $mail->clearBCCs();
+//     $mail->clearCCs();
+//     $mail->clearReplyTos();
+//     $mail->Subject = '';
+//     $mail->Body = '';
+//     unlink($imagen);
 
-    echo json_encode(['status' => 200, 'mensaje' => 'Correo enviado con éxito']);
-    sleep(2);
-}
+//     echo json_encode(['status' => 200, 'mensaje' => 'Correo enviado con éxito']);
+//     sleep(2);
+// }
 
 
 //EOF

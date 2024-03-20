@@ -9,6 +9,10 @@ require '../../utils/PHPMailer/src/SMTP.php';
 // Credenciales para el correo
 require '../../utils/credenciales_correo.php';
 
+$semanasAlerta = json_decode($_POST['semanas'], true);
+
+$LOCAL_URL = 'http://localhost';
+$PROD_URL = 'https://cananaliticadv.bimboconnect.com';
 $FECHA_EMISION = date('Y-m-d');
 
 $tipo = '';
@@ -18,6 +22,24 @@ if ($_POST['id_tipo'] == 1) {
 } else {
     $tipo = 'SUBENSAMBLES';
 }
+// $query = '
+// SELECT 
+//     fixed_aniosem_bimbo
+// FROM
+//     MKS_MP_SUB.SEMANAS_BIMBO
+// WHERE
+//     dia BETWEEN CAST(GETDATE() -53 AS DATE) AND CAST(GETDATE() -5 AS DATE)
+// GROUP BY
+//     fixed_aniosem_bimbo
+// ORDER BY
+//     fixed_aniosem_bimbo';
+
+// $result = sqlsrv_query($conn_sql_azure, $query);
+
+// $semanasAlerta = array();
+// while ($row = sqlsrv_fetch_array($result)) {
+//     $semanasAlerta[] = $row['fixed_aniosem_bimbo'];
+// }
 
 $query = '
 SELECT 
@@ -33,26 +55,7 @@ $nombrePlanta = '';
 while ($row = sqlsrv_fetch_array($result)) {
     $nombrePlanta = $row['nombre'];
 }
-
-$query = '
-SELECT 
-    fixed_aniosem_bimbo
-FROM
-    MKS_MP_SUB.SEMANAS_BIMBO
-WHERE
-    dia BETWEEN CAST(GETDATE() -53 AS DATE) AND CAST(GETDATE() -5 AS DATE)
-GROUP BY
-    fixed_aniosem_bimbo
-ORDER BY
-    fixed_aniosem_bimbo';
-
-$result = sqlsrv_query($conn_sql_azure, $query);
-
-$semanasAlerta = array();
-while ($row = sqlsrv_fetch_array($result)) {
-    $semanasAlerta[] = $row['fixed_aniosem_bimbo'];
-}
-$semanasAlerta = [202401, 202402, 202403, 202404, 202405, 202406, 202407, 202408];
+// $semanasAlerta = [202401, 202402, 202403, 202404, 202405, 202406, 202407, 202408];
 
 $query = '
 SELECT 
@@ -109,6 +112,8 @@ foreach ($itemsTabla as $item) {
         }
     }
 }
+
+$items = array_column($itemsTabla, 'id_item');
 
 $globalStyles = '
     <style>
@@ -223,6 +228,7 @@ $encabezadoTabla = $encabezadoTabla . '
 
 $filasTabla = '';
 $filaAcumulado = '';
+$contador = 0;
 
 $filaAcumulado = '
             <tr class="acumulado">
@@ -238,13 +244,18 @@ $filaAcumulado = $filaAcumulado . '</tr>';
 
 for ($i = 0; $i < sizeof($itemsTabla); $i++) {
     $columnaItemId = '<td>' . $itemsTabla[$i]['id_item'] . '</td>';
+    if ($contador == 0) {
+        $columnaLink = '<td rowspan="' . sizeof($items) . '"><a href="' . $LOCAL_URL . '/mp_sub_grafica/portales/tendencia/index.php?idPlanta=' . $_POST['idPlanta'] . '&semanaAlerta=' . $semanasAlerta[sizeof($semanasAlerta) - 1] . '&fechaEmision=' . $FECHA_EMISION . '&items=' . implode(',', $items) . '&id_tipo=' . $_POST['id_tipo'] . ' " target="_blank">LINK</a></td>';
+    }
     $filasTabla = $filasTabla . '<tr>' . $columnaItemId . '<td>' . $itemsTabla[$i]['item'] . '</td><td>' . $itemsTabla[$i]['cantidad'] . '</td>';
 
     foreach ($itemsTabla[$i]['semanas'] as $semana) {
         $filasTabla = $filasTabla . '<td>' . number_format($semana['importe'], 0, '.', ',') . '</td>';
     }
 
-    $filasTabla = $filasTabla . '</tr>';
+    $filasTabla = $filasTabla . $columnaLink . '</tr>';
+
+    $contador += 1;
 }
 
 $cuerpoTabla = '<tbody>' . $filaAcumulado . $filasTabla . '</tbody> </table>';
@@ -279,7 +290,7 @@ if (!imagecopyresampled($thumb, $grafica, 0, 0, 0, 0, $newwidth, $newheight, $wi
     die('Error al copiar y redimensionar la imagen');
 }
 
-$name = $_POST['idPlanta'] . '_1.png';
+$name = $_POST['idPlanta'] . '_' . $_POST['id_tipo'] . '.png';
 $file = $folderPath . $name;
 
 $output = imagepng($thumb, $file, 9); // Usa el tercer parámetro para la calidad de compresión
@@ -292,7 +303,7 @@ if (!$output) {
 // }
 
 // Envío de correo
-$subject = 'Alerta Microleak ' . $tipo . ' Predictiva';
+$subject = 'Alerta Microleak ' . $tipo . ' Tendencia';
 $mail = new PHPMailer\PHPMailer\PHPMailer(true);
 $mail->SetLanguage("es", '../../utils/PHPMailer/language/');
 $mail->IsSMTP();
@@ -310,7 +321,7 @@ $mail->Subject = $subject;
 $mail->Body = $correoCompleto;
 
 $basePath = __DIR__;
-$imagen = $basePath . '/../uploads/' . $_POST['idPlanta'] . '_1.png';
+$imagen = $basePath . '/../uploads/' . $_POST['idPlanta'] . '_' . $_POST['id_tipo'] . '.png';
 $cid = md5($imagen);
 $mail->AddEmbeddedImage($imagen, $cid, 'gráfica.png');
 $mail->Body .= '<center><img src="cid:' . $cid . '" alt="Grafica"></center>';

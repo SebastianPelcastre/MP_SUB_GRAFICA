@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_POST['datosEnviar'])) {
         echo json_encode(array(
             'status' => 401,
-            'mensaje' => 'Error al recuperar datos'
+            'mensaje' => 'Debe introducir respuestas'
         ));
         die;
     }
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         SELECT
             *
         FROM 
-            MKS_MP_SUB.RESPUESTAS
+            MKS_MP_SUB.RESPUESTAS_TENDENCIA
         WHERE
             id_item = ?
             AND semana = ?
@@ -96,5 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     die;
 }
+
 
  // EOF

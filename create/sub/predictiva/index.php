@@ -15,11 +15,17 @@ ORDER BY
 
 $result = sqlsrv_query($conn_sql_azure, $query);
 
-$semanasAlerta = array();
+$semanasAlertas = array();
 while ($row = sqlsrv_fetch_array($result)) {
-    $semanasAlerta[] = $row['fixed_aniosem_bimbo'];
+    $semanasAlertas[] = $row['fixed_aniosem_bimbo'];
 }
-$semanasAlerta = [202401, 202402, 202403, 202404, 202405, 202406, 202407, 202408];
+
+function convertirAEntero($valor)
+{
+    return intval($valor);
+}
+$semanasAlerta = array_map("convertirAEntero", $semanasAlertas);
+// $semanasAlerta = [202401, 202402, 202403, 202404, 202405, 202406, 202407, 202408];
 
 // $semanasAlerta = array_values(array_diff($semanasAlerta, ["202353"]));
 
@@ -56,7 +62,7 @@ while ($row = sqlsrv_fetch_array($result)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gráfica</title>
+    <title>sub-predictiva</title>
 </head>
 
 <body>
@@ -146,7 +152,7 @@ while ($row = sqlsrv_fetch_array($result)) {
             formData.append('image', image)
             formData.append('idPlanta', idPlanta)
             formData.append('datosGrafica', inputDatosGrafica)
-            formData.append('semanasAlerta', inputSemanas.value)
+            formData.append('semanas', inputSemanas.value)
             formData.append('id_tipo_alerta', 1)
             formData.append('id_tipo', 2)
             const response = await fetch('../../../apis/enviarAlertaPredictiva.php', {
@@ -186,7 +192,7 @@ while ($row = sqlsrv_fetch_array($result)) {
         async function procesarPlanta(planta) {
             inputIdPlanta.value = planta
             await crearGrafica()
-            console.log(a.getAttribute('data-src'))
+            // console.log(a.getAttribute('data-src'))
             enviar(inputIdPlanta.value, inputDatosGrafica, a.getAttribute('data-src'))
         }
 
