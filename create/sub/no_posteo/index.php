@@ -10,6 +10,10 @@ require '../../../../utils/PHPMailer/src/SMTP.php';
 // Credenciales para el correo
 require '../../../../utils/credenciales_correo.php';
 
+$LOCAL_URL = 'http://localhost';
+$PROD_URL = 'https://cananaliticadv.bimboconnect.com';
+$FECHA_EMISION = date('Y-m-d');
+
 $query = '
 SELECT 
 	Aniosem_Bimbo
@@ -112,7 +116,7 @@ $encabezadoCorreo = '<h1>Plantas <span class="text-red">sin posteo</span> Subens
 
     <h2>Microleaks Subensambes | Consultoría de Análisis para Negocio</h2>
 
-    <h2><span class="bold">Información con corte al Martes a las 12:00pm</span></h2>
+    <h2><span class="bold">Información con corte al Lunes a las 23:59 hrs</span></h2>
     ';
 
 $notasCorreo = '
@@ -142,8 +146,9 @@ $columnaPlanta = '';
 foreach ($plantas as $planta) {
     $columnaId = '<td>' . $planta['id'] . '</td>';
     $columnaPlanta = '<td>' . $planta['nombre'] . '</td>';
+    $columnaLink = '<td><a href="' . $LOCAL_URL . '/mp_sub_grafica/portales/no_posteo/index.php?idPlanta=' . $planta['id'] . '&semanaAlerta=' . $semanaAlerta . '&fechaEmision=' . $FECHA_EMISION . '&id_tipo=1 " target="_blank">LINK</a></td>';
     $filasTabla = $filasTabla . '<tr>
-        ' . $columnaId . $columnaPlanta . '
+        ' . $columnaId . $columnaPlanta .  '
         </tr>';
 }
 
@@ -156,7 +161,7 @@ echo $correoCompleto;
 echo '<br/><br/>';
 
 // Envío de correo
-$subject = "Alerta Microleak SUB No Posteo";
+$subject = "Alerta Microleak Subensambles No Posteo";
 $mail = new PHPMailer\PHPMailer\PHPMailer(true);
 $mail->SetLanguage("es", '../../utils/PHPMailer/language/');
 $mail->IsSMTP();
@@ -212,10 +217,10 @@ echo '</ul>';
 echo '<br>';
 
 // Copia a Analítica Avanzada
-$mail->addBCC('ana.segovia@grupobimbo.com');
-$mail->addBCC('daniel.robles@grupobimbo.com');
+// $mail->addBCC('ana.segovia@grupobimbo.com');
+// $mail->addBCC('daniel.robles@grupobimbo.com');
 $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
-$mail->addBCC('israel.gonzalez@grupobimbo.com');
+// $mail->addBCC('israel.gonzalez@grupobimbo.com');
 
 // if (!$mail->send()) {
 //     $query = '

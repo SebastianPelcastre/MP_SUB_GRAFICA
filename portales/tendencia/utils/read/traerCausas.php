@@ -4,7 +4,9 @@ $query = '
 SELECT 
 	*
 FROM
-	MKS_MP_SUB.CAT_CAUSAS';
+	MKS_MP_SUB.CAT_CAUSAS
+WHERE 
+	id_tipo_alerta = 1';
 
 $result = sqlsrv_query($conn_sql_azure, $query);
 

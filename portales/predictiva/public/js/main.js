@@ -12,6 +12,14 @@ const failModal = new bootstrap.Modal(
   options
 );
 
+function traerPlanes(selectedValue) {
+  const data = selectedValue
+  fetch('../utils/read/traerPlanes.php', {
+    method: 'POST',
+    body: data
+  })
+}
+
 const submitForm = (e) => {
   e.preventDefault();
 

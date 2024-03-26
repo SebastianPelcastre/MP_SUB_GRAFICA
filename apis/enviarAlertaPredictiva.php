@@ -17,11 +17,14 @@ $PROD_URL = 'https://cananaliticadv.bimboconnect.com';
 $FECHA_EMISION = date('Y-m-d');
 
 $tipo = '';
+$asunto = '';
 
 if ($_POST['id_tipo'] == 1) {
     $tipo = 'MATERIAS PRIMAS';
+    $asunto = 'Materias Primas';
 } else {
     $tipo = 'SUBENSAMBLES';
+    $asunto = 'Subensambles';
 }
 
 // echo json_encode($_POST);
@@ -188,7 +191,7 @@ $encabezadoCorreo = '
 <h2><span class="subtitle">Año Semana:</span> ' . $siguienteSemana . '</h2>';
 
 $mensajeAlerta = '
-<p>A continuación se muestran los items que tienen mayor ptobabilidad de reportar un ajuste de inventarios; es información que aún no ocurre y que con tu ayuda evitaremos que suceda.</p>
+<p>A continuación se muestran los items que tienen mayor probabilidad de reportar un ajuste de inventarios; es información que aún no ocurre y que con tu ayuda evitaremos que suceda.</p>
 <br />
 <h2 style="text-align: start;">CRITERIOS PARA LA ALERTA</h2>
 <ol style="text-align: start;">
@@ -305,7 +308,7 @@ if (!$output) {
 // }
 
 // Envío de correo
-$subject = 'Alerta Microleak ' . $tipo . ' Predictiva';
+$subject = 'Alerta Microleak ' . $asunto . ' Predictiva';
 $mail = new PHPMailer\PHPMailer\PHPMailer(true);
 $mail->SetLanguage("es", '../../utils/PHPMailer/language/');
 $mail->IsSMTP();
@@ -372,18 +375,25 @@ $mail->addBCC('daniel.robles@grupobimbo.com');
 $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
 // $mail->addBCC('israel.gonzalez@grupobimbo.com');
 
+$ERROR_ENVIO = 1;
+$ENVIO_EXITOSO = 0;
+
 // if (!$mail->send()) {
-//     // $query = '
-//     //     INSERT INTO
-//     //         MKS_Datos_Complementarios.ALERTAS_EMITIDAS
-//     //     VALUES
-//     //         (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
+//     // foreach ($items as $item) {
+//     //     $query = '
+//     //      INSERT INTO
+//     //          MKS_MP_SUB.ALERTAS_EMITIDAS_PREDICTIVA_TENDENCIA
+//     //      VALUES
+//     //          (' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', ' . $_POST['idPlanta'] . ', ' . $item . ', ' . $_POST['id_tipo_alerta'] . ', ' . $_POST['id_tipo'] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
+//     // }
 // } else {
-//     // $query = '
-//     //     INSERT INTO
-//     //         MKS_Datos_Complementarios.ALERTAS_EMITIDAS
-//     //     VALUES
-//     //         (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
+//     // foreach ($items as $item) {
+//     //     $query = '
+//     //      INSERT INTO
+//     //          MKS_MP_SUB.ALERTAS_EMITIDAS_PREDICTIVA_TENDENCIA
+//     //      VALUES
+//     //         (' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', ' . $_POST['idPlanta'] . ', ' . $item . ', ' . $_POST['id_tipo_alerta'] . ', ' . $_POST['id_tipo'] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
+//     // }
 
 //     $mail->clearAllRecipients();
 //     $mail->clearAttachments();

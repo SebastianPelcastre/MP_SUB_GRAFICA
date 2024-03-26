@@ -2,13 +2,13 @@
 
 require '../../../utils/conexion_sql_azure.php';
 
-require './utils/read/traerDatosAlerta.php';
-
-require './utils/read/traerPlanes.php';
-
-require './utils/read/traerCausas.php';
-
 require './utils/read/traerRespuestas.php';
+
+// require './utils/read/traerPlanes.php';
+
+// require './utils/read/traerCausas.php';
+
+// require './utils/read/traerRespuestas.php';
 
 ?>
 
@@ -18,7 +18,7 @@ require './utils/read/traerRespuestas.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PORTAL ALERTA PREDICTIVA</title>
+    <title>PORTAL SEGUIMIENTO</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="../public/css/bootstrap.min.css">
     <!-- Custom CSS -->
@@ -42,40 +42,20 @@ require './utils/read/traerRespuestas.php';
     <main class="container mt-5">
         <div class="row">
             <div class="col">
-                <h1 class="text-center title">MICROLEAK DE <?php if ($idTipo == 1) {
-                                                                echo 'MATERIAS PRIMAS';
-                                                            } else {
-                                                                echo 'SUBENSAMBLES';
-                                                            } ?> | CAN</h1>
+                <h1 class="text-center title">SEGUIMIENTO MICROLEAK | CAN</h1>
             </div>
         </div>
         <div class="row justify-content-md-center mt-3">
             <div class="col-12">
                 <div class="card shadow border border-top-0 border-end-0 border-bottom-0 border-main">
                     <form class="card-body" id="form" method="POST">
-                        <div class=" row mb-3">
-                            <div class="col">
-                                <p class="fs-5">Planta: <?php echo $idPlanta . '_' . $nombrePlanta; ?></p>
-                            </div>
-                            <div class="col">
-                                <p class="fs-5 text-center"></p>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col">
-                                <p class="fs-5 ">Año semana: <?php echo $semanaAlerta; ?></p>
-                            </div>
-                            <div class="col">
-                                <p class="fs-5 text-center"></p>
-                            </div>
-                        </div>
                         <div class="table-responsive">
                             <table class="table">
                                 <thead class="table-light">
                                     <tr>
+                                        <th>SEMANA</th>
                                         <th>ITEM</th>
                                         <th>NOMBRE ITEM</th>
-                                        <th>MONTO ESPERADO</th>
                                         <th>CAUSA</th>
                                         <th>PLAN DE ACCIÓN</th>
                                         <th>FECHA DE RESOLUCIÓN</th>
@@ -88,61 +68,45 @@ require './utils/read/traerRespuestas.php';
                                     // $items = explode(',', $_GET['items']);
                                     // $cantidadItems = sizeof(explode(',', $_GET['items']));
 
-                                    foreach ($datosAlerta as $datoAlerta) {
+                                    foreach ($respuestas as $respuesta) {
                                         $columnaCausa = '';
                                         $columnaPlanAccion = '';
                                         $columnaFechaResolucion = '';
                                         $columnaComentarios = '';
-                                        $respuestaParaItem = null;
-                                        foreach ($respuestas as $res) {
-                                            if ($res['idItem'] == $datoAlerta['id']) {
-                                                $respuestaParaItem = $res;
-                                                break;
-                                            }
-                                        }
+                                        $respuestaParaItem = 'SIN RESPUESTA';
+                                        // foreach ($respuestas as $res) {
+                                        //     if ($res['idItem'] == $respuesta['id']) {
+                                        //         $respuestaParaItem = $res;
+                                        //         break;
+                                        //     }
+                                        // }
 
-                                        if ($respuestaParaItem !== null) {
-                                            $columnaCausa = '<td style="vertical-align: middle;"><p>' . $respuestaParaItem['causa'] . '</p></td>';
-                                            $columnaPlanAccion = '<td style="vertical-align: middle;"><p>' . $respuestaParaItem['nombrePlan'] . '</p></td>';
-                                            $columnaFechaResolucion = '<td style="vertical-align: middle;"><p>' . $respuestaParaItem['fechaResolucion'] . '</p></td>';
-                                            $columnaComentarios = '<td style="vertical-align: middle;"> <div style="vertical-align: middle;">' . $respuestaParaItem['comentario'] . '</div></td>';
+                                        if ($respuesta['causa'] !== null && $respuesta['nombre_plan'] !== null) {
+                                            $columnaCausa = '<td style="vertical-align: middle;text-align:center;"><p>' . $respuesta['causa'] . '</p></td>';
+
+                                            $columnaPlanAccion = '<td style="vertical-align: middle;text-align:center;"><p>' . $respuesta['nombre_plan'] . '</p></td>';
+
+                                            $columnaFechaResolucion = '<td style="vertical-align: middle;text-align:center;"><p>' . $respuesta['fecha_resolucion']->format('d/m/Y') . '</p></td>';
+                                            if ($respuesta['comentario'] == '') {
+                                                $columnaComentarios = '';
+                                                '<td style="vertical-align: middle;"><p>SIN COMENTARIOS</p></td>';
+                                            } else {
+                                                $columnaComentarios = '<td style="vertical-align: middle;"><p>' . $respuesta['comentario'] . '</p></td>';
+                                            }
                                         } else {
-                                            $columnaCausa = '<td style="vertical-align: middle;text-align:center;">
-                            <select class="form-select" name="causa-' . $contador . '">
-                                <option value="" selected disabled>Seleccione una causa...</option>';
-
-                                            foreach ($causas as $causa) {
-                                                $columnaCausa .= '<option value="' . $causa['id'] . '">' . $causa['causa'] . '</option>';
-                                            }
-
-                                            $columnaCausa .= '</select>
-                        </td>';
-
-                                            $columnaPlanAccion = '<td style="vertical-align: middle;text-align:center;">
-                                <select class="form-select" name="planAccion-' . $contador . '">
-                                    <option value="" selected disabled>Seleccione un plan...</option>';
-
-                                            foreach ($planes as $plan) {
-                                                $columnaPlanAccion .= '<option value="' . $plan['id'] . '">' . $plan['nombre'] . '</option>';
-                                            }
-
-                                            $columnaPlanAccion .= '</select>
-                            </td>';
-
-                                            $columnaFechaResolucion = '<td style="vertical-align: middle;text-align:center;">
-                                    <input class="form-control" type="date" name="fechaResolucion-' . $contador . '" min="' . date('Y-m-d') . '" max="' . $fechaMaximaPlan . '">
-                                </td>';
-                                            $columnaComentarios = '<td style="vertical-align: middle;"> <textarea class="form-control" rows="2" name="comentario-' . $contador . '" maxlength="255"></textarea>
-                            </td>';
+                                            $columnaCausa = '<td style="vertical-align: middle;"><p>' . $respuestaParaItem . '</p></td>';
+                                            $columnaPlanAccion = '<td style="vertical-align: middle;"><p>' . $respuestaParaItem . '</p></td>';
+                                            $columnaFechaResolucion = '<td style="vertical-align: middle;"><p>' . $respuestaParaItem . '</p></td>';
+                                            $columnaComentarios = '<td style="vertical-align: middle;"> <div style="vertical-align: middle;">' . $respuestaParaItem . '</div></td>';
                                         }
                                     ?>
                                         <tr>
+                                            <td style="vertical-align: middle;"><?php echo $respuesta['semana'] ?></td>
                                             <td style="vertical-align: middle;">
                                                 <input class="form-control" style="display: inline-block;
-  min-width: 80px;" type="text" name="id-<?php echo $contador ?>" value="<?php echo $datoAlerta['id'] ?>" readonly />
+  min-width: 80px;" type="text" name="id-<?php echo $contador ?>" value="<?php echo $respuesta['id_item'] ?>" readonly />
                                             </td>
-                                            <td style="vertical-align: middle;"><?php echo $datoAlerta['nombre'] ?></td>
-                                            <td style="vertical-align: middle;"><?php echo number_format($datoAlerta['monto'], 0, '.', ',') ?></td>
+                                            <td style="vertical-align: middle;"><?php echo $respuesta['nombre_item'] ?></td>
                                             <?php echo $columnaCausa ?>
                                             <?php echo $columnaPlanAccion; ?>
                                             <?php echo $columnaFechaResolucion; ?>
@@ -171,13 +135,6 @@ require './utils/read/traerRespuestas.php';
                         </div>
                         <div class="row justify-content-center mt-3">
                             <div class="col-12 col-lg-6">
-                                <?php
-                                if (sizeof($datosAlerta) !== sizeof($respuestas)) {
-                                ?>
-                                    <button type="submit" class="btn btn-main w-100 fw-bold" id="btn-submit">Enviar Registro</button>
-                                <?php
-                                }
-                                ?>
                             </div>
                         </div>
 

@@ -68,7 +68,7 @@ for ($i = 0; $i < count($items); $i++) {
     ];
 }
 
-// echo json_encode($datosAlerta);
+// echo json_encode($montosItem);
 // die;
 
 // EOF

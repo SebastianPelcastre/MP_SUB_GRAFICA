@@ -18,7 +18,7 @@ require './utils/read/traerRespuestas.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PORTAL ALERTA TENDENCIA</title>
+    <title>PORTAL ALERTA PREDICTIVA</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="../public/css/bootstrap.min.css">
     <!-- Custom CSS -->
@@ -82,9 +82,7 @@ require './utils/read/traerRespuestas.php';
                             <table class="table">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>ITEM</th>
-                                        <th>NOMBRE ITEM</th>
-                                        <th>MONTO</th>
+                                        <th>FECHA DE EMISIÓN</th>
                                         <th>CAUSA</th>
                                         <th>PLAN DE ACCIÓN</th>
                                         <th>FECHA DE RESOLUCIÓN</th>
@@ -92,114 +90,45 @@ require './utils/read/traerRespuestas.php';
                                     </tr>
                                 </thead>
                                 <tbody class="table-group-divider">
-                                    <?php
-                                    $contador = 0;
-                                    // $items = explode(',', $_GET['items']);
-                                    // $cantidadItems = sizeof(explode(',', $_GET['items']));
-
-                                    foreach ($datosAlerta as $datoAlerta) {
-                                        $columnaCausa = '';
-                                        $columnaPlanAccion = '';
-                                        $columnaFechaResolucion = '';
-                                        $columnaComentarios = '';
-                                        $respuestaParaItem = null;
-                                        foreach ($respuestas as $res) {
-                                            if ($res['idItem'] == $datoAlerta['id']) {
-                                                $respuestaParaItem = $res;
-                                                break;
-                                            }
-                                        }
-
-                                        if ($respuestaParaItem !== null) {
-                                            $columnaCausa = '<td style="vertical-align: middle;"><p>' . $respuestaParaItem['causa'] . '</p></td>';
-                                            $columnaPlanAccion = '<td style="vertical-align: middle;"><p>' . $respuestaParaItem['nombrePlan'] . '</p></td>';
-                                            $columnaFechaResolucion = '<td style="vertical-align: middle;"><p>' . $respuestaParaItem['fechaResolucion'] . '</p></td>';
-                                            $columnaComentarios = '<td style="vertical-align: middle;"> <div style="vertical-align: middle;">' . $respuestaParaItem['comentario'] . '</div></td>';
-                                        } else {
-                                            $columnaCausa = '<td style="vertical-align: middle;text-align:center;">
-                            <select class="form-select" name="causa-' . $contador . '">
-                                <option value="" selected disabled>Seleccione una causa...</option>';
-
+                                    <td style="vertical-align: middle;text-align:center;"><?php echo $fechaEmision ?></td>
+                                    <td style="vertical-align: middle;text-align:center;">
+                                        <select class="form-select" name="causas" id="causas" onchange="selectValue(this.value)">
+                                            <option value="disabled" selected disabled>Seleccione una causa de no posteo</option>
+                                            <?php
+                                            $options = '';
                                             foreach ($causas as $causa) {
-                                                $columnaCausa .= '<option value="' . $causa['id'] . '">' . $causa['causa'] . '</option>';
+                                                $options = $options . '<option value=' . $causa['id'] . '>' . $causa['causa'] . '</option>';
                                             }
-
-                                            $columnaCausa .= '</select>
-                        </td>';
-
-                                            $columnaPlanAccion = '<td style="vertical-align: middle;text-align:center;">
-                                <select class="form-select" name="planAccion-' . $contador . '">
-                                    <option value="" selected disabled>Seleccione un plan...</option>';
-
-                                            foreach ($planes as $plan) {
-                                                $columnaPlanAccion .= '<option value="' . $plan['id'] . '">' . $plan['nombre'] . '</option>';
-                                            }
-
-                                            $columnaPlanAccion .= '</select>
-                            </td>';
-
-                                            $columnaFechaResolucion = '<td style="vertical-align: middle;text-align:center;">
-                                    <input class="form-control" type="date" name="fechaResolucion-' . $contador . '" min="' . date('Y-m-d') . '" max="' . $fechaMaximaPlan . '">
-                                </td>';
-                                            $columnaComentarios = '<td style="vertical-align: middle;"> <textarea class="form-control" rows="2" name="comentario-' . $contador . '" maxlength="255"></textarea>
-                            </td>';
-                                        }
-                                    ?>
-                                        <tr>
-                                            <td style="vertical-align: middle;">
-                                                <input class="form-control" style="display: inline-block;
-  min-width: 80px;" type="text" name="id-<?php echo $contador ?>" value="<?php echo $datoAlerta['id'] ?>" readonly />
-                                            </td>
-                                            <td style="vertical-align: middle;"><?php echo $datoAlerta['nombre'] ?></td>
-                                            <td style="vertical-align: middle;"><?php echo number_format($datoAlerta['monto'], 0, '.', ',') ?></td>
-                                            <?php echo $columnaCausa ?>
-                                            <?php echo $columnaPlanAccion; ?>
-                                            <?php echo $columnaFechaResolucion; ?>
-                                            <?php echo $columnaComentarios; ?>
-                                        </tr>
-                                    <?php
-                                        $contador += 1;
-                                    }
-                                    ?>
+                                            echo $options;
+                                            ?>
+                                        </select>
+                                    </td>
+                                    <td style="vertical-align: middle;text-align:center;" id="planAccion"> <input class="form-control" type="text"> </td>
+                                    <td style="vertical-align: middle;text-align:center;" id="fechaResolucion"> <input class="form-control" type="date"> </td>
+                                    <td style="vertical-align: middle;text-align:center;" id="comentario"> <input class="form-control" type="text"> </td>
                                 </tbody>
                             </table>
                         </div>
 
                         <input type="hidden" value="<?php echo $_GET['idPlanta']; ?>" name="idPlanta" />
-                        <!-- <input type="hidden" value="<?php //echo $_GET['tipoAlerta']; 
-                                                            ?>" name="tipoAlerta" /> -->
+                        <input type="hidden" value="<?php echo $_GET['tipoAlerta']; ?>" name="tipoAlerta" />
                         <input type="hidden" value="<?php echo $_GET['semanaAlerta']; ?>" name="semanaAlerta" />
                         <input type="hidden" value="<?php echo $_GET['fechaEmision']; ?>" name="fechaEmision" />
                         <input type="hidden" value="<?php echo date('Y-m-d'); ?>" name="fechaRegistro" />
 
-                        <input type="hidden" value="<?php echo sizeof($datosAlerta); ?>" name="numItems" />
-
                         <div class="row justify-content-center mt-3">
                             <div class="col-12 col-lg-6">
-                                <!-- <textarea class="form-control mt-1" type="text" name="otros-" id="otros" maxlength="100" rows="6" require>Escriba aquí su comentario.</textarea> -->
-                                <?php
-                                // if (!empty($respuesta)) {
-                                //     $contador = 0;
-                                //     foreach ($respuesta as $res) {
-                                //         if ($res['idPlan'] == 12) {
-                                //             echo '<textarea class="form-control mt-1" type="text" name="otros-' . $contador . '" maxlength="100" rows="6" disabled>' . $res['otro'] . '</textarea>';
-                                //         } else {
-                                // echo '<textarea class="form-control d-none mt-1" type="text" name="otros-' . $contador . '" id="otros" maxlength="100" rows="6" require>Escriba aquí su comentario.</textarea>';
-                                //         }
-                                //         $contador += 1;
-                                //     }
-                                // } 
-                                ?>
+                                <textarea class="d-none form-control" name="otros" id="otros" cols="30" rows="5" placeholder="Escriba una causa de No Posteo"></textarea>
                             </div>
                         </div>
                         <div class="row justify-content-center mt-3">
                             <div class="col-12 col-lg-6">
                                 <?php
-                                if (sizeof($datosAlerta) !== sizeof($respuestas)) {
+                                // if (sizeof($datosAlerta) !== sizeof($respuestas)) {
                                 ?>
-                                    <button type="submit" class="btn btn-main w-100 fw-bold" id="btn-submit">Enviar Registro</button>
+                                <button type="submit" class="btn btn-main w-100 fw-bold" id="btn-submit">Enviar Registro</button>
                                 <?php
-                                }
+                                // }
                                 ?>
                             </div>
                         </div>
@@ -259,6 +188,17 @@ require './utils/read/traerRespuestas.php';
     <!-- Bootstrap JS -->
     <script src="../public/js/bootstrap.min.js"></script>
     <script src="./public/js/main.js"></script>
+    <script>
+        const otros = document.querySelector('#otros')
+        const selectValue = (selectedValue) => {
+
+            if (selectedValue == 20) {
+                otros.classList.remove("d-none")
+            } else {
+                otros.classList.add("d-none")
+            }
+        }
+    </script>
 
 </body>
 

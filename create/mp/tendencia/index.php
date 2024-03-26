@@ -25,7 +25,7 @@ function convertirAEntero($valor)
     return intval($valor);
 }
 $semanasAlerta = array_map("convertirAEntero", $semanasAlertas);
-// $semanasAlerta = [202401, 202402, 202403, 202404, 202405, 202406, 202407, 202408];
+// $semanasAlerta = [202405, 202406, 202407, 202408, 202409, 202410, 202411, 202412];
 
 // $semanasAlerta = array_values(array_diff($semanasAlerta, ["202353"]));
 
@@ -162,7 +162,10 @@ while ($row = sqlsrv_fetch_array($result)) {
             const data = await response.json()
                 .then(data => {
                     if (data.status === 200) {
-                        console.log('Correo Enviado')
+                        console.log(data.mensaje)
+                    }
+                    if (data.status === 500) {
+                        console.log(data.mensaje)
                     }
                 })
         }

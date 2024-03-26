@@ -1,0 +1,103 @@
+:root {
+  --primary-color: #1c306a;
+  --secondary-color: #ef4565;
+  --third-color: #d8eefe;
+  --four-color: #3da9fc;
+  --background-color-secondary: #fffffe;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  height: -webkit-fill-available;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--background-color-secondary);
+  /* background-color: #f0f0f0; */
+}
+
+.bg-header {
+  background-color: var(--primary-color);
+}
+
+.title {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.subtitle {
+  color: var(--secondary-color);
+}
+
+.btn-main {
+  background-color: var(--primary-color);
+  font-weight: bold;
+  color: white;
+  height: 3.5rem;
+}
+
+.border-main {
+  border-color: var(--primary-color) !important;
+  border-width: 12px !important;
+}
+
+.card-fasoba {
+  background-color: var(--primary-color);
+}
+
+.btn-add-item {
+  background-color: var(--four-color);
+}
+
+.btn-remove-item {
+  background-color: var(--secondary-color);
+}
+
+.card-text {
+  color: var(--third-color);
+}
+
+.table-container {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.fail-modal {
+  background-color: var(--secondary-color);
+}
+
+/* table {
+  border-collapse: collapse;
+}
+
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+thead {
+  background-color: #4472c4;
+  color: white;
+}
+
+th {
+  border: 1px solid #ddd;
+  padding: 16px;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+} */

@@ -16,11 +16,14 @@ $PROD_URL = 'https://cananaliticadv.bimboconnect.com';
 $FECHA_EMISION = date('Y-m-d');
 
 $tipo = '';
+$asunto = '';
 
 if ($_POST['id_tipo'] == 1) {
     $tipo = 'MATERIAS PRIMAS';
+    $asunto = 'Materias Primas';
 } else {
     $tipo = 'SUBENSAMBLES';
+    $asunto = 'Subensambles';
 }
 // $query = '
 // SELECT 
@@ -55,7 +58,7 @@ $nombrePlanta = '';
 while ($row = sqlsrv_fetch_array($result)) {
     $nombrePlanta = $row['nombre'];
 }
-// $semanasAlerta = [202401, 202402, 202403, 202404, 202405, 202406, 202407, 202408];
+
 
 $query = '
 SELECT 
@@ -67,7 +70,7 @@ WHERE
     AND da.aniosemana IN (' . implode(',', $semanasAlerta) . ')
     AND alerta = 1
     AND id_tipo = ' . $_POST['id_tipo'] . '
-    AND id_tipo_alerta IN (2,3)
+    AND id_tipo_alerta IN (' . $_POST['id_tipo_alerta'] . ',3)
 GROUP BY da.id_item
 ORDER BY da.id_item
 ';
@@ -81,6 +84,32 @@ while ($row = sqlsrv_fetch_array($result)) {
     $subdata['item'] = $row['id_item'];
     $subdata['cantidad'] = $row['cantidad'];
     $historico[] = $subdata;
+}
+
+$query = '
+SELECT
+    aniosemana,
+    SUM(ajuste_inv_real_abs) as ajuste_inv_real_abs
+FROM
+    MKS_MP_SUB.DATOS_ALERTAS      
+WHERE
+    id_planta = ' . $_POST['idPlanta'] . '
+    AND aniosemana IN (' . implode(',', $semanasAlerta) . ')
+    AND id_tipo = ' . $_POST['id_tipo'] . '
+GROUP BY
+    aniosemana
+ORDER BY
+	aniosemana';
+
+$result = sqlsrv_query($conn_sql_azure, $query);
+
+$importesAcumulado = array();
+
+while ($row = sqlsrv_fetch_array($result)) {
+    $subdata = array();
+    $subdata['semana'] = $row['aniosemana'];
+    $subdata['absoluto'] = $row['ajuste_inv_real_abs'];
+    $importesAcumulado[] = $subdata;
 }
 
 $itemsTabla = json_decode($_POST['datosGrafica'], true);
@@ -98,19 +127,19 @@ foreach ($itemsTabla as &$itemTabla) {
 }
 
 $acumuladoHistorico = 0;
-$sumaPorSemana = [];
+// $sumaPorSemana = [];
 
 foreach ($itemsTabla as $item) {
     $acumuladoHistorico += $item['cantidad'];
-    foreach ($item['semanas'] as $semana) {
-        $semanaNumber = $semana['semana'];
-        if (!isset($sumaPorSemana[$semanaNumber])) {
-            $sumaPorSemana[$semanaNumber] = 0;
-        }
-        if (isset($semana['acumulado'])) {
-            $sumaPorSemana[$semanaNumber] += $semana['acumulado'];
-        }
-    }
+    // foreach ($item['semanas'] as $semana) {
+    //     $semanaNumber = $semana['semana'];
+    //     if (!isset($sumaPorSemana[$semanaNumber])) {
+    //         $sumaPorSemana[$semanaNumber] = 0;
+    //     }
+    //     if (isset($semana['acumulado'])) {
+    //         $sumaPorSemana[$semanaNumber] += $semana['acumulado'];
+    //     }
+    // }
 }
 
 $items = array_column($itemsTabla, 'id_item');
@@ -216,7 +245,7 @@ $encabezadoTabla = '
         <thead>
             <tr>
                 <th>ITEMS</th>
-                <th>NOMBRE</th>
+                <th>NOMBRE ITEM</th>
                 <th>Alertas en las últimas 8 semanas</th>';
 
 foreach ($semanasAlerta as $semanaAlerta) {
@@ -228,34 +257,31 @@ $encabezadoTabla = $encabezadoTabla . '
 
 $filasTabla = '';
 $filaAcumulado = '';
-$contador = 0;
+
 
 $filaAcumulado = '
             <tr class="acumulado">
                 <td></td>
                 <td>ACUMULADO PLANTA (Valores Absolutos)</td>
-                <td>' . $acumuladoHistorico . '</td>';
-foreach ($sumaPorSemana as $semana) {
+                <td></td>';
+foreach ($importesAcumulado as $importeAcumulado) {
     $filaAcumulado = $filaAcumulado . '
-                <td> ' . number_format($semana, 0, '.', ',') . ' </td>';
+                <td> ' . number_format($importeAcumulado['absoluto'], 0, '.', ',') . ' </td>';
 }
 
 $filaAcumulado = $filaAcumulado . '</tr>';
 
 for ($i = 0; $i < sizeof($itemsTabla); $i++) {
     $columnaItemId = '<td>' . $itemsTabla[$i]['id_item'] . '</td>';
-    if ($contador == 0) {
-        $columnaLink = '<td rowspan="' . sizeof($items) . '"><a href="' . $LOCAL_URL . '/mp_sub_grafica/portales/tendencia/index.php?idPlanta=' . $_POST['idPlanta'] . '&semanaAlerta=' . $semanasAlerta[sizeof($semanasAlerta) - 1] . '&fechaEmision=' . $FECHA_EMISION . '&items=' . implode(',', $items) . '&id_tipo=' . $_POST['id_tipo'] . ' " target="_blank">LINK</a></td>';
-    }
     $filasTabla = $filasTabla . '<tr>' . $columnaItemId . '<td>' . $itemsTabla[$i]['item'] . '</td><td>' . $itemsTabla[$i]['cantidad'] . '</td>';
 
     foreach ($itemsTabla[$i]['semanas'] as $semana) {
         $filasTabla = $filasTabla . '<td>' . number_format($semana['importe'], 0, '.', ',') . '</td>';
     }
-
-    $filasTabla = $filasTabla . $columnaLink . '</tr>';
-
-    $contador += 1;
+    // if ($i == 0) {
+    //     $columnaLink = '<td rowspan="' . sizeof($items) . '"><a href="' . $LOCAL_URL . '/mp_sub_grafica/portales/tendencia/index.php?idPlanta=' . $_POST['idPlanta'] . '&semanaAlerta=' . $semanasAlerta[sizeof($semanasAlerta) - 1] . '&fechaEmision=' . $FECHA_EMISION . '&items=' . implode(',', $items) . '&id_tipo=' . $_POST['id_tipo'] . ' " target="_blank">LINK</a></td>';
+    //     $filasTabla = $filasTabla . $columnaLink . '</tr>';
+    // }
 }
 
 $cuerpoTabla = '<tbody>' . $filaAcumulado . $filasTabla . '</tbody> </table>';
@@ -303,7 +329,7 @@ if (!$output) {
 // }
 
 // Envío de correo
-$subject = 'Alerta Microleak ' . $tipo . ' Tendencia';
+$subject = 'Alerta Microleak ' . $asunto . ' Tendencia';
 $mail = new PHPMailer\PHPMailer\PHPMailer(true);
 $mail->SetLanguage("es", '../../utils/PHPMailer/language/');
 $mail->IsSMTP();
@@ -366,36 +392,40 @@ foreach ($correos as $correo) {
 
 // Copia a Analítica Avanzada
 // $mail->addBCC('ana.segovia@grupobimbo.com');
-// $mail->addBCC('daniel.robles@grupobimbo.com');
+$mail->addBCC('daniel.robles@grupobimbo.com');
 $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
 // $mail->addBCC('israel.gonzalez@grupobimbo.com');
 
-if (!$mail->send()) {
-    // $query = '
-    //     INSERT INTO
-    //         MKS_Datos_Complementarios.ALERTAS_EMITIDAS
-    //     VALUES
-    //         (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
-} else {
-    // $query = '
-    //     INSERT INTO
-    //         MKS_Datos_Complementarios.ALERTAS_EMITIDAS
-    //     VALUES
-    //         (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
+// if (!$mail->send()) {
+//     // foreach ($items as $item) {
+//     //     $query = '
+//     //      INSERT INTO
+//     //          MKS_MP_SUB.ALERTAS_EMITIDAS_PREDICTIVA_TENDENCIA
+//     //      VALUES
+//     //          (' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', ' . $_POST['idPlanta'] . ', ' . $item . ', ' . $_POST['id_tipo_alerta'] . ', ' . $_POST['id_tipo'] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
+//     // }
+// } else {
+//     // foreach ($items as $item) {
+//     //     $query = '
+//     //      INSERT INTO
+//     //          MKS_MP_SUB.ALERTAS_EMITIDAS_PREDICTIVA_TENDENCIA
+//     //      VALUES
+//     //         (' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', ' . $_POST['idPlanta'] . ', ' . $item . ', ' . $_POST['id_tipo_alerta'] . ', ' . $_POST['id_tipo'] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
+//     // }
 
-    $mail->clearAllRecipients();
-    $mail->clearAttachments();
-    $mail->clearCustomHeaders();
-    $mail->clearBCCs();
-    $mail->clearCCs();
-    $mail->clearReplyTos();
-    $mail->Subject = '';
-    $mail->Body = '';
-    unlink($imagen);
+//     $mail->clearAllRecipients();
+//     $mail->clearAttachments();
+//     $mail->clearCustomHeaders();
+//     $mail->clearBCCs();
+//     $mail->clearCCs();
+//     $mail->clearReplyTos();
+//     $mail->Subject = '';
+//     $mail->Body = '';
+//     unlink($imagen);
 
-    echo json_encode(['status' => 200, 'mensaje' => 'Correo enviado con éxito']);
-    sleep(2);
-}
+//     echo json_encode(['status' => 200, 'mensaje' => 'Correo enviado con éxito']);
+//     sleep(2);
+// }
 
 
 //EOF

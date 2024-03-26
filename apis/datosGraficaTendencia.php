@@ -54,8 +54,7 @@ $query = '
 SELECT
     id_item,
     aniosemana,
-    ajuste_inv_real,
-    ajuste_inv_real_abs
+    ajuste_inv_real
 FROM
     MKS_MP_SUB.DATOS_ALERTAS      
 WHERE
@@ -66,8 +65,7 @@ WHERE
 GROUP BY
     id_item,
     aniosemana,
-    ajuste_inv_real,
-    ajuste_inv_real_abs
+    ajuste_inv_real
 ';
 
 $result = sqlsrv_query($conn_sql_azure, $query);
@@ -79,8 +77,33 @@ while ($row = sqlsrv_fetch_array($result)) {
     $subdata['id_item'] = $row['id_item'];
     $subdata['semana'] = $row['aniosemana'];
     $subdata['importe'] = $row['ajuste_inv_real'];
-    $subdata['absoluto'] = $row['ajuste_inv_real_abs'];
     $importesItems[] = $subdata;
+}
+
+$query = '
+SELECT
+    aniosemana,
+    SUM(ajuste_inv_real_abs) as ajuste_inv_real_abs
+FROM
+    MKS_MP_SUB.DATOS_ALERTAS      
+WHERE
+    id_planta = ' . $_POST['idPlanta'] . '
+    AND aniosemana IN (' . implode(',', $semanasAlerta) . ')
+    AND id_tipo = ' . $_POST['id_tipo'] . '
+GROUP BY
+    aniosemana
+ORDER BY
+	aniosemana';
+
+$result = sqlsrv_query($conn_sql_azure, $query);
+
+$importesAcumulado = array();
+
+while ($row = sqlsrv_fetch_array($result)) {
+    $subdata = array();
+    $subdata['semana'] = $row['aniosemana'];
+    $subdata['absoluto'] = $row['ajuste_inv_real_abs'];
+    $importesAcumulado[] = $subdata;
 }
 
 $itemsTabla = array();
@@ -94,11 +117,15 @@ foreach ($itemsAlertados as $itemAlertado) {
         foreach ($importesItems as $importeItem) {
             if ($itemAlertado['id_item'] == $importeItem['id_item'] && $semanaAlerta == $importeItem['semana']) {
                 $subdataSemana['importe'] = $importeItem['importe'];
-                $subdataSemana['acumulado'] = $importeItem['absoluto'];
                 $banderaImporte = true;
                 break;
             }
         }
+        // foreach ($importesAcumulado as $importeAcumulado) {
+        //     if ($semanaAlerta == $importeAcumulado['semana']) {
+        //         $subdataSemana['acumulado'] = $importeAcumulado['absoluto'];
+        //     }
+        // }
         if (!$banderaImporte) {
             $subdataSemana['importe'] = 0;
         }

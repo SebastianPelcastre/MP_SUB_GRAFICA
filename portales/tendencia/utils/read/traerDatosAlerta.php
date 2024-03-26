@@ -36,7 +36,7 @@ while ($row = sqlsrv_fetch_array($result)) {
 $query = '
 SELECT
     ci.nombre,
-    da.ajuste_inv_predicted_mod
+    da.ajuste_inv_real
 FROM
 	MKS_MP_SUB.CAT_ITEMS ci
 INNER JOIN 
@@ -55,7 +55,7 @@ $montosItem = array();
 
 while ($row = sqlsrv_fetch_array($result)) {
     $nombresItems[] = $row['nombre'];
-    $montosItem[] = $row['ajuste_inv_predicted_mod'];
+    $montosItem[] = $row['ajuste_inv_real'];
 }
 
 $datosAlerta = array();
