@@ -188,7 +188,9 @@ $encabezadoCorreo = '
 
 <h2><span class="subtitle">Planta:</span>' . $_POST['idPlanta'] . '_' . $nombrePlanta . '</h2>
 
-<h2><span class="subtitle">Año Semana:</span> ' . $siguienteSemana . '</h2>';
+<h2><span class="subtitle">Semana Alertada:</span> ' . $semanasAlerta[sizeof($semanasAlerta) - 1] . '</h2>' . '
+
+<h2><span class="subtitle">Semana Predictiva:</span> ' . $siguienteSemana . '</h2>';
 
 $mensajeAlerta = '
 <p>A continuación se muestran los items que tienen mayor probabilidad de reportar un ajuste de inventarios; es información que aún no ocurre y que con tu ayuda evitaremos que suceda.</p>
@@ -308,7 +310,7 @@ if (!$output) {
 // }
 
 // Envío de correo
-$subject = 'Alerta Microleak ' . $asunto . ' Predictiva';
+$subject = 'Alerta Microleak ' . $asunto . ' Predictiva ' . $semanasAlerta[sizeof($semanasAlerta) - 1];
 $mail = new PHPMailer\PHPMailer\PHPMailer(true);
 $mail->SetLanguage("es", '../../utils/PHPMailer/language/');
 $mail->IsSMTP();
@@ -385,6 +387,7 @@ $ENVIO_EXITOSO = 0;
 //     //          MKS_MP_SUB.ALERTAS_EMITIDAS_PREDICTIVA_TENDENCIA
 //     //      VALUES
 //     //          (' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', ' . $_POST['idPlanta'] . ', ' . $item . ', ' . $_POST['id_tipo_alerta'] . ', ' . $_POST['id_tipo'] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
+//     // sqlsrv_query($conn_sql_azure, $query);
 //     // }
 // } else {
 //     // foreach ($items as $item) {
@@ -393,6 +396,7 @@ $ENVIO_EXITOSO = 0;
 //     //          MKS_MP_SUB.ALERTAS_EMITIDAS_PREDICTIVA_TENDENCIA
 //     //      VALUES
 //     //         (' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', ' . $_POST['idPlanta'] . ', ' . $item . ', ' . $_POST['id_tipo_alerta'] . ', ' . $_POST['id_tipo'] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
+//     // sqlsrv_query($conn_sql_azure, $query);
 //     // }
 
 //     $mail->clearAllRecipients();

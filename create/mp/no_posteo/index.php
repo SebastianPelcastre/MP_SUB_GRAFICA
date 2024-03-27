@@ -42,6 +42,7 @@ INNER JOIN
 WHERE 
 	aniosemana = ' . $semanaAlerta . '
 	AND da.id_tipo =  1 -- SUBENSAMBLES
+    AND da.id_planta = 2031
 GROUP BY 
 	da.id_planta,
 	cp.nombre
@@ -162,7 +163,7 @@ echo $correoCompleto;
 echo '<br/><br/>';
 
 // Envío de correo
-$subject = "Alerta Microleak Materias Primas No Posteo";
+$subject = 'Alerta Microleak Materias Primas No Posteo ' . $semanaAlerta;
 $mail = new PHPMailer\PHPMailer\PHPMailer(true);
 $mail->SetLanguage("es", '../../utils/PHPMailer/language/');
 $mail->IsSMTP();
@@ -219,22 +220,22 @@ echo '<br>';
 
 // Copia a Analítica Avanzada
 // $mail->addBCC('ana.segovia@grupobimbo.com');
-// $mail->addBCC('daniel.robles@grupobimbo.com');
+$mail->addBCC('daniel.robles@grupobimbo.com');
 $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
 // $mail->addBCC('israel.gonzalez@grupobimbo.com');
 
 // if (!$mail->send()) {
-//     $query = '
-//                 INSERT INTO
-//                     MKS_Datos_Complementarios.ALERTAS_EMITIDAS
-//                 VALUES
-//                     (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
+//     // $query = '
+//     //             INSERT INTO
+//     //                 MKS_Datos_Complementarios.ALERTAS_EMITIDAS
+//     //             VALUES
+//     //                 (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
 // } else {
-//     $query = '
-//                 INSERT INTO
-//                     MKS_Datos_Complementarios.ALERTAS_EMITIDAS
-//                 VALUES
-//                     (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
+//     // $query = '
+//     //             INSERT INTO
+//     //                 MKS_Datos_Complementarios.ALERTAS_EMITIDAS
+//     //             VALUES
+//     //                 (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
 // }
 
 //EOF

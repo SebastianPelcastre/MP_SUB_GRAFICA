@@ -329,7 +329,7 @@ if (!$output) {
 // }
 
 // Envío de correo
-$subject = 'Alerta Microleak ' . $asunto . ' Tendencia';
+$subject = 'Alerta Microleak ' . $asunto . ' Tendencia ' . $semanasAlerta[sizeof($semanasAlerta) - 1];
 $mail = new PHPMailer\PHPMailer\PHPMailer(true);
 $mail->SetLanguage("es", '../../utils/PHPMailer/language/');
 $mail->IsSMTP();
@@ -403,6 +403,7 @@ $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
 //     //          MKS_MP_SUB.ALERTAS_EMITIDAS_PREDICTIVA_TENDENCIA
 //     //      VALUES
 //     //          (' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', ' . $_POST['idPlanta'] . ', ' . $item . ', ' . $_POST['id_tipo_alerta'] . ', ' . $_POST['id_tipo'] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
+//     // sqlsrv_query($conn_sql_azure, $query);
 //     // }
 // } else {
 //     // foreach ($items as $item) {
@@ -411,6 +412,7 @@ $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
 //     //          MKS_MP_SUB.ALERTAS_EMITIDAS_PREDICTIVA_TENDENCIA
 //     //      VALUES
 //     //         (' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', ' . $_POST['idPlanta'] . ', ' . $item . ', ' . $_POST['id_tipo_alerta'] . ', ' . $_POST['id_tipo'] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
+//     // sqlsrv_query($conn_sql_azure, $query);
 //     // }
 
 //     $mail->clearAllRecipients();

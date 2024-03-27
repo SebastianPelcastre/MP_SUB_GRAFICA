@@ -54,12 +54,19 @@ require './utils/read/traerRespuestas.php';
                                 <thead class="table-light">
                                     <tr>
                                         <th>SEMANA</th>
+                                        <th>PLANTA</th>
+                                        <th>NOMBRE PLANTA</th>
                                         <th>ITEM</th>
                                         <th>NOMBRE ITEM</th>
+                                        <th>TIPO</th>
+                                        <th>PUESTO</th>
+                                        <th>CORREO</th>
                                         <th>CAUSA</th>
                                         <th>PLAN DE ACCIÓN</th>
                                         <th>FECHA DE RESOLUCIÓN</th>
-                                        <th>COMENTARIOS (MÁXIMO 255 CARÁCTERES)</th>
+                                        <th>COMENTARIO</th>
+                                        <th>SEGUIMIENTO</th>
+                                        <th>OBSERVACIONES</th>
                                     </tr>
                                 </thead>
                                 <tbody class="table-group-divider">
@@ -74,12 +81,6 @@ require './utils/read/traerRespuestas.php';
                                         $columnaFechaResolucion = '';
                                         $columnaComentarios = '';
                                         $respuestaParaItem = 'SIN RESPUESTA';
-                                        // foreach ($respuestas as $res) {
-                                        //     if ($res['idItem'] == $respuesta['id']) {
-                                        //         $respuestaParaItem = $res;
-                                        //         break;
-                                        //     }
-                                        // }
 
                                         if ($respuesta['causa'] !== null && $respuesta['nombre_plan'] !== null) {
                                             $columnaCausa = '<td style="vertical-align: middle;text-align:center;"><p>' . $respuesta['causa'] . '</p></td>';
@@ -95,18 +96,23 @@ require './utils/read/traerRespuestas.php';
                                             }
                                         } else {
                                             $columnaCausa = '<td style="vertical-align: middle;"><p>' . $respuestaParaItem . '</p></td>';
+
                                             $columnaPlanAccion = '<td style="vertical-align: middle;"><p>' . $respuestaParaItem . '</p></td>';
+
                                             $columnaFechaResolucion = '<td style="vertical-align: middle;"><p>' . $respuestaParaItem . '</p></td>';
+
                                             $columnaComentarios = '<td style="vertical-align: middle;"> <div style="vertical-align: middle;">' . $respuestaParaItem . '</div></td>';
                                         }
                                     ?>
                                         <tr>
                                             <td style="vertical-align: middle;"><?php echo $respuesta['semana'] ?></td>
-                                            <td style="vertical-align: middle;">
-                                                <input class="form-control" style="display: inline-block;
-  min-width: 80px;" type="text" name="id-<?php echo $contador ?>" value="<?php echo $respuesta['id_item'] ?>" readonly />
-                                            </td>
+                                            <td style="vertical-align: middle;"><?php echo $respuesta['id_planta'] ?></td>
+                                            <td style="vertical-align: middle;"><?php echo $respuesta['nombre_planta'] ?></td>
+                                            <td style="vertical-align: middle;"><?php echo $respuesta['id_item'] ?></td>
                                             <td style="vertical-align: middle;"><?php echo $respuesta['nombre_item'] ?></td>
+                                            <td style="vertical-align: middle;"><?php echo $respuesta['tipo'] ?></td>
+                                            <td style="vertical-align: middle;"><?php echo $respuesta['puesto'] ?></td>
+                                            <td style="vertical-align: middle;"><?php echo $respuesta['correo'] ?></td>
                                             <?php echo $columnaCausa ?>
                                             <?php echo $columnaPlanAccion; ?>
                                             <?php echo $columnaFechaResolucion; ?>

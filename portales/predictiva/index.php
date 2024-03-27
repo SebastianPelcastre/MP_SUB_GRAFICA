@@ -4,7 +4,7 @@ require '../../../utils/conexion_sql_azure.php';
 
 require './utils/read/traerDatosAlerta.php';
 
-require './utils/read/traerPlanes.php';
+// require './utils/read/traerPlanes.php';
 
 require './utils/read/traerCausas.php';
 
@@ -85,8 +85,6 @@ require './utils/read/traerRespuestas.php';
                                 <tbody class="table-group-divider">
                                     <?php
                                     $contador = 0;
-                                    // $items = explode(',', $_GET['items']);
-                                    // $cantidadItems = sizeof(explode(',', $_GET['items']));
 
                                     foreach ($datosAlerta as $datoAlerta) {
                                         $columnaCausa = '';
@@ -108,7 +106,8 @@ require './utils/read/traerRespuestas.php';
                                             $columnaComentarios = '<td style="vertical-align: middle;"> <div style="vertical-align: middle;">' . $respuestaParaItem['comentario'] . '</div></td>';
                                         } else {
                                             $columnaCausa = '<td style="vertical-align: middle;text-align:center;">
-                            <select class="form-select" name="causa-' . $contador . '">
+                                            <select class="form-select" name="causa-' . $contador . '" onchange="traerPlanes(this.value, ' . $contador . ')">
+
                                 <option value="" selected disabled>Seleccione una causa...</option>';
 
                                             foreach ($causas as $causa) {
@@ -119,15 +118,11 @@ require './utils/read/traerRespuestas.php';
                         </td>';
 
                                             $columnaPlanAccion = '<td style="vertical-align: middle;text-align:center;">
-                                <select class="form-select" name="planAccion-' . $contador . '">
-                                    <option value="" selected disabled>Seleccione un plan...</option>';
-
-                                            foreach ($planes as $plan) {
-                                                $columnaPlanAccion .= '<option value="' . $plan['id'] . '">' . $plan['nombre'] . '</option>';
-                                            }
-
-                                            $columnaPlanAccion .= '</select>
-                            </td>';
+                                                <select class="form-select" name="planAccion-' . $contador . '">
+                                                    <option value="" selected disabled>Seleccione un plan...</option>
+                                                    <option value=""></option>
+                                                    </select>
+                                            </td>';
 
                                             $columnaFechaResolucion = '<td style="vertical-align: middle;text-align:center;">
                                     <input class="form-control" type="date" name="fechaResolucion-' . $contador . '" min="' . date('Y-m-d') . '" max="' . $fechaMaximaPlan . '">
@@ -237,15 +232,28 @@ require './utils/read/traerRespuestas.php';
     <script src="../public/js/bootstrap.min.js"></script>
     <script src="./public/js/main.js"></script>
     <script>
-        // const otros = document.querySelector('#otros')
-        // const selectValue = (selectedValue, id) => {
+        function traerPlanes(selectedValue, rowIndex) {
+            const formData = new FormData();
+            formData.append('selectedValue', selectedValue);
 
-        //     if (selectedValue == 12) {
-        //         otros.classList.remove("d-none")
-        //     } else {
-        //         otros.classList.add("d-none")
-        //     }
-        // }
+            fetch('./utils/read/traerPlanes.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const planSelect = document.querySelector(`select[name="planAccion-${rowIndex}"]`);
+
+                    planSelect.innerHTML = '';
+
+                    data.forEach(plan => {
+                        const option = document.createElement('option');
+                        option.value = plan.id;
+                        option.textContent = plan.nombre;
+                        planSelect.appendChild(option);
+                    });
+                })
+        }
     </script>
 
 </body>
