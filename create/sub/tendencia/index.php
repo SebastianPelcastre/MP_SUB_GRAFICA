@@ -192,7 +192,7 @@ while ($row = sqlsrv_fetch_array($result)) {
         async function procesarPlanta(planta) {
             inputIdPlanta.value = planta
             await crearGrafica()
-            console.log(a.getAttribute('data-src'))
+            // console.log(a.getAttribute('data-src'))
             enviar(inputIdPlanta.value, inputDatosGrafica, a.getAttribute('data-src'))
         }
 

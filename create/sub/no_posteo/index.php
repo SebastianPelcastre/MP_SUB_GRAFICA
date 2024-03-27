@@ -113,7 +113,7 @@ $styles = '
 
 $encabezadoCorreo = '<h1>Plantas <span class="text-red">sin posteo</span> Subensambles</h1>
 
-    <h2>Semana: <span class="bold">' . $semanaAlerta . '</span></h2>
+    <h2>Año Semana de emisión: <span class="bold">' . $semanaAlerta . '</span></h2>
 
     <h2>Microleaks Subensambes | Consultoría de Análisis para Negocio</h2>
 
@@ -218,10 +218,10 @@ echo '</ul>';
 echo '<br>';
 
 // Copia a Analítica Avanzada
-// $mail->addBCC('ana.segovia@grupobimbo.com');
+$mail->addBCC('ana.segovia@grupobimbo.com');
 $mail->addBCC('daniel.robles@grupobimbo.com');
 $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
-// $mail->addBCC('israel.gonzalez@grupobimbo.com');
+$mail->addBCC('israel.gonzalez@grupobimbo.com');
 
 // if (!$mail->send()) {
 //     // $query = '

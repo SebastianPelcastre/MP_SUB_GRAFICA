@@ -26,6 +26,9 @@ require './utils/read/traerRespuestas.php';
 </head>
 
 <body>
+
+    <input type="hidden" value="<?php echo $idTipo; ?>" id="idTipo" />
+
     <!-- Encabezado -->
     <div class="bg-header w-100">
         <header class="container">
@@ -120,8 +123,7 @@ require './utils/read/traerRespuestas.php';
                                             $columnaPlanAccion = '<td style="vertical-align: middle;text-align:center;">
                                                 <select class="form-select" name="planAccion-' . $contador . '">
                                                     <option value="" selected disabled>Seleccione un plan...</option>
-                                                    <option value=""></option>
-                                                    </select>
+                                                </select>
                                             </td>';
 
                                             $columnaFechaResolucion = '<td style="vertical-align: middle;text-align:center;">
@@ -233,8 +235,10 @@ require './utils/read/traerRespuestas.php';
     <script src="./public/js/main.js"></script>
     <script>
         function traerPlanes(selectedValue, rowIndex) {
+            const tipo = document.getElementById('idTipo').value
             const formData = new FormData();
             formData.append('selectedValue', selectedValue);
+            formData.append('tipo', tipo);
 
             fetch('./utils/read/traerPlanes.php', {
                     method: 'POST',

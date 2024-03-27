@@ -188,9 +188,7 @@ $encabezadoCorreo = '
 
 <h2><span class="subtitle">Planta:</span>' . $_POST['idPlanta'] . '_' . $nombrePlanta . '</h2>
 
-<h2><span class="subtitle">Semana Alertada:</span> ' . $semanasAlerta[sizeof($semanasAlerta) - 1] . '</h2>' . '
-
-<h2><span class="subtitle">Semana Predictiva:</span> ' . $siguienteSemana . '</h2>';
+<h2><span class="subtitle">Año Semana de emisión:</span> ' . $semanasAlerta[sizeof($semanasAlerta) - 1] . '</h2>';
 
 $mensajeAlerta = '
 <p>A continuación se muestran los items que tienen mayor probabilidad de reportar un ajuste de inventarios; es información que aún no ocurre y que con tu ayuda evitaremos que suceda.</p>
@@ -373,30 +371,40 @@ foreach ($correos as $correo) {
 
 // Copia a Analítica Avanzada
 // $mail->addBCC('ana.segovia@grupobimbo.com');
-$mail->addBCC('daniel.robles@grupobimbo.com');
+// $mail->addBCC('daniel.robles@grupobimbo.com');
 $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
 // $mail->addBCC('israel.gonzalez@grupobimbo.com');
 
-$ERROR_ENVIO = 1;
-$ENVIO_EXITOSO = 0;
+$ERROR_ENVIO = 0;
+$ENVIO_EXITOSO = 1;
 
 // if (!$mail->send()) {
-//     // foreach ($items as $item) {
+//     // for ($i = 0; $i < sizeof($items); $i++) {
 //     //     $query = '
 //     //      INSERT INTO
-//     //          MKS_MP_SUB.ALERTAS_EMITIDAS_PREDICTIVA_TENDENCIA
+//     //         MKS_MP_SUB.ALERTAS_EMITIDAS_PREDICTIVA_TENDENCIA
 //     //      VALUES
-//     //          (' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', ' . $_POST['idPlanta'] . ', ' . $item . ', ' . $_POST['id_tipo_alerta'] . ', ' . $_POST['id_tipo'] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
-//     // sqlsrv_query($conn_sql_azure, $query);
+//     //          (' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', ' . $_POST['idPlanta'] . ', \'' . $items[$i] . '\', ' . $_POST['id_tipo_alerta'] . ', ' . $_POST['id_tipo'] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
+//     //     if (!sqlsrv_query($conn_sql_azure, $query)) {
+//     //         echo $query;
+//     //         echo '<br />';
+//     //         echo '<br />';
+//     //         die(print_r(sqlsrv_errors()));
+//     //     }
 //     // }
 // } else {
-//     // foreach ($items as $item) {
+//     // for ($i = 0; $i < sizeof($items); $i++) {
 //     //     $query = '
 //     //      INSERT INTO
 //     //          MKS_MP_SUB.ALERTAS_EMITIDAS_PREDICTIVA_TENDENCIA
 //     //      VALUES
-//     //         (' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', ' . $_POST['idPlanta'] . ', ' . $item . ', ' . $_POST['id_tipo_alerta'] . ', ' . $_POST['id_tipo'] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
-//     // sqlsrv_query($conn_sql_azure, $query);
+//     //         (' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', ' . $_POST['idPlanta'] . ', \'' . $items[$i] . '\', ' . $_POST['id_tipo_alerta'] . ', ' . $_POST['id_tipo'] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
+//     //     if (!sqlsrv_query($conn_sql_azure, $query)) {
+//     //         echo $query;
+//     //         echo '<br />';
+//     //         echo '<br />';
+//     //         die(print_r(sqlsrv_errors()));
+//     //     }
 //     // }
 
 //     $mail->clearAllRecipients();

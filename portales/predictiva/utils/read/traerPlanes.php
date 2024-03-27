@@ -5,6 +5,7 @@ require '../../../../../utils/conexion_sql_azure.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $selectedValue = $_POST['selectedValue'];
+    $tipo = $_POST['tipo'];
 
     $query = '
     SELECT
@@ -16,7 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         MKS_MP_SUB.CAT_PLANES cp 
         ON crcp.id_plan = cp.id_plan 
     WHERE 
-        crcp.id_causa = ' . $selectedValue;
+        crcp.id_causa = ' . $selectedValue . '
+        AND crcp.id_tipo = ' . $tipo;
 
     $result = sqlsrv_query($conn_sql_azure, $query);
 
