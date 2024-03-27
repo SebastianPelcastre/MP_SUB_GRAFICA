@@ -63,7 +63,7 @@ require './utils/read/traerRespuestas.php';
                         </div>
                         <div class="row mb-3">
                             <div class="col">
-                                <p class="fs-5 ">Año semana: <?php echo $semanaAlerta; ?></p>
+                                <p class="fs-5 ">Año semana predictiva: <?php echo $semanaAlerta; ?></p>
                             </div>
                             <div class="col">
                                 <p class="fs-5 text-center"></p>
