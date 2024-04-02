@@ -47,6 +47,7 @@ require './utils/read/traerRespuestas.php';
                                                             } else {
                                                                 echo 'SUBENSAMBLES';
                                                             } ?> | CAN</h1>
+                <p class="fs-5 text-center text-danger font-weight-bold"><strong>ALERTA POR TENDENCIA</strong></p>
             </div>
         </div>
         <div class="row justify-content-md-center mt-3">
