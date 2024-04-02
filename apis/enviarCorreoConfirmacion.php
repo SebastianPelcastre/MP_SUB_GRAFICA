@@ -296,7 +296,7 @@ if ($idTipo == 1 && $respuesta['mantenimiento'] != null && $respuesta['materiale
 // Agregamos a los destinatarios principales
 foreach ($correos as $correo) {
     // echo '<li>' . $correo . '</li>';
-    // $mail->addAddress($correo);
+    $mail->addAddress($correo);
 }
 
 // echo '</ul>';
