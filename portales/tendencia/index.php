@@ -84,9 +84,9 @@ require './utils/read/traerRespuestas.php';
                                     <tr>
                                         <th>ITEM</th>
                                         <th>NOMBRE ITEM</th>
-                                        <th>MONTO</th>
-                                        <th>CAUSA</th>
-                                        <th>PLAN DE ACCIÓN</th>
+                                        <th>AJUSTE DE INV REAL $</th>
+                                        <!-- <th>CAUSA</th> -->
+                                        <th>PLAN DE ACCIÓN (MÁXIMO 255 CARÁCTERES)</th>
                                         <th>FECHA DE RESOLUCIÓN</th>
                                         <th>COMENTARIOS (MÁXIMO 255 CARÁCTERES)</th>
                                     </tr>
@@ -111,38 +111,27 @@ require './utils/read/traerRespuestas.php';
                                         }
 
                                         if ($respuestaParaItem !== null) {
-                                            $columnaCausa = '<td style="vertical-align: middle;"><p>' . $respuestaParaItem['causa'] . '</p></td>';
-                                            $columnaPlanAccion = '<td style="vertical-align: middle;"><p>' . $respuestaParaItem['nombrePlan'] . '</p></td>';
+                                            // $columnaCausa = '<td style="vertical-align: middle;"><p>' . $respuestaParaItem['causa'] . '</p></td>';
+                                            $columnaPlanAccion = '<td style="vertical-align: middle;"><p></p></td>';
                                             $columnaFechaResolucion = '<td style="vertical-align: middle;"><p>' . $respuestaParaItem['fechaResolucion'] . '</p></td>';
                                             $columnaComentarios = '<td style="vertical-align: middle;"> <div style="vertical-align: middle;">' . $respuestaParaItem['comentario'] . '</div></td>';
                                         } else {
-                                            $columnaCausa = '<td style="vertical-align: middle;text-align:center;">
-                            <select class="form-select" name="causa-' . $contador . '">
-                                <option value="" selected disabled>Seleccione una causa...</option>';
+                                            // $columnaCausa = '<td style="vertical-align: middle;text-align:center;">
+                                            //     <select class="form-select" name="causa-' . $contador . '">
+                                            //         <option value="" selected disabled>Seleccione una causa...</option>';
 
-                                            foreach ($causas as $causa) {
-                                                $columnaCausa .= '<option value="' . $causa['id'] . '">' . $causa['causa'] . '</option>';
-                                            }
+                                            // foreach ($causas as $causa) {
+                                            //     $columnaCausa .= '<option value="' . $causa['id'] . '">' . $causa['causa'] . '</option>';
+                                            // }
 
-                                            $columnaCausa .= '</select>
-                        </td>';
+                                            // $columnaCausa .= '</select></td>';
 
-                                            $columnaPlanAccion = '<td style="vertical-align: middle;text-align:center;">
-                                <select class="form-select" name="planAccion-' . $contador . '">
-                                    <option value="" selected disabled>Seleccione un plan...</option>';
-
-                                            foreach ($planes as $plan) {
-                                                $columnaPlanAccion .= '<option value="' . $plan['id'] . '">' . $plan['nombre'] . '</option>';
-                                            }
-
-                                            $columnaPlanAccion .= '</select>
-                            </td>';
+                                            $columnaPlanAccion = '<td style="vertical-align: middle;"> <textarea class="form-control" rows="2" name="planAccion-' . $contador . '" maxlength="255"></textarea>
+                                            </td>';
 
                                             $columnaFechaResolucion = '<td style="vertical-align: middle;text-align:center;">
-                                    <input class="form-control" type="date" name="fechaResolucion-' . $contador . '" min="' . date('Y-m-d') . '" max="' . $fechaMaximaPlan . '">
-                                </td>';
-                                            $columnaComentarios = '<td style="vertical-align: middle;"> <textarea class="form-control" rows="2" name="comentario-' . $contador . '" maxlength="255"></textarea>
-                            </td>';
+                                    <input class="form-control" type="date" name="fechaResolucion-' . $contador . '" min="' . date('Y-m-d') . '" max="' . $fechaMaximaPlan . '"></td>';
+                                            $columnaComentarios = '<td style="vertical-align: middle;"> <textarea class="form-control" rows="2" name="comentario-' . $contador . '" maxlength="255"></textarea></td>';
                                         }
                                     ?>
                                         <tr>
@@ -152,7 +141,7 @@ require './utils/read/traerRespuestas.php';
                                             </td>
                                             <td style="vertical-align: middle;"><?php echo $datoAlerta['nombre'] ?></td>
                                             <td style="vertical-align: middle;"><?php echo number_format($datoAlerta['monto'], 0, '.', ',') ?></td>
-                                            <?php echo $columnaCausa ?>
+                                            <!-- <?php echo $columnaCausa ?> -->
                                             <?php echo $columnaPlanAccion; ?>
                                             <?php echo $columnaFechaResolucion; ?>
                                             <?php echo $columnaComentarios; ?>

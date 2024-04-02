@@ -19,29 +19,26 @@ const submitForm = (e) => {
 
   const datosEnviar = []
 
-
-  const idItem = formData.get("id-" + i)
-  const idCausa = formData.get("causa-" + i)
-  const idPlanAccion = formData.get("planAccion-" + i)
-  const fechaResolucion = formData.get("fechaResolucion-" + i)
-  const comentarios = formData.get("comentario-" + i)
+  const idCausa = formData.get("causa")
+  const planAccion = formData.get("planAccion")
+  const fechaResolucion = formData.get("fechaResolucion")
   const idPlanta = formData.get("idPlanta")
   const semanaAlerta = formData.get("semanaAlerta")
   const fechaEmision = formData.get("fechaEmision")
   const fechaRegistro = formData.get("fechaRegistro")
 
   // Verificar si los campos necesarios están seleccionados
-  if (idCausa && idPlanAccion && fechaResolucion) {
+  if (idCausa && planAccion && fechaResolucion) {
     // Construir el objeto para el item actual
     const itemData = {
-      idItem: idItem,
       semana: semanaAlerta,
       idPlanta: idPlanta,
       fechaEmision: fechaEmision,
       idCausa: idCausa,
-      idPlan: idPlanAccion,
+      planAccion: planAccion,
       fechaResolucion: fechaResolucion,
       comentarios: comentarios,
+      fechaRegistro: fechaRegistro
     }
 
     // Agregar el objeto al array
@@ -71,12 +68,12 @@ const submitForm = (e) => {
       }
 
       if (jsonResult["status"] === 200) {
-        fetch('../../../apis/enviarCorreoConfirmacion.php',{
-          method: 'POST',
-          body: datosEnviar
-        })
-        .then( )
-        .then
+        // fetch('../../../apis/enviarCorreoConfirmacion.php',{
+        //   method: 'POST',
+        //   body: datosEnviar
+        // })
+        // .then( )
+        // .then
           location.href = "registro-exitoso.php"
         
       }

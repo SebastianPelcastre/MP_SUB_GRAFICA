@@ -84,15 +84,14 @@ require './utils/read/traerRespuestas.php';
                                     <tr>
                                         <th>FECHA DE EMISIÓN</th>
                                         <th>CAUSA</th>
-                                        <th>PLAN DE ACCIÓN</th>
+                                        <th>PLAN DE ACCIÓN (MÁXIMO 255 CARÁCTERES)</th>
                                         <th>FECHA DE RESOLUCIÓN</th>
-                                        <th>COMENTARIOS (MÁXIMO 255 CARÁCTERES)</th>
                                     </tr>
                                 </thead>
                                 <tbody class="table-group-divider">
                                     <td style="vertical-align: middle;text-align:center;"><?php echo $fechaEmision ?></td>
                                     <td style="vertical-align: middle;text-align:center;">
-                                        <select class="form-select" name="causas" id="causas" onchange="selectValue(this.value)">
+                                        <select class="form-select" name="causa" id="causa" onchange="selectValue(this.value)">
                                             <option value="disabled" selected disabled>Seleccione una causa de no posteo</option>
                                             <?php
                                             $options = '';
@@ -105,7 +104,6 @@ require './utils/read/traerRespuestas.php';
                                     </td>
                                     <td style="vertical-align: middle;text-align:center;" id="planAccion"> <input class="form-control" type="text"> </td>
                                     <td style="vertical-align: middle;text-align:center;" id="fechaResolucion"> <input class="form-control" type="date"> </td>
-                                    <td style="vertical-align: middle;text-align:center;" id="comentario"> <input class="form-control" type="text"> </td>
                                 </tbody>
                             </table>
                         </div>

@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!is_array($datosEnviar)) {
         echo json_encode(array(
             'status' => 401,
-            'mensaje' => 'Error: datosEnviar no es un array'
+            'mensaje' => 'Error al recuperar datoas'
         ));
         die;
     }
@@ -89,6 +89,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Si todo el formulario es correcto, guardamos la respuesta
+    // echo json_encode(array(
+    //     'status' => 200,
+    //     'mensaje' => 'Validado'
+    // ));
     require '../create/enviarRespuestas.php';
 
     die;

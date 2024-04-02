@@ -18,13 +18,16 @@ $FECHA_EMISION = date('Y-m-d');
 
 $tipo = '';
 $asunto = '';
+$mensaje = '';
 
 if ($_POST['id_tipo'] == 1) {
     $tipo = 'MATERIAS PRIMAS';
     $asunto = 'Materias Primas';
+    $mensaje = '<p><span class="bold">Supervisor  de materias primas/ Jefe de mantenimiento:</span> Revisar en conjunto la causa, elegir un plan de acción y fecha de resolución para evitar el ajuste de los items alertados y en el checkbox del portal de respuesta seleccionar las figuras que estuvieron presentes en la generación del plan de acción</p>';
 } else {
     $tipo = 'SUBENSAMBLES';
     $asunto = 'Subensambles';
+    $mensaje = '<p><span class="bold">Ingeniero de procesos/ Jefe de mantenimiento:</span> Revisar en conjunto la causa, elegir un plan de acción y fecha de resolución para evitar el ajuste de los items alertados y en el checkbox del portal de respuesta seleccionar las figuras que estuvieron presentes en la generación del plan de acción</p>';
 }
 
 // echo json_encode($_POST);
@@ -177,6 +180,9 @@ $globalStyles = '
     .text-red{
         color:red;
     }
+    .bold{
+        font-weight: bolder;
+    }
 
 </style>
 ';
@@ -192,7 +198,8 @@ $encabezadoCorreo = '
 
 $mensajeAlerta = '
 <p>A continuación se muestran los items que tienen mayor probabilidad de reportar un ajuste de inventarios; es información que aún no ocurre y que con tu ayuda evitaremos que suceda.</p>
-<br />
+<br/>
+' . $mensaje . '
 <h2 style="text-align: start;">CRITERIOS PARA LA ALERTA</h2>
 <ol style="text-align: start;">
     <li>Se calcula el ajuste de inventario absoluto para cada Planta - Item</li>
@@ -370,8 +377,8 @@ foreach ($correos as $correo) {
 // echo '<br>';
 
 // Copia a Analítica Avanzada
-// $mail->addBCC('ana.segovia@grupobimbo.com');
-// $mail->addBCC('daniel.robles@grupobimbo.com');
+$mail->addBCC('ana.segovia@grupobimbo.com');
+$mail->addBCC('daniel.robles@grupobimbo.com');
 $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
 // $mail->addBCC('israel.gonzalez@grupobimbo.com');
 

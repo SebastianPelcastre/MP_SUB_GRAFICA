@@ -4,8 +4,6 @@ $query = '
 SELECT
     r.id,
 	r.id_item,
-	cc.causa,
-	cp.nombre_plan,
 	r.fecha_resolucion,
 	CASE
         WHEN c.comentario IS NULL THEN \'SIN COMENTARIO\'
@@ -13,12 +11,6 @@ SELECT
     END AS comentario
 FROM
 	MKS_MP_SUB.RESPUESTAS_TENDENCIA r
-INNER JOIN
-	MKS_MP_SUB.CAT_CAUSAS cc
-	ON r.id_causa = cc.id_causa
-INNER JOIN 
-	MKS_MP_SUB.CAT_PLANES cp
-	ON r.id_plan_accion = cp.id_plan
 LEFT JOIN 
     MKS_MP_SUB.COMENTARIOS_TENDENCIA c
     ON r.id = c.id_respuesta
@@ -29,8 +21,6 @@ WHERE
 GROUP BY
     r.id,
     r.id_item,
-    cc.causa,
-    cp.nombre_plan,
     r.fecha_resolucion,
     c.comentario';
 
@@ -49,7 +39,6 @@ while ($row = sqlsrv_fetch_array($result)) {
     $subdata = array();
     $subdata['idItem'] = $row['id_item'];
     $subdata['causa'] = $row['causa'];
-    $subdata['nombrePlan'] = $row['nombre_plan'];
     $subdata['fechaResolucion'] = $row['fecha_resolucion']->format('Y-m-d');
     $subdata['comentario'] = $row['comentario'];
     $respuestas[] = $subdata;

@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!is_array($datosEnviar)) {
         echo json_encode(array(
             'status' => 401,
-            'mensaje' => 'Error: datosEnviar no es un array'
+            'mensaje' => 'Error al recuperar datoas'
         ));
         die;
     }
@@ -72,14 +72,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $params = array($item['idItem'], $item['semana'], $item['idPlanta'], $item['fechaEmision']);
 
-        // if (!$result = sqlsrv_query($conn_sql_azure, $query, $params)) {
-        //     echo json_encode(array(
-        //         'status' => 500,
-        //         'mensaje' => 'Error al validar respuesta'
-        //     ));
-        //     die;
-        // }
-        if ($result = sqlsrv_query($conn_sql_azure, $query, $params)) {
+        if (!$result = sqlsrv_query($conn_sql_azure, $query, $params)) {
+            echo json_encode(array(
+                'status' => 500,
+                'mensaje' => 'Error al validar respuesta'
+            ));
+            die;
+        }
+        if (sqlsrv_has_rows($result)) {
             echo json_encode(array(
                 'status' => 401,
                 'mensaje' => 'Esta alerta ya fue contestada para el item ' . $item['idItem'] . ''

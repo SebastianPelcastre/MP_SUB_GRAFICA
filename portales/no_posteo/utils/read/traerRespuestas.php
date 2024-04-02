@@ -2,41 +2,20 @@
 
 $query = '
 SELECT
-    r.id,
-	r.id_item,
-	cc.causa,
-	cp.nombre_plan,
-	r.fecha_resolucion,
-	CASE
-        WHEN c.comentario IS NULL THEN \'SIN COMENTARIO\'
-        ELSE c.comentario
-    END AS comentario
+	benp.id, benp.id_planta, benp.fecha_emision, rnp.plan_accion, rnp.fecha_resolucion 
 FROM
-	MKS_MP_SUB.RESPUESTAS r
-INNER JOIN
-	MKS_MP_SUB.CAT_CAUSAS cc
-	ON r.id_causa = cc.id_causa
+	MKS_MP_SUB.RESPUESTAS_NO_POSTEO rnp
 INNER JOIN 
-	MKS_MP_SUB.CAT_PLANES cp
-	ON r.id_plan_accion = cp.id_plan
-LEFT JOIN 
-    MKS_MP_SUB.COMENTARIOS c
-    ON r.id = c.id_respuesta
+	MKS_MP_SUB.CAT_CAUSAS cc 
+	ON cc.id_causa = rnp.id_causa 
+INNER JOIN 
+	MKS_MP_SUB.BITACORA_ENVIOS_NO_POSTEO benp 
+	ON benp.id = rnp.id_envio 
 WHERE
-    r.id_planta = ?
-    AND r.semana = ?
-    AND r.id_item IN (\'' . implode('\',\'', $items) . '\')
-GROUP BY
-    r.id,
-    r.id_item,
-    cc.causa,
-    cp.nombre_plan,
-    r.fecha_resolucion,
-    c.comentario';
+    benp.id_planta = ?';
 
 $params = array(
-    $idPlanta,
-    $semanaAlerta
+    $idPlanta
 );
 if (!$result = sqlsrv_query($conn_sql_azure, $query, $params)) {
     echo 'Error al traer respuestas';
@@ -47,11 +26,11 @@ if (!$result = sqlsrv_query($conn_sql_azure, $query, $params)) {
 $respuestas = array();
 while ($row = sqlsrv_fetch_array($result)) {
     $subdata = array();
-    $subdata['idItem'] = $row['id_item'];
-    $subdata['causa'] = $row['causa'];
-    $subdata['nombrePlan'] = $row['nombre_plan'];
+    $subdata['idItem'] = $row['id'];
+    $subdata['planta'] = $row['id_planta'];
+    $subdata['fechaEmision'] = $row['fecha_emision']->format('Y-m-d');
+    $subdata['planAccion'] = $row['plan_accion'];
     $subdata['fechaResolucion'] = $row['fecha_resolucion']->format('Y-m-d');
-    $subdata['comentario'] = $row['comentario'];
     $respuestas[] = $subdata;
 }
 

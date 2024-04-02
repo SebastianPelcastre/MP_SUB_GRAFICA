@@ -23,6 +23,8 @@ require './utils/read/traerRespuestas.php';
     <link rel="stylesheet" href="../public/css/bootstrap.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="public/css/main.css">
+    <!-- DataTable CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css" />
 </head>
 
 <body>
@@ -50,7 +52,7 @@ require './utils/read/traerRespuestas.php';
                 <div class="card shadow border border-top-0 border-end-0 border-bottom-0 border-main">
                     <form class="card-body" id="form" method="POST">
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table" id="table">
                                 <thead class="table-light">
                                     <tr>
                                         <th>SEMANA</th>
@@ -72,8 +74,6 @@ require './utils/read/traerRespuestas.php';
                                 <tbody class="table-group-divider">
                                     <?php
                                     $contador = 0;
-                                    // $items = explode(',', $_GET['items']);
-                                    // $cantidadItems = sizeof(explode(',', $_GET['items']));
 
                                     foreach ($respuestas as $respuesta) {
                                         $columnaCausa = '';
@@ -117,6 +117,8 @@ require './utils/read/traerRespuestas.php';
                                             <?php echo $columnaPlanAccion; ?>
                                             <?php echo $columnaFechaResolucion; ?>
                                             <?php echo $columnaComentarios; ?>
+                                            <td></td>
+                                            <td></td>
                                         </tr>
                                     <?php
                                         $contador += 1;
@@ -198,17 +200,10 @@ require './utils/read/traerRespuestas.php';
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <!-- Bootstrap JS -->
     <script src="../public/js/bootstrap.min.js"></script>
+    <!-- DataTable JS -->
+    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
     <script src="./public/js/main.js"></script>
     <script>
-        // const otros = document.querySelector('#otros')
-        // const selectValue = (selectedValue, id) => {
-
-        //     if (selectedValue == 12) {
-        //         otros.classList.remove("d-none")
-        //     } else {
-        //         otros.classList.add("d-none")
-        //     }
-        // }
     </script>
 
 </body>

@@ -19,13 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!is_array($datosEnviar)) {
         echo json_encode(array(
             'status' => 401,
-            'mensaje' => 'Error: datosEnviar no es un array'
+            'mensaje' => 'Error al recuperar datoas'
         ));
         die;
     }
 
-    foreach ($datosEnviar as $item) {
-        if (empty($item['idPlanta'])) {
+    foreach ($datosEnviar as $planta) {
+        if (empty($planta['idPlanta'])) {
             echo json_encode(array(
                 'status' => 401,
                 'mensaje' => 'Error: El campo idPlanta está vacío'
@@ -33,15 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die;
         }
 
-        if (empty($item['idItem'])) {
-            echo json_encode(array(
-                'status' => 401,
-                'mensaje' => 'Error: El campo idItem está vacío'
-            ));
-            die;
-        }
-
-        if (empty($item['semana'])) {
+        if (empty($planta['semana'])) {
             echo json_encode(array(
                 'status' => 401,
                 'mensaje' => 'Error: El campo semana está vacío'
@@ -49,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die;
         }
 
-        if (empty($item['fechaEmision'])) {
+        if (empty($planta['fechaEmision'])) {
             echo json_encode(array(
                 'status' => 401,
                 'mensaje' => 'Error: El campo fechaEmision está vacío'
@@ -62,27 +54,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         SELECT
             *
         FROM 
-            MKS_MP_SUB.RESPUESTAS
+            MKS_MP_SUB.BITACORA_ENVIOS_NO_POSTEO
         WHERE
-            id_item = ?
-            AND semana = ?
+            semana = ?
             AND id_planta = ?
             AND fecha_emisión = ?
         ';
 
-        $params = array($item['idItem'], $item['semana'], $item['idPlanta'], $item['fechaEmision']);
+        $params = array($planta['semana'], $planta['idPlanta'], $planta['fechaEmision']);
 
-        // if (!$result = sqlsrv_query($conn_sql_azure, $query, $params)) {
-        //     echo json_encode(array(
-        //         'status' => 500,
-        //         'mensaje' => 'Error al validar respuesta'
-        //     ));
-        //     die;
-        // }
-        if ($result = sqlsrv_query($conn_sql_azure, $query, $params)) {
+        if (!$result = sqlsrv_query($conn_sql_azure, $query, $params)) {
+            echo json_encode(array(
+                'status' => 500,
+                'mensaje' => 'Error al validar respuesta'
+            ));
+            die;
+        }
+        if (sqlsrv_has_rows($result)) {
             echo json_encode(array(
                 'status' => 401,
-                'mensaje' => 'Esta alerta ya fue contestada para el item ' . $item['idItem'] . ''
+                'mensaje' => 'Esta alerta ya fue contestada para la planta ' . $planta['idItem'] . ''
             ));
             die;
         }

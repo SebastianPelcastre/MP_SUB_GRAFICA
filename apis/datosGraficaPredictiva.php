@@ -2,24 +2,6 @@
 require '../../utils/conexion_sql_azure.php';
 
 $semanasAlerta = json_decode($_POST['semanas'], true);
-// $query = '
-// SELECT 
-//     fixed_aniosem_bimbo
-// FROM
-//     MKS_MP_SUB.SEMANAS_BIMBO
-// WHERE
-//     dia BETWEEN CAST(GETDATE() -53 AS DATE) AND CAST(GETDATE() -5 AS DATE)
-// GROUP BY
-//     fixed_aniosem_bimbo
-// ORDER BY
-//     fixed_aniosem_bimbo';
-
-// $result = sqlsrv_query($conn_sql_azure, $query);
-
-// $semanasAlerta = array();
-// while ($row = sqlsrv_fetch_array($result)) {
-//     $semanasAlerta[] = $row['fixed_aniosem_bimbo'];
-// }
 
 $query = '
 SELECT 

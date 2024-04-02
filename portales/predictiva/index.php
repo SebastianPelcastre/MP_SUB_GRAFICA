@@ -50,6 +50,7 @@ require './utils/read/traerRespuestas.php';
                                                             } else {
                                                                 echo 'SUBENSAMBLES';
                                                             } ?> | CAN</h1>
+                <p class="fs-5 text-center text-danger font-weight-bold"><strong>ALERTA PREDICTIVA</strong></p>
             </div>
         </div>
         <div class="row justify-content-md-center mt-3">
@@ -66,7 +67,7 @@ require './utils/read/traerRespuestas.php';
                         </div>
                         <div class="row mb-3">
                             <div class="col">
-                                <p class="fs-5 ">Año semana predictiva: <?php echo $semanaAlerta; ?></p>
+                                <p class="fs-5 ">Año semana de emisión: <?php echo $semanaAlerta; ?></p>
                             </div>
                             <div class="col">
                                 <p class="fs-5 text-center"></p>
@@ -78,11 +79,12 @@ require './utils/read/traerRespuestas.php';
                                     <tr>
                                         <th>ITEM</th>
                                         <th>NOMBRE ITEM</th>
-                                        <th>MONTO ESPERADO</th>
+                                        <th>AJUSTE ESPERADO $</th>
                                         <th>CAUSA</th>
                                         <th>PLAN DE ACCIÓN</th>
                                         <th>FECHA DE RESOLUCIÓN</th>
                                         <th>COMENTARIOS (MÁXIMO 255 CARÁCTERES)</th>
+                                        <th>¿QUIÉNES PARTICIPARON EN EL PLAN DE ACCIÓN?</th>
                                     </tr>
                                 </thead>
                                 <tbody class="table-group-divider">
@@ -144,6 +146,16 @@ require './utils/read/traerRespuestas.php';
                                             <?php echo $columnaPlanAccion; ?>
                                             <?php echo $columnaFechaResolucion; ?>
                                             <?php echo $columnaComentarios; ?>
+                                            <td id="<?php echo $contador ?>">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="materiales-<?php echo $contador ?>" value="materiales" name="materiales-<?php echo $contador ?>">
+                                                    <label class="form-check-label" for="materiales-<?php echo $contador ?>"><?php echo ($idTipo == 1) ? 'Supervisor de Materias Primas' : 'Ingeniero de Procesos' ?></label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="mantenimiento-<?php echo $contador ?>" value="mantenimiento" name="mantenimiento-<?php echo $contador ?>">
+                                                    <label class="form-check-label" for="mantenimiento-<?php echo $contador ?>">Jefe de Mantenimiento</label>
+                                                </div>
+                                            </td>
                                         </tr>
                                     <?php
                                         $contador += 1;
@@ -161,6 +173,8 @@ require './utils/read/traerRespuestas.php';
                         <input type="hidden" value="<?php echo date('Y-m-d'); ?>" name="fechaRegistro" />
 
                         <input type="hidden" value="<?php echo sizeof($datosAlerta); ?>" name="numItems" />
+
+                        <input type="hidden" value="<?php echo $idTipo; ?>" name="idTipo" />
 
                         <div class="row justify-content-center mt-3">
                             <div class="col-12 col-lg-6">

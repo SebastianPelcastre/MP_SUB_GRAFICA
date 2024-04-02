@@ -23,7 +23,7 @@ const submitForm = (e) => {
 
   for (let i = 0; i <= numItems; i++) {
     const idItem = formData.get("id-" + i);
-    const idCausa = formData.get("causa-" + i);
+    // const idCausa = formData.get("causa-" + i);
     const idPlanAccion = formData.get("planAccion-" + i);
     const fechaResolucion = formData.get("fechaResolucion-" + i);
     const comentarios = formData.get("comentario-" + i);
@@ -32,14 +32,14 @@ const submitForm = (e) => {
     const fechaEmision = formData.get("fechaEmision");
 
     // Verificar si los campos necesarios están seleccionados
-    if (idCausa && idPlanAccion && fechaResolucion) {
+    if (idPlanAccion && fechaResolucion) {
       // Construir el objeto para el item actual
       const itemData = {
         idItem: idItem,
         semana: semanaAlerta,
         idPlanta: idPlanta,
         fechaEmision: fechaEmision,
-        idCausa: idCausa,
+        // idCausa: idCausa,
         idPlan: idPlanAccion,
         fechaResolucion: fechaResolucion,
         comentarios: comentarios,

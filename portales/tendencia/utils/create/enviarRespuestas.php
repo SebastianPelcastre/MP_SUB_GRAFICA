@@ -9,7 +9,7 @@ foreach ($datosEnviar as $dato) {
     $fechaEmision = htmlspecialchars($dato['fechaEmision']);
     $idPlanta = htmlspecialchars($dato['idPlanta']);
     $fechaResolucion = htmlspecialchars($dato['fechaResolucion']);
-    $idCausa = htmlspecialchars($dato['idCausa']);
+    // $idCausa = htmlspecialchars($dato['idCausa']);
     $idPlan = htmlspecialchars($dato['idPlan']);
     $comentario = htmlspecialchars($dato['comentarios']);
 
@@ -23,7 +23,7 @@ foreach ($datosEnviar as $dato) {
     INSERT INTO 
         MKS_MP_SUB.RESPUESTAS_TENDENCIA
     VALUES
-        (?, ?, ?, ?, ?, ?, ?, ?);
+        (?, ?, ?, ?, ?, ?, ?);
     SELECT SCOPE_IDENTITY()
     ';
 
@@ -32,7 +32,7 @@ foreach ($datosEnviar as $dato) {
         $aniosem,
         $idPlanta,
         $fechaEmision,
-        $idCausa,
+        // $idCausa,
         $idPlan,
         $fechaResolucion,
         $indicador
