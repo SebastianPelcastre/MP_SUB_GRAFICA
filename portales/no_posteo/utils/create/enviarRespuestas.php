@@ -51,7 +51,7 @@ foreach ($datosEnviar as $dato) {
         'mensaje' => 'Respuesta guardada con éxito'
     ));
 
-    require '../../../../apis/enviarCorreoAceptacion.php';
+    // require '../../../../apis/enviarCorreoAceptacion.php';
 }
 
 // EOF

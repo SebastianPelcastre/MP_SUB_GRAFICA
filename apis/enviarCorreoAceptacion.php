@@ -18,6 +18,7 @@ $json_data = file_get_contents('php://input');
 
 $respuesta = json_decode($json_data, true);
 
-
+echo $respuesta[0]['idPLanta'];
+die;
 
 //EOF

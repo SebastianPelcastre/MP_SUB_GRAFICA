@@ -41,8 +41,8 @@ INNER JOIN
 	ON da.id_planta = cp.id_planta
 WHERE 
 	aniosemana = ' . $semanaAlerta . '
-	AND da.id_tipo =  1 -- SUBENSAMBLES
-    AND da.id_planta IN (2002, 2008, 2031, 2046, 2049, 2051)
+	AND da.id_tipo =  1 
+    AND da.id_planta IN (2008, 2031, 2046, 2051)
 GROUP BY 
 	da.id_planta,
 	cp.nombre
@@ -220,23 +220,42 @@ echo '</ul>';
 echo '<br>';
 
 // Copia a Analítica Avanzada
-// $mail->addBCC('ana.segovia@grupobimbo.com');
-// $mail->addBCC('daniel.robles@grupobimbo.com');
+$mail->addBCC('ana.segovia@grupobimbo.com');
+$mail->addBCC('daniel.robles@grupobimbo.com');
 $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
-// $mail->addBCC('israel.gonzalez@grupobimbo.com');
+$mail->addBCC('israel.gonzalez@grupobimbo.com');
+
+$ERROR_ENVIO = 0;
+$ENVIO_EXITOSO = 1;
 
 // if (!$mail->send()) {
-//     // $query = '
-//     //             INSERT INTO
-//     //                 MKS_Datos_Complementarios.ALERTAS_EMITIDAS
-//     //             VALUES
-//     //                 (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
+// foreach ($ids as $id) {
+//     $query = '
+//                 INSERT INTO
+//                     MKS_MP_SU.BITACORA_ENVIOS_NO_POSTEO
+//                 VALUES
+//                     (' . $id . ',\'' . $FECHA_EMISION . '\', ' . $semanaAlerta . ', ' . $ERROR_ENVIO . ')';
+// }
+// if (!sqlsrv_query($conn_sql_azure, $query)) {
+//     echo $query;
+//     echo '<br />';
+//     echo '<br />';
+//     die(print_r(sqlsrv_errors()));
+// }
 // } else {
-//     // $query = '
-//     //             INSERT INTO
-//     //                 MKS_Datos_Complementarios.ALERTAS_EMITIDAS
-//     //             VALUES
-//     //                 (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
+// foreach ($ids as $id) {
+//     $query = '
+//                     INSERT INTO
+//                         MKS_MP_SU.BITACORA_ENVIOS_NO_POSTEO
+//                     VALUES
+//                         (' . $id . ',\'' . $FECHA_EMISION . '\', ' . $semanaAlerta . ', ' . $ENVIO_EXITOSO . ')';
+// }
+// if (!sqlsrv_query($conn_sql_azure, $query)) {
+//     echo $query;
+//     echo '<br />';
+//     echo '<br />';
+//     die(print_r(sqlsrv_errors()));
+// }
 // }
 
 //EOF

@@ -157,7 +157,7 @@ foreach ($respuestasRegistradas as $respuesta) {
         $plan = $row['nombre_plan'];
     }
 
-    $comentarios = empty($respuesta['comentarios']) ? 'SIN COMENTARIOS' : $respuesta['comentarios'];
+    $comentarios = empty($respuesta['comentarios']) ? '' : $respuesta['comentarios'];
 
     $filasTabla .= '
         <tr>
@@ -196,98 +196,30 @@ $mail->isHTML(true);
 $mail->Subject = $subject;
 $mail->Body = $correoCompleto;
 
+$puestos = '2';
+if ($idTipo === 1) {
+    $puestos = '1';
+}
+
+$query = '
+SELECT 
+	crup.correo 
+FROM 
+	MKS_MP_SUB.CAT_RELACION_ALERTA_PUESTOS crap 
+INNER JOIN 
+	MKS_MP_SUB.CAT_RELACION_USUARIOS_PLANTAS crup 
+	ON crup.id_puesto = crap.id_puesto 
+WHERE 	
+	crap.id_puesto IN (' . $puestos . ',10)
+	AND crup.id_planta = ' . $idPlanta . '
+	AND crap.item_type = ' . $idTipo;
+
+$result = sqlsrv_query($conn_sql_azure, $query);
+
 $correos = array();
 
-if ($idTipo == 1 && $respuesta['mantenimiento'] != null && $respuesta['materiales'] != null) {
-    $query = '
-    SELECT
-	crup.correo 
-    FROM 
-        MKS_MP_SUB.CAT_RELACION_USUARIOS_PLANTAS crup 
-    WHERE 	
-        id_puesto IN (1, 10)
-        AND id_planta = ' . $idPlanta . '
-    ';
-    $result = sqlsrv_query($conn_sql_azure, $query);
-
-    while ($row = sqlsrv_fetch_array($result)) {
-        $correos[] = $row['correo'];
-    }
-} elseif ($idTipo == 2 && $respuesta['mantenimiento'] != null && $respuesta['materiales'] != null) {
-    $query = '
-    SELECT
-	crup.correo 
-    FROM 
-        MKS_MP_SUB.CAT_RELACION_USUARIOS_PLANTAS crup 
-    WHERE 	
-        id_puesto IN (2, 10)
-        AND id_planta = ' . $idPlanta . '
-    ';
-    $result = sqlsrv_query($conn_sql_azure, $query);
-
-    while ($row = sqlsrv_fetch_array($result)) {
-        $correos[] = $row['correo'];
-    }
-} elseif ($idTipo = 1 && $respuesta['materiales'] != null && $respuesta['mantenimiento'] == null) {
-    $query = '
-    SELECT
-	crup.correo 
-    FROM 
-        MKS_MP_SUB.CAT_RELACION_USUARIOS_PLANTAS crup 
-    WHERE 	
-        id_puesto IN (1)
-        AND id_planta = ' . $idPlanta . '
-    ';
-    $result = sqlsrv_query($conn_sql_azure, $query);
-
-    while ($row = sqlsrv_fetch_array($result)) {
-        $correos[] = $row['correo'];
-    }
-} elseif ($idTipo = 2 && $respuesta['materiales'] != null && $respuesta['mantenimiento'] == null) {
-    $query = '
-    SELECT
-	crup.correo 
-    FROM 
-        MKS_MP_SUB.CAT_RELACION_USUARIOS_PLANTAS crup 
-    WHERE 	
-        id_puesto IN (2)
-        AND id_planta = ' . $idPlanta . '
-    ';
-    $result = sqlsrv_query($conn_sql_azure, $query);
-
-    while ($row = sqlsrv_fetch_array($result)) {
-        $correos[] = $row['correo'];
-    }
-} elseif ($idTipo = 1 && $respuesta['materiales'] == null && $respuesta['mantenimiento'] != null) {
-    $query = '
-    SELECT
-	crup.correo 
-    FROM 
-        MKS_MP_SUB.CAT_RELACION_USUARIOS_PLANTAS crup 
-    WHERE 	
-        id_puesto IN (10)
-        AND id_planta = ' . $idPlanta . '
-    ';
-    $result = sqlsrv_query($conn_sql_azure, $query);
-
-    while ($row = sqlsrv_fetch_array($result)) {
-        $correos[] = $row['correo'];
-    }
-} elseif ($idTipo = 2 && $respuesta['materiales'] == null && $respuesta['mantenimiento'] = !null) {
-    $query = '
-    SELECT
-	crup.correo 
-    FROM 
-        MKS_MP_SUB.CAT_RELACION_USUARIOS_PLANTAS crup 
-    WHERE 	
-        id_puesto IN (10)
-        AND id_planta = ' . $idPlanta . '
-    ';
-    $result = sqlsrv_query($conn_sql_azure, $query);
-
-    while ($row = sqlsrv_fetch_array($result)) {
-        $correos[] = $row['correo'];
-    }
+while ($row = sqlsrv_fetch_array($result)) {
+    $correos[] = $row['correo'];
 }
 
 // echo '<p>Usuarios:</p>';
@@ -307,9 +239,6 @@ foreach ($correos as $correo) {
 // $mail->addBCC('daniel.robles@grupobimbo.com');
 $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
 // $mail->addBCC('israel.gonzalez@grupobimbo.com');
-
-$ERROR_ENVIO = 0;
-$ENVIO_EXITOSO = 1;
 
 if (!$mail->send()) {
     echo json_encode(array(

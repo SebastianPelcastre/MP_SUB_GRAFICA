@@ -17,7 +17,7 @@ const submitForm = (e) => {
 
   const formData = new FormData(form)
 
-  const datosEnviar = []
+  let datosEnviar = []
 
   const idCausa = formData.get("causa")
   const planAccion = formData.get("planAccion")
@@ -26,28 +26,35 @@ const submitForm = (e) => {
   const semanaAlerta = formData.get("semanaAlerta")
   const fechaEmision = formData.get("fechaEmision")
   const fechaRegistro = formData.get("fechaRegistro")
+  const causa = formData.get('otros')
 
   // Verificar si los campos necesarios están seleccionados
   if (idCausa && planAccion && fechaResolucion) {
     // Construir el objeto para el item actual
-    const itemData = {
+    const itemData = { 
       semana: semanaAlerta,
       idPlanta: idPlanta,
       fechaEmision: fechaEmision,
       idCausa: idCausa,
+      otro: causa,
       planAccion: planAccion,
       fechaResolucion: fechaResolucion,
-      comentarios: comentarios,
+      // comentarios: comentarios,
       fechaRegistro: fechaRegistro
     }
 
     // Agregar el objeto al array
     datosEnviar.push(itemData)
+  }else{
+        document.querySelector("#mensaje-error").innerHTML =
+        'Debe ingresar una causa, un plan de acción y una fecha de resolución'
+        failModal.show()
+        return
   }
 
   // Mostrar el array resultante en la consola (puedes quitar esto en producción)
   console.log(datosEnviar)
-  // return
+  return
 
   $.ajax({
     url: "utils/validate/validarFormulario.php",
@@ -68,12 +75,12 @@ const submitForm = (e) => {
       }
 
       if (jsonResult["status"] === 200) {
-        // fetch('../../../apis/enviarCorreoConfirmacion.php',{
-        //   method: 'POST',
-        //   body: datosEnviar
-        // })
-        // .then( )
-        // .then
+        fetch('../../../apis/enviarCorreoAceptacion.php',{
+          method: 'POST',
+          body: datosEnviar
+        })
+        .then( )
+        .then
           location.href = "registro-exitoso.php"
         
       }

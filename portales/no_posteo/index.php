@@ -18,7 +18,7 @@ require './utils/read/traerRespuestas.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PORTAL ALERTA PREDICTIVA</title>
+    <title>PORTAL ALERTA NO POSTEO</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="../public/css/bootstrap.min.css">
     <!-- Custom CSS -->
@@ -86,12 +86,13 @@ require './utils/read/traerRespuestas.php';
                                         <th>CAUSA</th>
                                         <th>PLAN DE ACCIÓN (MÁXIMO 255 CARÁCTERES)</th>
                                         <th>FECHA DE RESOLUCIÓN</th>
+                                        <th>COMENTARIOS</th>
                                     </tr>
                                 </thead>
                                 <tbody class="table-group-divider">
                                     <td style="vertical-align: middle;text-align:center;"><?php echo $fechaEmision ?></td>
                                     <td style="vertical-align: middle;text-align:center;">
-                                        <select class="form-select" name="causa" id="causa" onchange="selectValue(this.value)">
+                                        <select class="form-select" name="causa" id="causa  " onchange="selectValue(this.value)">
                                             <option value="disabled" selected disabled>Seleccione una causa de no posteo</option>
                                             <?php
                                             $options = '';
@@ -102,8 +103,9 @@ require './utils/read/traerRespuestas.php';
                                             ?>
                                         </select>
                                     </td>
-                                    <td style="vertical-align: middle;text-align:center;" id="planAccion"> <input class="form-control" type="text"> </td>
-                                    <td style="vertical-align: middle;text-align:center;" id="fechaResolucion"> <input class="form-control" type="date"> </td>
+                                    <td style="vertical-align: middle;text-align:center;" id="planAccion"> <input class="form-control" type="text" name="planAccion"> </td>
+                                    <td style="vertical-align: middle;text-align:center;" id="fechaResolucion"> <input class="form-control" type="date" name="fechaResolucion"> </td>
+                                    <td style="vertical-align: middle;text-align:center;" id="comentarios"><textarea class="form-control" rows="2" name="comentario-<?php echo $contador ?>" maxlength="255"></textarea></td>
                                 </tbody>
                             </table>
                         </div>

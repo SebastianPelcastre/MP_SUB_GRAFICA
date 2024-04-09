@@ -247,7 +247,7 @@ foreach ($items as $item) {
 
             $columnaItemId = '<td>' . $item . '</td>';
             if ($contador == 0) {
-                $columnaLink = '<td rowspan="' . sizeof($items) . '"><a href="' . $PROD_URL . '/mp_sub_grafica/portales/predictiva/index.php?idPlanta=' . $_POST['idPlanta'] . '&semanaAlerta=' . $siguienteSemana . '&fechaEmision=' . $FECHA_EMISION . '&items=' . implode(',', $items) . '&id_tipo=' . $_POST['id_tipo'] . ' " target="_blank">LINK</a></td>';
+                $columnaLink = '<td rowspan="' . sizeof($items) . '"><a href="' . $PROD_URL . '/mp_sub_grafica/portales/predictiva/index.php?idPlanta=' . $_POST['idPlanta'] . '&semanaAlerta=' . $semanasAlerta[sizeof($semanasAlerta) - 1] . '&fechaEmision=' . $FECHA_EMISION . '&items=' . implode(',', $items) . '&id_tipo=' . $_POST['id_tipo'] . ' " target="_blank">LINK</a></td>';
             }
 
             $filasTabla = $filasTabla . '
@@ -377,7 +377,7 @@ foreach ($correos as $correo) {
 // echo '<br>';
 
 // Copia a Analítica Avanzada
-// $mail->addBCC('ana.segovia@grupobimbo.com');
+$mail->addBCC('ana.segovia@grupobimbo.com');
 $mail->addBCC('daniel.robles@grupobimbo.com');
 $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
 // $mail->addBCC('israel.gonzalez@grupobimbo.com');

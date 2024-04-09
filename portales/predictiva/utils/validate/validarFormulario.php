@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!is_array($datosEnviar)) {
         echo json_encode(array(
             'status' => 401,
-            'mensaje' => 'Error al recuperar datoas'
+            'mensaje' => 'Error al recuperar datos'
         ));
         die;
     }

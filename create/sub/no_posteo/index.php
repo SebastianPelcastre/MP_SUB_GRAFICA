@@ -42,7 +42,7 @@ INNER JOIN
 WHERE 
 	aniosemana = ' . $semanaAlerta . '
 	AND da.id_tipo =  2 -- SUBENSAMBLES
-    AND da.id_planta IN (2002, 2008, 2031, 2046, 2049, 2051)
+    AND da.id_planta IN (2008, 2031, 2046, 2051)
 GROUP BY 
 	da.id_planta,
 	cp.nombre
@@ -219,10 +219,10 @@ echo '</ul>';
 echo '<br>';
 
 // Copia a Analítica Avanzada
-// $mail->addBCC('ana.segovia@grupobimbo.com');
+$mail->addBCC('ana.segovia@grupobimbo.com');
 $mail->addBCC('daniel.robles@grupobimbo.com');
 $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
-// $mail->addBCC('israel.gonzalez@grupobimbo.com');
+$mail->addBCC('israel.gonzalez@grupobimbo.com');
 
 // if (!$mail->send()) {
 //     // $query = '

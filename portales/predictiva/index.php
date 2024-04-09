@@ -67,7 +67,7 @@ require './utils/read/traerRespuestas.php';
                         </div>
                         <div class="row mb-3">
                             <div class="col">
-                                <p class="fs-5 ">Año semana de emisión: <?php echo $semanaAlerta - 1; ?></p>
+                                <p class="fs-5 ">Año semana de emisión: <?php echo $semanaAlerta; ?></p>
                             </div>
                             <div class="col">
                                 <p class="fs-5 text-center"></p>

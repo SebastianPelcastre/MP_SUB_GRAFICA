@@ -1,10 +1,11 @@
 <?php
 
 // require '../../../../../utils/conexion_sql_azure.php';
-
+// $id_planta = $_SESSION['id_planta'];
 $query = '
 SELECT
-c2.aniosemana,
+c2.id,
+c2.semana,
 c2.nombre_planta,
 c2.id_planta,
 c2.id_item,
@@ -68,8 +69,8 @@ GROUP BY
     semana)
 AS c1
 RIGHT JOIN (    
-SELECT cp2.nombre nombre_planta, da.id_planta, ct.tipo , da.id_item,ci.nombre nombre_item, cp.puesto, STRING_AGG(crup.correo, \', \') correo, da.aniosemana
-FROM MKS_MP_SUB.DATOS_ALERTAS da
+SELECT da.id, cp2.nombre nombre_planta, da.id_planta, ct.tipo , da.id_item,ci.nombre nombre_item, cp.puesto, STRING_AGG(crup.correo, \', \') correo, da.semana
+FROM MKS_MP_SUB.ALERTAS_EMITIDAS_PREDICTIVA_TENDENCIA da
 LEFT JOIN MKS_MP_SUB.CAT_RELACION_ALERTA_PUESTOS crap
 ON crap.item_type = da.id_tipo
 LEFT JOIN MKS_MP_SUB.CAT_RELACION_USUARIOS_PLANTAS crup
@@ -82,14 +83,14 @@ INNER JOIN MKS_MP_SUB.CAT_ITEMS ci
 ON ci.id_item = da.id_item
 INNER JOIN MKS_MP_SUB.CAT_PLANTAS cp2
 ON cp2.id_planta = da.id_planta
-WHERE da.id_tipo_alerta IN (1,3)
+WHERE da.id_tipo_alerta IN (1)
 AND crap.id_puesto in (1,2)
-GROUP BY cp2.nombre, da.id_planta, ct.tipo , da.id_item, ci.nombre, cp.puesto, da.aniosemana)
+GROUP BY da.id, cp2.nombre, da.id_planta, ct.tipo , da.id_item, ci.nombre, cp.puesto, da.semana)
 --AND da.aniosemana = 202411)
 AS c2
-ON (c1.id_item = c2.id_item AND c1.id_planta = c2.id_planta AND c2.aniosemana = c1.semana)
-WHERE c2.aniosemana not in (202409)
-ORDER BY aniosemana
+ON (c1.id_item = c2.id_item AND c1.id_planta = c2.id_planta AND c2.semana = c1.semana)
+WHERE c2.semana not in (202409) AND c2.id_planta IN (' . implode(',', $id_planta) . ')
+ORDER BY semana
 ';
 
 $result = sqlsrv_query($conn_sql_azure, $query);
@@ -97,20 +98,22 @@ $result = sqlsrv_query($conn_sql_azure, $query);
 $respuestas = array();
 
 while ($row = sqlsrv_fetch_array($result)) {
-    $subdata = array();
-    $subdata['semana'] = $row['aniosemana'];
-    $subdata['nombre_planta'] = $row['nombre_planta'];
-    $subdata['id_planta'] = $row['id_planta'];
-    $subdata['id_item'] = $row['id_item'];
-    $subdata['nombre_item'] = $row['nombre_item'];
-    $subdata['tipo'] = $row['tipo'];
-    $subdata['puesto'] = $row['puesto'];
-    $subdata['correo'] = $row['correo'];
-    $subdata['causa'] = $row['causa'];
-    $subdata['nombre_plan'] = $row['nombre_plan'];
-    $subdata['fecha_resolucion'] = $row['fecha_resolucion'];
-    $subdata['comentario'] = $row['comentario'];
-    $respuestas[] = $subdata;
+	$subdata = array();
+	$subdata['id'] = $row['id'];
+	$subdata['semana'] = $row['semana'];
+	$subdata['nombre_planta'] = $row['nombre_planta'];
+	$subdata['id_planta'] = $row['id_planta'];
+	$subdata['id_item'] = $row['id_item'];
+	$subdata['nombre_item'] = $row['nombre_item'];
+	$subdata['tipo'] = $row['tipo'];
+	$subdata['puesto'] = $row['puesto'];
+	$subdata['correo'] = $row['correo'];
+	$subdata['causa'] = $row['causa'];
+	$subdata['nombre_plan'] = $row['nombre_plan'];
+	$subdata['fecha_resolucion'] = $row['fecha_resolucion'];
+	$subdata['comentario'] = $row['comentario'];
+	$respuestas[] = $subdata;
 }
+
 
 // EOF
