@@ -292,11 +292,6 @@ require './utils/read/traerRespuestasPortal.php';
                                     </table>
                                 </div>
 
-                                <input type="hidden" value="<?php echo $_GET['idPlanta']; ?>" name="idPlanta" />
-                                <!-- <input type="hidden" value="<?php //echo $_GET['tipoAlerta']; 
-                                                                    ?>" name="tipoAlerta" /> -->
-                                <input type="hidden" value="<?php echo $_GET['semanaAlerta']; ?>" name="semanaAlerta" />
-                                <input type="hidden" value="<?php echo $_GET['fechaEmision']; ?>" name="fechaEmision" />
                                 <input type="hidden" value="<?php echo date('Y-m-d'); ?>" name="fechaRegistro" />
 
                                 <input type="hidden" value="<?php echo sizeof($respuestas); ?>" name="numAlertas" id="numAlertas" />
