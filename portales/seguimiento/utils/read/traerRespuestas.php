@@ -115,5 +115,8 @@ while ($row = sqlsrv_fetch_array($result)) {
 	$respuestas[] = $subdata;
 }
 
+// echo json_encode($respuestas);
+// die;
+
 
 // EOF

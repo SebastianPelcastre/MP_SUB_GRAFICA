@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_POST['datosEnviar'])) {
         echo json_encode(array(
             'status' => 401,
-            'mensaje' => 'Error al recuperar datos'
+            'mensaje' => 'Error al recuperar respuesta'
         ));
         die;
     }
@@ -25,34 +25,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     foreach ($datosEnviar as $item) {
-        if (empty($item['idPlanta'])) {
+        if (empty($item['idAlerta'])) {
             echo json_encode(array(
                 'status' => 401,
-                'mensaje' => 'Error: El campo idPlanta está vacío'
+                'mensaje' => 'Error al recuperar id de la alerta'
             ));
             die;
         }
 
-        if (empty($item['idItem'])) {
+        if (empty($item['realizado'])) {
             echo json_encode(array(
                 'status' => 401,
-                'mensaje' => 'Error: El campo idItem está vacío'
+                'mensaje' => 'Error al recuperar status de seguimiento'
             ));
             die;
         }
 
-        if (empty($item['semana'])) {
+        if (empty($item['observaciones'])) {
             echo json_encode(array(
                 'status' => 401,
-                'mensaje' => 'Error: El campo semana está vacío'
+                'mensaje' => 'Error al recuperar observaciones'
             ));
             die;
         }
 
-        if (empty($item['fechaEmision'])) {
+        if (empty($item['fechaRegistro'])) {
             echo json_encode(array(
                 'status' => 401,
-                'mensaje' => 'Error: El campo fechaEmision está vacío'
+                'mensaje' => 'Error al recuperar fecha de registro'
             ));
             die;
         }
@@ -62,15 +62,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         SELECT
             *
         FROM 
-            MKS_MP_SUB.RESPUESTAS
+            MKS_MP_SUB.RESPUESTAS_PORTAL_SEGUIMIENTO
         WHERE
-            id_item = ?
-            AND semana = ?
-            AND id_planta = ?
-            AND fecha_emisión = ?
+            id_historico = ?
+            AND fecha_registro = ?
         ';
 
-        $params = array($item['idItem'], $item['semana'], $item['idPlanta'], $item['fechaEmision']);
+        $params = array($item['idAlerta'], $item['fechaRegistro']);
 
         if (!$result = sqlsrv_query($conn_sql_azure, $query, $params)) {
             echo json_encode(array(
@@ -82,20 +80,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (sqlsrv_has_rows($result)) {
             echo json_encode(array(
                 'status' => 401,
-                'mensaje' => 'Esta alerta ya fue contestada para el item ' . $item['idItem'] . ''
+                'mensaje' => 'Esta alerta ya fue contestada para la alerta con id ' . $item['idAlerta'] . ''
             ));
             die;
         }
     }
 
+    // echo json_encode(array(
+    //     'status' => 200,
+    //     'mensaje' => 'Respuesta Guardada'
+    // ));
+
     // Si todo el formulario es correcto, guardamos la respuesta
-    echo json_encode(array(
-        'status' => 200,
-        'mensaje' => 'Validado'
-    ));
-    // require '../create/enviarRespuestas.php';
+    require '../create/enviarRespuestas.php';
 
     die;
 }
+
 
  // EOF

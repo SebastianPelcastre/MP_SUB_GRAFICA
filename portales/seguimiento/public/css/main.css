@@ -11,7 +11,8 @@
   /* ===== Colors ===== */
   --body-color: #f4f6fd;
   --sidebar-color: #fff;
-  --primary-color: #1c306a;
+   --primary-color: #1c306a;
+   --hover-color: #324478;
   --primary-color-light: #f6f5ff;
   --toggle-color: #ddd;
   --text-color: #707070;
@@ -432,4 +433,13 @@ body.dark table {
     display: flex;
     justify-content: center;
   }
+}
+.btn-main {
+  background-color: var(--primary-color);
+  font-weight: bold;
+  color: white;
+  height: 3.5rem;
+}
+.btn-main:hover {
+  background-color: var(--hover-color);
 }

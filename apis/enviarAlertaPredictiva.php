@@ -81,7 +81,7 @@ while ($row = sqlsrv_fetch_array($result)) {
     $siguienteSemana = $row['next_bimboweek'];
 }
 
-// $siguienteSemana = 202409;
+$siguienteSemana = 202414;
 
 $itemsTabla = json_decode($_POST['datosGrafica'], true);
 
@@ -377,7 +377,7 @@ foreach ($correos as $correo) {
 // echo '<br>';
 
 // Copia a Analítica Avanzada
-$mail->addBCC('ana.segovia@grupobimbo.com');
+// $mail->addBCC('ana.segovia@grupobimbo.com');
 $mail->addBCC('daniel.robles@grupobimbo.com');
 $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
 // $mail->addBCC('israel.gonzalez@grupobimbo.com');

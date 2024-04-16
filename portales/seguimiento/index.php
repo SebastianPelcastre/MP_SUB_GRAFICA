@@ -13,8 +13,6 @@ if (isset($_SESSION['nombre_usuario']) && isset($_SESSION['id_usuario_cookie']))
     echo '<script type="text/javascript">';
     echo ' var id_usuario = ' . $id_usuario;
     echo '</script>';
-    // echo json_encode($id_planta);
-    // die;
 } else {
     echo '<script type="text/javascript">';
     echo 'alert("Por favor inicia sesión.");';
@@ -23,6 +21,8 @@ if (isset($_SESSION['nombre_usuario']) && isset($_SESSION['id_usuario_cookie']))
 }
 
 require './utils/read/traerRespuestas.php';
+
+require './utils/read/traerRespuestasPortal.php';
 
 ?>
 
@@ -36,12 +36,12 @@ require './utils/read/traerRespuestas.php';
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PORTAL SEGUIMIENTO</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="public/css/bootstrap.min.css" />
     <!-- CSS -->
     <link rel="stylesheet" href="public/css/main.css" />
     <!-- BoxIcons CSS -->
     <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet" />
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="public/css/bootstrap.min.css" />
     <!-- DataTable CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css" />
 
@@ -73,15 +73,15 @@ require './utils/read/traerRespuestas.php';
                 <ul class="menu-links">
                     <li class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Uso">
                         <a href="index.php">
-                            <i class='bx bx-mobile-alt icon'></i>
-                            <span class="home-text nav-text">MP y SUB Predictiva</span>
+                            <i class='bx bx-time-five icon'></i>
+                            <span class="home-text nav-text">Predictiva</span>
                         </a>
                     </li>
 
                     <li class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Ventas">
-                        <a href="ventas.php">
-                            <i class='bx bx-money-withdraw icon'></i>
-                            <span class="home-text nav-text">MP y SUB Tendencia</span>
+                        <a href="./">
+                            <i class='bx bx-line-chart icon'></i>
+                            <span class="home-text nav-text">Tendencia <br> (En desarrollo)</span>
                         </a>
                     </li>
                 </ul>
@@ -109,6 +109,7 @@ require './utils/read/traerRespuestas.php';
             </div>
         </div>
     </nav>
+
     <!-- Content -->
     <section class="home" id="home">
         <div class="container-fluid">
@@ -156,38 +157,119 @@ require './utils/read/traerRespuestas.php';
                                         <tbody class="table-group-divider">
                                             <?php
                                             $contador = 0;
-
                                             foreach ($respuestas as $respuesta) {
                                                 $columnaCausa = '';
                                                 $columnaPlanAccion = '';
                                                 $columnaFechaResolucion = '';
                                                 $columnaComentarios = '';
+                                                $columnaRealizado = '';
+                                                $columnaObservaciones = '';
                                                 $respuestaParaItem = 'SIN RESPUESTA';
 
                                                 if ($respuesta['causa'] !== null && $respuesta['nombre_plan'] !== null) {
-                                                    $columnaCausa = '<td style="vertical-align: middle;text-align:center;"><p>' . $respuesta['causa'] . '</p></td>';
+                                                    $coincidenciaEncontrada = false;
+                                                    foreach ($seguimientos as $seguimiento) {
+                                                        if ($seguimiento['id'] == $respuesta['id']) {
+                                                            $coincidenciaEncontrada = true;
+                                                            $columnaRealizado = '
+                                                            <td style="vertical-align: middle;text-align:center;">
+                                                                <p>' . $seguimiento['realizado'] . '</p>
+                                                            </td>';
+                                                            $columnaObservaciones = '
+                                                            <td style="vertical-align: middle;text-align:center;">
+                                                                <p>' . $seguimiento['observaciones'] . '</p>
+                                                            </td>';
+                                                            break;
+                                                        }
+                                                    }
 
-                                                    $columnaPlanAccion = '<td style="vertical-align: middle;text-align:center;"><p>' . $respuesta['nombre_plan'] . '</p></td>';
+                                                    if (!$coincidenciaEncontrada) {
+                                                        $columnaRealizado = ' 
+                                                        <td>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" value="si" id="si-' . $contador . '" name="estado-' . $contador . '">
+                                                                <label class="form-check-label" for="si-' . $contador . '">
+                                                                    Sí
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" value="no" id="no-' . $contador . '" name="estado-' . $contador . '">
+                                                                <label class="form-check-label" for="no-' . $contador . '">
+                                                                    No
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" value="en-proceso" id="liveToastBtn-' . $contador . '" name="estado-' . $contador . '">
+                                                                <label class="form-check-label" for="en-proceso-' . $contador . '">
+                                                                    En proceso
+                                                                </label>
+                                                            </div>
+                                                        </td>';
+                                                        $columnaObservaciones = '
+                                                        <td>
+                                                            <div class="form-floating" style="height: 100%">
+                                                                <textarea class="form-control" rows="2" name="comentario-' . $contador . '" maxlength="255" id="observaciones-' . $contador . '"></textarea>
+                                                                <label for="observaciones-' . $contador . '">Observaciones</label>
+                                                            </div>
+                                                        </td>';
+                                                    }
 
-                                                    $columnaFechaResolucion = '<td style="vertical-align: middle;text-align:center;"><p>' . $respuesta['fecha_resolucion']->format('d/m/Y') . '</p></td>';
+                                                    $columnaCausa = '
+                                                    <td style="vertical-align: middle;text-align:center;">
+                                                        <p>' . $respuesta['causa'] . '</p>
+                                                    </td>';
+
+                                                    $columnaPlanAccion = '
+                                                    <td style="vertical-align: middle;text-align:center;">
+                                                        <p>' . $respuesta['nombre_plan'] . '</p>
+                                                    </td>';
+
+                                                    $columnaFechaResolucion = '
+                                                    <td style="vertical-align: middle;text-align:center;">
+                                                        <p>' . $respuesta['fecha_resolucion']->format('d/m/Y') . '</p>
+                                                    </td>';
+
                                                     if ($respuesta['comentario'] == '') {
-                                                        $columnaComentarios = '';
-                                                        '<td style="vertical-align: middle;"><p>SIN COMENTARIOS</p></td>';
+                                                        $columnaComentarios = '
+                                                        <td style="vertical-align: middle;">
+                                                            <p>SIN COMENTARIOS</p>
+                                                        </td>';
                                                     } else {
-                                                        $columnaComentarios = '<td style="vertical-align: middle;"><p>' . $respuesta['comentario'] . '</p></td>';
+                                                        $columnaComentarios = '
+                                                        <td style="vertical-align: middle;">
+                                                            <p>' . $respuesta['comentario'] . '</p>
+                                                        </td>';
                                                     }
                                                 } else {
-                                                    $columnaCausa = '<td style="vertical-align: middle;"><p>' . $respuestaParaItem . '</p></td>';
+                                                    $columnaCausa = '
+                                                    <td style="vertical-align: middle;">
+                                                        <p>' . $respuestaParaItem . '</p>
+                                                    </td>';
 
-                                                    $columnaPlanAccion = '<td style="vertical-align: middle;"><p>' . $respuestaParaItem . '</p></td>';
+                                                    $columnaPlanAccion = '
+                                                    <td style="vertical-align: middle;">
+                                                        <p>' . $respuestaParaItem . '</p>
+                                                    </td>';
 
-                                                    $columnaFechaResolucion = '<td style="vertical-align: middle;"><p>' . $respuestaParaItem . '</p></td>';
+                                                    $columnaFechaResolucion = '
+                                                    <td style="vertical-align: middle;">
+                                                        <p>' . $respuestaParaItem . '</p>
+                                                    </td>';
 
-                                                    $columnaComentarios = '<td style="vertical-align: middle;"> <div style="vertical-align: middle;">' . $respuestaParaItem . '</div></td>';
+                                                    $columnaComentarios = '
+                                                    <td style="vertical-align: middle;">
+                                                        <p>' . $respuestaParaItem . '</p>
+                                                    </td>';
+
+                                                    $columnaRealizado = '
+                                                    <td></td>';
+
+                                                    $columnaObservaciones = '
+                                                    <td></td>';
                                                 }
                                             ?>
-                                                <tr>
-                                                    <td style="vertical-align: middle;"><?php echo $respuesta['semana'] ?></td>
+                                                <tr style="white-space: nowrap">
+                                                    <td style="vertical-align: middle;"> <input type="hidden" value="<?php echo $respuesta['id']; ?>" name="idAlerta-<?php echo $contador ?>" /><?php echo $respuesta['semana']; ?></td>
                                                     <td style="vertical-align: middle;"><?php echo $respuesta['id_planta'] ?></td>
                                                     <td style="vertical-align: middle;"><?php echo $respuesta['nombre_planta'] ?></td>
                                                     <td style="vertical-align: middle;"><?php echo $respuesta['id_item'] ?></td>
@@ -199,44 +281,8 @@ require './utils/read/traerRespuestas.php';
                                                     <?php echo $columnaPlanAccion; ?>
                                                     <?php echo $columnaFechaResolucion; ?>
                                                     <?php echo $columnaComentarios; ?>
-                                                    <td>
-                                                        <?php if ($respuesta['causa'] !== null && $respuesta['nombre_plan'] !== null) {
-                                                        ?>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="radio" value="si" id="si-<?php echo $contador ?>" name="estado-<?php echo $contador ?>">
-                                                                <label class="form-check-label" for="si-<?php echo $contador ?>">
-                                                                    Sí
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="radio" value="no" id="no-<?php echo $contador ?>" name="estado-<?php echo $contador ?>">
-                                                                <label class="form-check-label" for="no-<?php echo $contador ?>">
-                                                                    No
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="radio" value="en-proceso-<?php echo $contador ?>" id="en-proceso-<?php echo $contador ?>" name="estado-<?php echo $contador ?>">
-                                                                <label class="form-check-label" for="en-proceso-<?php echo $contador ?>">
-                                                                    En proceso
-                                                                </label>
-                                                                <hr>
-                                                                <div class="d-none" id="instruccion-<?php echo $contador ?>">
-                                                                    <p>En caso de seleccionar "En proceso", indicar nueva fecha de resolución en los comentarios</p>
-                                                                </div>
-                                                            </div>
-                                                        <?php
-                                                        } ?>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-floating" style="height: 100%">
-                                                            <?php if ($respuesta['causa'] !== null && $respuesta['nombre_plan'] !== null) {
-                                                            ?>
-                                                                <textarea class="form-control" rows="2" name="comentario-<?php echo $contador ?>" maxlength="255" id="observaciones-<?php echo $contador ?>"></textarea>
-                                                                <label for="observaciones-<?php echo $contador ?>">Observaciones</label>
-                                                            <?php
-                                                            } ?>
-                                                        </div>
-                                                    </td>
+                                                    <?php echo $columnaRealizado; ?>
+                                                    <?php echo $columnaObservaciones; ?>
                                                 </tr>
                                             <?php
                                                 $contador += 1;
@@ -254,20 +300,9 @@ require './utils/read/traerRespuestas.php';
                                 <input type="hidden" value="<?php echo date('Y-m-d'); ?>" name="fechaRegistro" />
 
                                 <input type="hidden" value="<?php echo sizeof($respuestas); ?>" name="numAlertas" id="numAlertas" />
-
                                 <div class="row justify-content-center mt-3">
                                     <div class="col-12 col-lg-6">
-                                        <?php
-                                        // if (sizeof($respuestas) !== sizeof($respuestas)) {
-                                        ?>
                                         <button type="submit" class="btn btn-main w-100 fw-bold" id="btn-submit">Enviar Registro</button>
-                                        <?php
-                                        // }
-                                        ?>
-                                    </div>
-                                </div>
-                                <div class="row justify-content-center mt-3">
-                                    <div class="col-12 col-lg-6">
                                     </div>
                                 </div>
 
@@ -310,8 +345,8 @@ require './utils/read/traerRespuestas.php';
     <div class="modal fade" id="fail-modal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header fail-modal">
-                    <h5 class="modal-title fw-bold">Error</h5>
+                <div class="modal-header bg-danger">
+                    <h5 class="modal-title fw-bold text-white">Error</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body d-flex flex-column align-items-center justify-content-center">
@@ -322,38 +357,30 @@ require './utils/read/traerRespuestas.php';
     </div>
     <!-- Ends fail modal -->
 
-    <!-- Main JS -->
-    <script src="public/js/main.min.js"></script>
+    <!-- Toast -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-warning">
+                <i class='bx bxs-bell icon'></i>
+                <strong class="me-auto">Aviso</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                En caso de seleccionar "En proceso", indicar nueva fecha de resolución en los comentarios
+            </div>
+        </div>
+    </div>
+    <!-- Ends Toast -->
+
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!-- Main JS -->
+    <script src="public/js/main.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="public/js/bootstrap.min.js"></script>
     <!-- DataTable JS -->
     <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
     <script src="public/js/main.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var cantidadAlertas = document.querySelector('input[name="numAlertas"]').value;
-
-            for (var i = 0; i < cantidadAlertas; i++) {
-                const radioButton = document.querySelector(`#en-proceso-${i}`);
-
-                radioButton.addEventListener("change", function() {
-                    const contador = this.id.split('-')[2];
-                    const instruccionesDiv = document.querySelector(`#instruccion-${contador}`);
-
-                    if (this.checked) {
-                        instruccionesDiv.classList.remove('d-none');
-                    } else {
-                        instruccionesDiv.classList.add('d-none');
-                    }
-                });
-            }
-        });
-    </script>
-
-
-
 
 </body>
 
