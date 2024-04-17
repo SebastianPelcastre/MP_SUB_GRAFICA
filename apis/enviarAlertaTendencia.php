@@ -62,6 +62,31 @@ while ($row = sqlsrv_fetch_array($result)) {
 
 $query = '
 SELECT 
+    /*id_item,*/ COUNT(*) AS cantidad
+FROM 
+    MKS_MP_SUB.ALERTAS_EMITIDAS_PREDICTIVA_TENDENCIA aept 
+WHERE
+    id_planta = ' . $_POST['idPlanta'] . '
+    AND semana IN (' . implode(',', $semanasAlerta) . ')
+    AND id_tipo = ' . $_POST['id_tipo'] . '
+    AND id_tipo_alerta IN (' . $_POST['id_tipo_alerta'] . ',3)
+--GROUP BY id_item
+--ORDER BY id_item
+';
+
+$result = sqlsrv_query($conn_sql_azure, $query);
+
+$cantidadItemsH = 0;
+
+while ($row = sqlsrv_fetch_array($result)) {
+    $subdata = array();
+    $subdata['item'] = $row['id_item'];
+    $subdata['cantidad'] = $row['cantidad'];
+    $cantidadItemsH = $row['cantidad'];
+}
+
+$query = '
+SELECT 
     id_item, COUNT(*) AS cantidad
 FROM 
     MKS_MP_SUB.ALERTAS_EMITIDAS_PREDICTIVA_TENDENCIA aept 
@@ -253,7 +278,7 @@ $filaAcumulado = '
             <tr class="acumulado">
                 <td></td>
                 <td>ACUMULADO PLANTA (Valores Absolutos)</td>
-                <td>' . $acumuladoHistorico . '</td>';
+                <td>' . $cantidadItemsH . '</td>';
 foreach ($importesAcumulado as $importeAcumulado) {
     $filaAcumulado = $filaAcumulado . '
                 <td> ' . number_format($importeAcumulado['absoluto'], 0, '.', ',') . ' </td>';
@@ -382,7 +407,7 @@ foreach ($correos as $correo) {
 
 // Copia a Analítica Avanzada
 // $mail->addBCC('ana.segovia@grupobimbo.com');
-$mail->addBCC('daniel.robles@grupobimbo.com');
+// $mail->addBCC('daniel.robles@grupobimbo.com');
 $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
 // $mail->addBCC('israel.gonzalez@grupobimbo.com');
 

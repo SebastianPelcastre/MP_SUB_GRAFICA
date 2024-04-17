@@ -44,7 +44,7 @@ INNER JOIN
     ON ci.id_item = da.id_item
 WHERE
 	ci.id_item IN (\'' . implode('\',\'', $items) . '\')
-    AND da.aniosemana = ' . $semanaAlerta . '
+    AND da.aniosemana = ' . ($semanaAlerta + 1) . '
     AND da.id_planta = ' . $idPlanta . '
     AND da.id_tipo = ' . $idTipo;
 
