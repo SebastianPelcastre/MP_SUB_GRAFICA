@@ -89,11 +89,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Si todo el formulario es correcto, guardamos la respuesta
-    echo json_encode(array(
-        'status' => 200,
-        'mensaje' => 'Validado'
-    ));
-    // require '../create/enviarRespuestas.php';
+    // echo json_encode(array(
+    //     'status' => 200,
+    //     'mensaje' => 'Validado'
+    // ));
+    require '../create/enviarRespuestas.php';
 
     die;
 }

@@ -32,6 +32,7 @@ SELECT
 	c.comentario,
 	CASE
 	WHEN semana = 202454 THEN 202501
+	WHEN semana >= 202414 THEN semana 
 	ELSE semana -1
 	END semana
 FROM
