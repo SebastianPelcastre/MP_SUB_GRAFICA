@@ -22,19 +22,23 @@ const tabla = new DataTable('#table', {
   },
 })
 
-  const cantidadAlertas = document.querySelector('input[name="numAlertas"]').value
+ const cantidadAlertas = document.querySelector('input[name="numAlertas"]').value
   const toastLiveExample = document.getElementById('liveToast')
 
   for (let i = 0; i < cantidadAlertas; i++) {
     const toastTrigger = document.getElementById(`liveToastBtn-${i}`)
+    const toastTrigger2 = document.getElementById(`liveToastBtn2-${i}`)
 
-    if (toastTrigger) {
+    if (toastTrigger || toastTrigger2) {
       const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
       toastTrigger.addEventListener('change', () => {
         toastBootstrap.show()
       })
+      toastTrigger2.addEventListener('change', () => {
+        toastBootstrap.show()
+      })
     }
-  }
+  } 
 
 const form = document.getElementById("form")
 const options = {

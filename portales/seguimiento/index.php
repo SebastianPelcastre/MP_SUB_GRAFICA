@@ -24,6 +24,8 @@ require './utils/read/traerRespuestas.php';
 
 require './utils/read/traerRespuestasPortal.php';
 
+require './utils/read/traerResponsable.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -152,6 +154,7 @@ require './utils/read/traerRespuestasPortal.php';
                                                 <th>COMENTARIO</th>
                                                 <th>¿SE LLEVÓ A CABO EL PLAN DE ACCIÓN?</th>
                                                 <th>OBSERVACIONES (MÁXIMO 255 CARÁCTERES)</th>
+                                                <th>RESPONSABLE</th>
                                             </tr>
                                         </thead>
                                         <tbody class="table-group-divider">
@@ -193,7 +196,7 @@ require './utils/read/traerRespuestasPortal.php';
                                                                 </label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="radio" value="no" id="no-' . $contador . '" name="estado-' . $contador . '">
+                                                                <input class="form-check-input" type="radio" value="no" id="liveToastBtn2-' . $contador . '" name="estado-' . $contador . '">
                                                                 <label class="form-check-label" for="no-' . $contador . '">
                                                                     No
                                                                 </label>
@@ -283,6 +286,7 @@ require './utils/read/traerRespuestasPortal.php';
                                                     <?php echo $columnaComentarios; ?>
                                                     <?php echo $columnaRealizado; ?>
                                                     <?php echo $columnaObservaciones; ?>
+                                                    <td style="vertical-align: middle;"><?php echo $nombre; ?></td>
                                                 </tr>
                                             <?php
                                                 $contador += 1;
@@ -361,7 +365,7 @@ require './utils/read/traerRespuestasPortal.php';
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
             <div class="toast-body">
-                En caso de seleccionar "En proceso", indicar nueva fecha de resolución en los comentarios
+                En caso de seleccionar "En proceso", indicar nueva fecha de resolución en las observaciones
             </div>
         </div>
     </div>

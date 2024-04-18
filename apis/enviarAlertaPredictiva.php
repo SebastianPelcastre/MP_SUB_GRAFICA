@@ -81,7 +81,7 @@ while ($row = sqlsrv_fetch_array($result)) {
     $siguienteSemana = $row['next_bimboweek'];
 }
 
-$siguienteSemana = 202414;
+// $siguienteSemana = 202414;
 
 $itemsTabla = json_decode($_POST['datosGrafica'], true);
 
@@ -95,10 +95,10 @@ SELECT
 FROM
     MKS_MP_SUB.DATOS_ALERTAS
 WHERE
-id_planta = ' . $_POST['idPlanta'] . '
-AND aniosemana =' . $siguienteSemana . '
-AND id_item IN (\'' . implode('\',\'', array_column($itemsTabla, 'id_item')) . '\')
-AND id_tipo = ' . $_POST['id_tipo'] . '
+    id_planta = ' . $_POST['idPlanta'] . '
+    AND aniosemana =' . $siguienteSemana . '
+    AND id_item IN (\'' . implode('\',\'', array_column($itemsTabla, 'id_item')) . '\')
+    AND id_tipo = ' . $_POST['id_tipo'] . '
 ';
 
 $result = sqlsrv_query($conn_sql_azure, $query);

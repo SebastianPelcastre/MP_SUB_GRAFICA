@@ -25,7 +25,7 @@ function convertirAEntero($valor)
     return intval($valor);
 }
 $semanasAlerta = array_map("convertirAEntero", $semanasAlertas);
-$semanasAlerta = [202408, 202409, 202410, 202411, 202412, 202413, 202414, 202415];
+// $semanasAlerta = [202408, 202409, 202410, 202411, 202412, 202413, 202414, 202415];
 
 // $semanasAlerta = array_values(array_diff($semanasAlerta, ["202353"]));
 
@@ -54,7 +54,7 @@ $plantasAlertadas = array();
 while ($row = sqlsrv_fetch_array($result)) {
     $plantasAlertadas[] = $row['id_planta'];
 }
-$plantasAlertadas = [2008];
+$plantasAlertadas = [2002, 2046];
 
 
 ?>

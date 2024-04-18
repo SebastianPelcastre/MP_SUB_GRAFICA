@@ -55,7 +55,7 @@ while ($row = sqlsrv_fetch_array($result)) {
     $plantasAlertadas[] = $row['id_planta'];
 }
 
-// $plantasAlertadas = [2139];
+$plantasAlertadas = [2002, 2046];
 
 ?>
 <!DOCTYPE html>
