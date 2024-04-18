@@ -94,8 +94,8 @@ const submitForm = (e) => {
         })
         .then(response => response.json())
         .then(data => {
-          console.log(data)
-          // location.href = "registro-exitoso.php"
+          // console.log(data)
+          location.href = "registro-exitoso.php"
         })
       }
     },
