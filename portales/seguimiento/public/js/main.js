@@ -16,13 +16,13 @@ columnDefs: [
       searchPanes: {
           show: false
       },
-      targets: [1, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+      targets: [0, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14]
   },
   {
     searchPanes: {
         show: true
     },
-    targets: [2, 3, 0, 5]
+    targets: [2, 3, 1, 5]
 }
 ],
   language: {
