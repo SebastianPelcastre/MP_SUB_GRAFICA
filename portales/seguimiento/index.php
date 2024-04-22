@@ -39,7 +39,11 @@ require './utils/read/traerResponsable.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PORTAL SEGUIMIENTO</title>
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="public/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/searchpanes/2.3.1/css/searchPanes.bootstrap5.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/2.0.1/css/select.bootstrap5.css" />
+    <!-- <link rel="stylesheet" href="public/css/bootstrap.min.css" /> -->
     <!-- CSS -->
     <link rel="stylesheet" href="public/css/main.css" />
     <!-- BoxIcons CSS -->
@@ -73,14 +77,14 @@ require './utils/read/traerResponsable.php';
         <div class="menu-bar">
             <div class="menu">
                 <ul class="menu-links">
-                    <li class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Uso">
+                    <li class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Predictiva">
                         <a href="index.php">
                             <i class='bx bx-time-five icon'></i>
                             <span class="home-text nav-text">Predictiva</span>
                         </a>
                     </li>
 
-                    <li class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Ventas">
+                    <li class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Tendencia">
                         <a href="./">
                             <i class='bx bx-line-chart icon'></i>
                             <span class="home-text nav-text">Tendencia <br> (En desarrollo)</span>
@@ -137,7 +141,7 @@ require './utils/read/traerResponsable.php';
                         <div class="card shadow border border-top-0 border-end-0 border-bottom-0 border-main">
                             <form class="card-body" id="form" method="POST">
                                 <div class="table-responsive">
-                                    <table class="table" id="table">
+                                    <table class="table display nowrap w-100" id="table">
                                         <thead class="table-light">
                                             <tr>
                                                 <th>SEMANA</th>
@@ -175,11 +179,11 @@ require './utils/read/traerResponsable.php';
                                                         if ($seguimiento['id'] == $respuesta['id']) {
                                                             $coincidenciaEncontrada = true;
                                                             $columnaRealizado = '
-                                                            <td style="vertical-align: middle;text-align:center;">
+                                                            <td style="vertical-align: middle;">
                                                                 <p>' . $seguimiento['realizado'] . '</p>
                                                             </td>';
                                                             $columnaObservaciones = '
-                                                            <td style="vertical-align: middle;text-align:center;">
+                                                            <td style="vertical-align: middle;">
                                                                 <p>' . $seguimiento['observaciones'] . '</p>
                                                             </td>';
                                                             break;
@@ -218,12 +222,12 @@ require './utils/read/traerResponsable.php';
                                                     }
 
                                                     $columnaCausa = '
-                                                    <td style="vertical-align: middle;text-align:center;">
+                                                    <td style="vertical-align:">
                                                         <p>' . $respuesta['causa'] . '</p>
                                                     </td>';
 
                                                     $columnaPlanAccion = '
-                                                    <td style="vertical-align: middle;text-align:center;">
+                                                    <td style="vertical-align:">
                                                         <p>' . $respuesta['nombre_plan'] . '</p>
                                                     </td>';
 
@@ -234,7 +238,7 @@ require './utils/read/traerResponsable.php';
 
                                                     if ($respuesta['comentario'] == '') {
                                                         $columnaComentarios = '
-                                                        <td style="vertical-align: middle;">
+                                                        <td style="vertical-align: middle; text-align:center;">
                                                             <p>SIN COMENTARIOS</p>
                                                         </td>';
                                                     } else {
@@ -255,7 +259,7 @@ require './utils/read/traerResponsable.php';
                                                     </td>';
 
                                                     $columnaFechaResolucion = '
-                                                    <td style="vertical-align: middle;">
+                                                    <td style="vertical-align: middle; text-align:center;">
                                                         <p>' . $respuestaParaItem . '</p>
                                                     </td>';
 
@@ -372,13 +376,22 @@ require './utils/read/traerResponsable.php';
     <!-- Ends Toast -->
 
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <!-- Main JS -->
     <script src="public/js/main.min.js"></script>
     <!-- Bootstrap JS -->
-    <script src="public/js/bootstrap.min.js"></script>
+    <!-- <script src="public/js/bootstrap.min.js"></script> -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <!-- DataTable JS -->
-    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/searchpanes/2.3.1/js/dataTables.searchPanes.js"></script>
+    <script src="https://cdn.datatables.net/searchpanes/2.3.1/js/searchPanes.bootstrap5.js"></script>
+    <!-- <script src="https://cdn.datatables.net/searchpanes/2.3.1/js/searchPanes.dataTables.js"></script> -->
+    <script src="https://cdn.datatables.net/select/2.0.1/js/dataTables.select.js"></script>
+    <script src="https://cdn.datatables.net/select/2.0.1/js/select.bootstrap5.js"></script>
     <script src="public/js/main.js"></script>
 
 </body>

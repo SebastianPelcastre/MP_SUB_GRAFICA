@@ -3,6 +3,27 @@ const tabla = new DataTable('#table', {
   scrollY: '450px',
   info: false,
   lengthChange: false,
+  layout: {
+    top1: {
+        searchPanes:{
+          cascadePanes:true
+        }
+    }
+},
+columnDefs: [
+  {
+      searchPanes: {
+          show: false
+      },
+      targets: [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+  },
+  {
+    searchPanes: {
+        show: true
+    },
+    targets: 1
+}
+],
   language: {
     searchPanes: {
       title: {

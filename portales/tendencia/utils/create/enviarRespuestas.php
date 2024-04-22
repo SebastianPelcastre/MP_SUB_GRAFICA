@@ -67,11 +67,11 @@ foreach ($datosEnviar as $dato) {
             die;
         }
     }
-
-    echo json_encode(array(
-        'status' => 200,
-        'mensaje' => 'Respuesta guardada con éxito'
-    ));
 }
+
+echo json_encode(array(
+    'status' => 200,
+    'mensaje' => 'Respuesta guardada con éxito'
+));
 
 // EOF

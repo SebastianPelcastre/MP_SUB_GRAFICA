@@ -70,17 +70,8 @@ require './utils/read/traerRespuestas.php';
                                 <p class="fs-5 text-center"></p>
                             </div>
                         </div>
-                        <!-- <div class="row mb-3">
-                            <div class="col">
-                                <p class="fs-5 ">Fecha Respuesta: <?php //echo !empty($respuesta) ? $respuesta['fechaRespuesta'] : date('Y-m-d'); 
-                                                                    ?></p>
-                            </div>
-                            <div class="col">
-                                <p class="fs-5 text-center"></p>
-                            </div>
-                        </div> -->
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table w-100">
                                 <thead class="table-light">
                                     <tr>
                                         <th>ITEM</th>

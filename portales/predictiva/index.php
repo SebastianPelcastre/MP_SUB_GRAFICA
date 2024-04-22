@@ -84,7 +84,7 @@ require './utils/read/traerRespuestas.php';
                                         <th>PLAN DE ACCIÓN</th>
                                         <th>FECHA DE RESOLUCIÓN</th>
                                         <th>COMENTARIOS (MÁXIMO 255 CARÁCTERES)</th>
-                                        <th>¿QUIÉNES PARTICIPARON EN EL PLAN DE ACCIÓN?</th>
+                                        <th>ÁREA RESPONSABLE DE EJECUTAR EL PLAN DE ACCIÓN</th>
                                     </tr>
                                 </thead>
                                 <tbody class="table-group-divider">
