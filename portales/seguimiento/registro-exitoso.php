@@ -33,7 +33,13 @@
           <div class="card-body">
             <img src="../img/checked.png" alt="exitoso" height="250" width="250">
             <h1 class="fw-bold mt-3">Registro Guardado Correctamente</h1>
-            <h6>Ya puede cerrar esta ventana.</h6>
+            <div class="row justify-content-center mt-3">
+              <div class="col-12 col-lg-6">
+                <a href="./index.php">
+                  <button type="submit" class="btn btn-main w-100 fw-bold" id="btn-submit">Volver</button>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
