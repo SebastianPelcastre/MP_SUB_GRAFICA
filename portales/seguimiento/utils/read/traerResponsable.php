@@ -20,7 +20,7 @@ $result = sqlsrv_query($conn_sql_azure, $query);
 $nombre = '';
 
 while ($row = sqlsrv_fetch_array($result)) {
-    $nombre = $row['nombre'];
+	$nombre = $row['nombre'];
 }
 
 // echo json_encode($respuestas);

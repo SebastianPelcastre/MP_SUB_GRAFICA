@@ -144,21 +144,22 @@ require './utils/read/traerResponsable.php';
                                     <table class="table display nowrap w-100" id="table">
                                         <thead class="table-light">
                                             <tr>
-                                                <th>SEMANA</th>
+
                                                 <th>PLANTA</th>
                                                 <th>NOMBRE PLANTA</th>
+                                                <th>SEMANA</th>
+                                                <th>TIPO</th>
                                                 <th>ITEM</th>
                                                 <th>NOMBRE ITEM</th>
-                                                <th>TIPO</th>
-                                                <th>PUESTO</th>
-                                                <th>CORREO</th>
+                                                <th>PUESTO PRINCIPAL</th>
+                                                <th>CORREO PRINCIPAL</th>
                                                 <th>CAUSA</th>
                                                 <th>PLAN DE ACCIÓN</th>
                                                 <th>FECHA DE RESOLUCIÓN</th>
                                                 <th>COMENTARIO</th>
                                                 <th>¿SE LLEVÓ A CABO EL PLAN DE ACCIÓN?</th>
                                                 <th>OBSERVACIONES (MÁXIMO 255 CARÁCTERES)</th>
-                                                <th>RESPONSABLE</th>
+                                                <th>RESPONSABLE (CONTROL Y COSTOS)</th>
                                             </tr>
                                         </thead>
                                         <tbody class="table-group-divider">
@@ -276,12 +277,13 @@ require './utils/read/traerResponsable.php';
                                                 }
                                             ?>
                                                 <tr style="white-space: nowrap">
-                                                    <td style="vertical-align: middle;"> <input type="hidden" value="<?php echo $respuesta['id']; ?>" name="idAlerta-<?php echo $contador ?>" /><?php echo $respuesta['semana']; ?></td>
+
                                                     <td style="vertical-align: middle;"><?php echo $respuesta['id_planta'] ?></td>
                                                     <td style="vertical-align: middle;"><?php echo $respuesta['nombre_planta'] ?></td>
+                                                    <td style="vertical-align: middle;"> <input type="hidden" value="<?php echo $respuesta['id']; ?>" name="idAlerta-<?php echo $contador ?>" /><?php echo $respuesta['semana']; ?></td>
+                                                    <td style="vertical-align: middle;"><?php echo $respuesta['tipo'] ?></td>
                                                     <td style="vertical-align: middle;"><?php echo $respuesta['id_item'] ?></td>
                                                     <td style="vertical-align: middle;"><?php echo $respuesta['nombre_item'] ?></td>
-                                                    <td style="vertical-align: middle;"><?php echo $respuesta['tipo'] ?></td>
                                                     <td style="vertical-align: middle;"><?php echo $respuesta['puesto'] ?></td>
                                                     <td style="vertical-align: middle;"><?php echo $respuesta['correo'] ?></td>
                                                     <?php echo $columnaCausa ?>

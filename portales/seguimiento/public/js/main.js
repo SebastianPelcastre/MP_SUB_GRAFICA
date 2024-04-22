@@ -6,7 +6,8 @@ const tabla = new DataTable('#table', {
   layout: {
     top1: {
         searchPanes:{
-          cascadePanes:true
+          cascadePanes:true,
+          initCollapsed: true
         }
     }
 },
@@ -15,13 +16,13 @@ columnDefs: [
       searchPanes: {
           show: false
       },
-      targets: [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+      targets: [1, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14]
   },
   {
     searchPanes: {
         show: true
     },
-    targets: 1
+    targets: [2, 3, 0, 5]
 }
 ],
   language: {
