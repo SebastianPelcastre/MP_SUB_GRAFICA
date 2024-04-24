@@ -42,7 +42,7 @@ INNER JOIN
 WHERE 
 	aniosemana = ' . $semanaAlerta . '
 	AND da.id_tipo =  2 -- SUBENSAMBLES
-    AND da.id_planta NOT IN (2002)
+    AND da.id_planta NOT IN (2139, 2185, 2049)
 GROUP BY 
 	da.id_planta,
 	cp.nombre
@@ -220,22 +220,22 @@ echo '<br>';
 
 // Copia a Analítica Avanzada
 // $mail->addBCC('ana.segovia@grupobimbo.com');
-$mail->addBCC('daniel.robles@grupobimbo.com');
-$mail->addBCC('sebastian.pelcastre@grupobimbo.com');
+// $mail->addBCC('daniel.robles@grupobimbo.com');
+// $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
 // $mail->addBCC('israel.gonzalez@grupobimbo.com');
 
-if (!$mail->send()) {
-    // $query = '
-    //         INSERT INTO
-    //             MKS_Datos_Complementarios.ALERTAS_EMITIDAS
-    //         VALUES
-    //             (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
-} else {
-    // $query = '
-    //         INSERT INTO
-    //             MKS_Datos_Complementarios.ALERTAS_EMITIDAS
-    //         VALUES
-    //             (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
-}
+// if (!$mail->send()) {
+//     // $query = '
+//     //         INSERT INTO
+//     //             MKS_Datos_Complementarios.ALERTAS_EMITIDAS
+//     //         VALUES
+//     //             (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
+// } else {
+//     // $query = '
+//     //         INSERT INTO
+//     //             MKS_Datos_Complementarios.ALERTAS_EMITIDAS
+//     //         VALUES
+//     //             (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
+// }
 
 //EOF

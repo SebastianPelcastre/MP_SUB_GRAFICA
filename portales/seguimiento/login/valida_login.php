@@ -18,7 +18,8 @@ if (isset($_POST['no_colaborador']) && isset($_POST['correo'])) {
         MKS_MP_SUB.USURIOS_PORTAL_SEGUIMIENTO
     WHERE 	
         correo = \'' . $correo . '\' 
-        AND numero_colaborador = ' . $no_colaborador;
+        AND numero_colaborador = ' . $no_colaborador . '
+        AND activo = 1';
 
     if (!$resultUsr = sqlsrv_query($conn_sql_azure, $qry_usuarios)) {
         echo '<script type="text/javascript">';
@@ -38,7 +39,7 @@ if (isset($_POST['no_colaborador']) && isset($_POST['correo'])) {
             MKS_MP_SUB.CAT_RELACION_USUARIOS_PLANTAS crup
         WHERE 
         	correo = \'' . $correo . '\'
-            AND id_puesto IN (3,4,9)
+            AND id_puesto IN (3,4,9,12)
         GROUP BY
         	id_planta';
 

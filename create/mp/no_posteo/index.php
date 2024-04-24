@@ -42,12 +42,12 @@ INNER JOIN
 WHERE 
 	aniosemana = ' . $semanaAlerta . '
 	AND da.id_tipo =  1 
-    AND da.id_planta NOT IN (2002)
+    AND da.id_planta NOT IN (2139, 2185, 2049)
 GROUP BY 
 	da.id_planta,
 	cp.nombre
 HAVING ((SUM(r_consumo_real_pesos) = 0 OR SUM(ajuste_inv_real) = 0))
-ORDER BY da.id_planta ';
+ORDER BY da.id_planta';
 
 $result = sqlsrv_query($conn_sql_azure, $query);
 
@@ -221,41 +221,41 @@ echo '<br>';
 
 // Copia a Analítica Avanzada
 // $mail->addBCC('ana.segovia@grupobimbo.com');
-$mail->addBCC('daniel.robles@grupobimbo.com');
-$mail->addBCC('sebastian.pelcastre@grupobimbo.com');
+// $mail->addBCC('daniel.robles@grupobimbo.com');
+// $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
 // $mail->addBCC('israel.gonzalez@grupobimbo.com');
 
 $ERROR_ENVIO = 0;
 $ENVIO_EXITOSO = 1;
 
-if (!$mail->send()) {
-    // foreach ($ids as $id) {
-    //     $query = '
-    //             INSERT INTO
-    //                 MKS_MP_SU.BITACORA_ENVIOS_NO_POSTEO
-    //             VALUES
-    //                 (' . $id . ',\'' . $FECHA_EMISION . '\', ' . $semanaAlerta . ', ' . $ERROR_ENVIO . ')';
-    // }
-    // if (!sqlsrv_query($conn_sql_azure, $query)) {
-    //     echo $query;
-    //     echo '<br />';
-    //     echo '<br />';
-    //     die(print_r(sqlsrv_errors()));
-    // }
-} else {
-    // foreach ($ids as $id) {
-    //     $query = '
-    //                 INSERT INTO
-    //                     MKS_MP_SU.BITACORA_ENVIOS_NO_POSTEO
-    //                 VALUES
-    //                     (' . $id . ',\'' . $FECHA_EMISION . '\', ' . $semanaAlerta . ', ' . $ENVIO_EXITOSO . ')';
-    // }
-    // if (!sqlsrv_query($conn_sql_azure, $query)) {
-    //     echo $query;
-    //     echo '<br />';
-    //     echo '<br />';
-    //     die(print_r(sqlsrv_errors()));
-    // }
-}
+// if (!$mail->send()) {
+//     // foreach ($ids as $id) {
+//     //     $query = '
+//     //             INSERT INTO
+//     //                 MKS_MP_SU.BITACORA_ENVIOS_NO_POSTEO
+//     //             VALUES
+//     //                 (' . $id . ',\'' . $FECHA_EMISION . '\', ' . $semanaAlerta . ', ' . $ERROR_ENVIO . ')';
+//     // }
+//     // if (!sqlsrv_query($conn_sql_azure, $query)) {
+//     //     echo $query;
+//     //     echo '<br />';
+//     //     echo '<br />';
+//     //     die(print_r(sqlsrv_errors()));
+//     // }
+// } else {
+//     // foreach ($ids as $id) {
+//     //     $query = '
+//     //                 INSERT INTO
+//     //                     MKS_MP_SU.BITACORA_ENVIOS_NO_POSTEO
+//     //                 VALUES
+//     //                     (' . $id . ',\'' . $FECHA_EMISION . '\', ' . $semanaAlerta . ', ' . $ENVIO_EXITOSO . ')';
+//     // }
+//     // if (!sqlsrv_query($conn_sql_azure, $query)) {
+//     //     echo $query;
+//     //     echo '<br />';
+//     //     echo '<br />';
+//     //     die(print_r(sqlsrv_errors()));
+//     // }
+// }
 
 //EOF

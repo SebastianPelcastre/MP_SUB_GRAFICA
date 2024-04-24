@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             id_item = ?
             AND semana = ?
             AND id_planta = ?
-            AND fecha_emisión = ?
+            AND fecha_emision = ?
         ';
 
         $params = array($item['idItem'], $item['semana'], $item['idPlanta'], $item['fechaEmision']);
