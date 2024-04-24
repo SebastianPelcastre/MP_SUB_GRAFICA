@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         WHERE
             semana = ?
             AND id_planta = ?
-            AND fecha_emisión = ?
+            AND fecha_emision = ?
         ';
 
         $params = array($planta['semana'], $planta['idPlanta'], $planta['fechaEmision']);
