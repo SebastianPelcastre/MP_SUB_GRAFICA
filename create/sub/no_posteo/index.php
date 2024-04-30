@@ -212,30 +212,30 @@ echo '<ul>';
 // Agregamos a los destinatarios principales
 foreach ($correos as $correo) {
     echo '<li>' . $correo . '</li>';
-    // $mail->addAddress($correo);
+    $mail->addAddress($correo);
 }
 
 echo '</ul>';
 echo '<br>';
 
 // Copia a Analítica Avanzada
-// $mail->addBCC('ana.segovia@grupobimbo.com');
-// $mail->addBCC('daniel.robles@grupobimbo.com');
-// $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
-// $mail->addBCC('israel.gonzalez@grupobimbo.com');
+$mail->addBCC('ana.segovia@grupobimbo.com');
+$mail->addBCC('daniel.robles@grupobimbo.com');
+$mail->addBCC('sebastian.pelcastre@grupobimbo.com');
+$mail->addBCC('israel.gonzalez@grupobimbo.com');
 
-// if (!$mail->send()) {
-//     // $query = '
-//     //         INSERT INTO
-//     //             MKS_Datos_Complementarios.ALERTAS_EMITIDAS
-//     //         VALUES
-//     //             (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
-// } else {
-//     // $query = '
-//     //         INSERT INTO
-//     //             MKS_Datos_Complementarios.ALERTAS_EMITIDAS
-//     //         VALUES
-//     //             (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
-// }
+if (!$mail->send()) {
+    // $query = '
+    //         INSERT INTO
+    //             MKS_Datos_Complementarios.ALERTAS_EMITIDAS
+    //         VALUES
+    //             (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
+} else {
+    // $query = '
+    //         INSERT INTO
+    //             MKS_Datos_Complementarios.ALERTAS_EMITIDAS
+    //         VALUES
+    //             (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
+}
 
 //EOF
