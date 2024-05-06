@@ -95,7 +95,7 @@ require './utils/read/traerResponsable.php';
 
             <div class="bottom-content">
                 <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Cerrar Sesión">
-                    <a href="login/cierra_sesion.php">
+                    <a href="../login/cierra_sesion.php">
                         <i class='bx bx-log-out icon'></i>
                         <span class="home-text nav-text">Cerrar Sesión</span>
                     </a>

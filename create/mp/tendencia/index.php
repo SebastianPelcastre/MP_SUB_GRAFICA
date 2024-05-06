@@ -54,6 +54,8 @@ $plantasAlertadas = array();
 while ($row = sqlsrv_fetch_array($result)) {
     $plantasAlertadas[] = $row['id_planta'];
 }
+
+$plantasAlertadas = [2008];
 // $plantasAlertadas = [
 //     2000,
 //     2001,
