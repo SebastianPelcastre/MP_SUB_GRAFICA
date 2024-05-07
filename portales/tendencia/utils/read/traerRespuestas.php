@@ -4,6 +4,7 @@ $query = '
 SELECT
     r.id,
 	r.id_item,
+    r.plan_accion,
 	r.fecha_resolucion,
 	CASE
         WHEN c.comentario IS NULL THEN \'SIN COMENTARIO\'
@@ -21,6 +22,7 @@ WHERE
 GROUP BY
     r.id,
     r.id_item,
+    r.plan_accion,
     r.fecha_resolucion,
     c.comentario';
 
@@ -38,7 +40,7 @@ $respuestas = array();
 while ($row = sqlsrv_fetch_array($result)) {
     $subdata = array();
     $subdata['idItem'] = $row['id_item'];
-    $subdata['causa'] = $row['causa'];
+    $subdata['plan_accion'] = $row['plan_accion'];
     $subdata['fechaResolucion'] = $row['fecha_resolucion']->format('Y-m-d');
     $subdata['comentario'] = $row['comentario'];
     $respuestas[] = $subdata;

@@ -24,7 +24,7 @@ require './utils/read/traerRespuestas.php';
 
 require './utils/read/traerRespuestasPortal.php';
 
-require './utils/read/traerResponsable.php';
+// require './utils/read/traerResponsable.php';
 
 ?>
 
@@ -285,14 +285,14 @@ require './utils/read/traerResponsable.php';
                                                     <td style="vertical-align: middle;"><?php echo $respuesta['id_item'] ?></td>
                                                     <td style="vertical-align: middle;"><?php echo $respuesta['nombre_item'] ?></td>
                                                     <td style="vertical-align: middle;"><?php echo $respuesta['puesto'] ?></td>
-                                                    <td style="vertical-align: middle;"><?php echo $respuesta['correo'] ?></td>
+                                                    <td style="vertical-align: middle;"><?php echo $respuesta['correos'] ?></td>
                                                     <?php echo $columnaCausa ?>
                                                     <?php echo $columnaPlanAccion; ?>
                                                     <?php echo $columnaFechaResolucion; ?>
                                                     <?php echo $columnaComentarios; ?>
                                                     <?php echo $columnaRealizado; ?>
                                                     <?php echo $columnaObservaciones; ?>
-                                                    <td style="vertical-align: middle;"><?php echo $nombre; ?></td>
+                                                    <td style="vertical-align: middle;"><?php echo $respuesta['responsables']; ?></td>
                                                 </tr>
                                             <?php
                                                 $contador += 1;

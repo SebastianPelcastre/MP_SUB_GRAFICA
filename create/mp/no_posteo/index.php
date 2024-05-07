@@ -196,6 +196,7 @@ WHERE
     crap.id_tipo_alerta = 5
     AND crap.item_type = 1
     AND crup.id_planta IN (' . implode(',', $ids) . ')
+    ND crap.id_EL = (CASE WHEN LEFT (crup.id_planta, 2) = 20 THEN 100 ELSE 101 END )
 GROUP BY 
     crup.correo
 ';

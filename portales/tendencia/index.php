@@ -104,7 +104,7 @@ require './utils/read/traerRespuestas.php';
 
                                         if ($respuestaParaItem !== null) {
                                             // $columnaCausa = '<td style="vertical-align: middle;"><p>' . $respuestaParaItem['causa'] . '</p></td>';
-                                            $columnaPlanAccion = '<td style="vertical-align: middle;"><p></p></td>';
+                                            $columnaPlanAccion = '<td style="vertical-align: middle;"><p>' . $respuestaParaItem['plan_accion'] . '</p></td>';
                                             $columnaFechaResolucion = '<td style="vertical-align: middle;"><p>' . $respuestaParaItem['fechaResolucion'] . '</p></td>';
                                             $columnaComentarios = '<td style="vertical-align: middle;"> <div style="vertical-align: middle;">' . $respuestaParaItem['comentario'] . '</div></td>';
                                         } else {

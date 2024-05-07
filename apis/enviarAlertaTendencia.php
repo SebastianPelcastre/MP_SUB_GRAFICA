@@ -382,6 +382,7 @@ WHERE
     crap.id_tipo_alerta = ' . $_POST['id_tipo_alerta'] . '
     AND crap.item_type = ' . $_POST['id_tipo'] . '
     AND crup.id_planta = ' . $_POST['idPlanta'] . '
+    ND crap.id_EL = (CASE WHEN LEFT (crup.id_planta, 2) = 20 THEN 100 ELSE 101 END )
 GROUP BY 
     crup.correo
 ';
@@ -414,48 +415,48 @@ $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
 $ERROR_ENVIO = 0;
 $ENVIO_EXITOSO = 1;
 
-if (!$mail->send()) {
-    // for ($i = 0; $i < sizeof($items); $i++) {
-    //     $query = '
-    //      INSERT INTO
-    //         MKS_MP_SUB.ALERTAS_EMITIDAS_PREDICTIVA_TENDENCIA
-    //      VALUES
-    //          (' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', ' . $_POST['idPlanta'] . ', \'' . $items[$i] . '\', ' . $_POST['id_tipo_alerta'] . ', ' . $_POST['id_tipo'] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
-    //     if (!sqlsrv_query($conn_sql_azure, $query)) {
-    //         echo $query;
-    //         echo '<br />';
-    //         echo '<br />';
-    //         die(print_r(sqlsrv_errors()));
-    //     }
-    // }
-} else {
-    // for ($i = 0; $i < sizeof($items); $i++) {
-    //     $query = '
-    //      INSERT INTO
-    //          MKS_MP_SUB.ALERTAS_EMITIDAS_PREDICTIVA_TENDENCIA
-    //      VALUES
-    //         (' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', ' . $_POST['idPlanta'] . ', \'' . $items[$i] . '\', ' . $_POST['id_tipo_alerta'] . ', ' . $_POST['id_tipo'] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
-    //     if (!sqlsrv_query($conn_sql_azure, $query)) {
-    //         echo $query;
-    //         echo '<br />';
-    //         echo '<br />';
-    //         die(print_r(sqlsrv_errors()));
-    //     }
-    // }
+// if (!$mail->send()) {
+//     // for ($i = 0; $i < sizeof($items); $i++) {
+//     //     $query = '
+//     //      INSERT INTO
+//     //         MKS_MP_SUB.ALERTAS_EMITIDAS_PREDICTIVA_TENDENCIA
+//     //      VALUES
+//     //          (' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', ' . $_POST['idPlanta'] . ', \'' . $items[$i] . '\', ' . $_POST['id_tipo_alerta'] . ', ' . $_POST['id_tipo'] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
+//     //     if (!sqlsrv_query($conn_sql_azure, $query)) {
+//     //         echo $query;
+//     //         echo '<br />';
+//     //         echo '<br />';
+//     //         die(print_r(sqlsrv_errors()));
+//     //     }
+//     // }
+// } else {
+//     // for ($i = 0; $i < sizeof($items); $i++) {
+//     //     $query = '
+//     //      INSERT INTO
+//     //          MKS_MP_SUB.ALERTAS_EMITIDAS_PREDICTIVA_TENDENCIA
+//     //      VALUES
+//     //         (' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', ' . $_POST['idPlanta'] . ', \'' . $items[$i] . '\', ' . $_POST['id_tipo_alerta'] . ', ' . $_POST['id_tipo'] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
+//     //     if (!sqlsrv_query($conn_sql_azure, $query)) {
+//     //         echo $query;
+//     //         echo '<br />';
+//     //         echo '<br />';
+//     //         die(print_r(sqlsrv_errors()));
+//     //     }
+//     // }
 
-    $mail->clearAllRecipients();
-    $mail->clearAttachments();
-    $mail->clearCustomHeaders();
-    $mail->clearBCCs();
-    $mail->clearCCs();
-    $mail->clearReplyTos();
-    $mail->Subject = '';
-    $mail->Body = '';
-    unlink($imagen);
+//     $mail->clearAllRecipients();
+//     $mail->clearAttachments();
+//     $mail->clearCustomHeaders();
+//     $mail->clearBCCs();
+//     $mail->clearCCs();
+//     $mail->clearReplyTos();
+//     $mail->Subject = '';
+//     $mail->Body = '';
+//     unlink($imagen);
 
-    echo json_encode(['status' => 200, 'mensaje' => 'Correo enviado con éxito']);
-    sleep(2);
-}
+//     echo json_encode(['status' => 200, 'mensaje' => 'Correo enviado con éxito']);
+//     sleep(2);
+// }
 
 
 //EOF

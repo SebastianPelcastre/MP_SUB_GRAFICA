@@ -23,7 +23,8 @@ while ($row = sqlsrv_fetch_array($result)) {
 	$nombre = $row['nombre'];
 }
 
-// echo json_encode($respuestas);
+// echo $query;
+
 // die;
 
 

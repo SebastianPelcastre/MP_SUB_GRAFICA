@@ -202,7 +202,7 @@ if ($idTipo === 1) {
 }
 
 $query = '
-SELECT 
+SELECT DISTINCT 
 	crup.correo 
 FROM 
 	MKS_MP_SUB.CAT_RELACION_ALERTA_PUESTOS crap 

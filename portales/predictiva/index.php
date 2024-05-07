@@ -84,7 +84,7 @@ require './utils/read/traerRespuestas.php';
                                         <th>PLAN DE ACCIÓN</th>
                                         <th>FECHA DE RESOLUCIÓN</th>
                                         <th>COMENTARIOS (MÁXIMO 255 CARÁCTERES)</th>
-                                        <th>ÁREA RESPONSABLE DE EJECUTAR EL PLAN DE ACCIÓN</th>
+                                        <th>¿QUIÉNES PARTICIPARON EN EL PLAN DE ACCIÓN?</th>
                                     </tr>
                                 </thead>
                                 <tbody class="table-group-divider">
@@ -149,11 +149,11 @@ require './utils/read/traerRespuestas.php';
                                             <td id="<?php echo $contador ?>">
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="checkbox" id="materiales-<?php echo $contador ?>" value="materiales" name="materiales-<?php echo $contador ?>">
-                                                    <label class="form-check-label" for="materiales-<?php echo $contador ?>"><?php echo ($idTipo == 1) ? 'Supervisor de Materias Primas' : 'Ingeniero de Procesos' ?></label>
+                                                    <label class="form-check-label" for="materiales-<?php echo $contador ?>">Gerencia de Producción</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="checkbox" id="mantenimiento-<?php echo $contador ?>" value="mantenimiento" name="mantenimiento-<?php echo $contador ?>">
-                                                    <label class="form-check-label" for="mantenimiento-<?php echo $contador ?>">Jefe de Mantenimiento</label>
+                                                    <label class="form-check-label" for="mantenimiento-<?php echo $contador ?>">Gerencia de Mantenimiento</label>
                                                 </div>
                                             </td>
                                         </tr>
