@@ -382,7 +382,7 @@ WHERE
     crap.id_tipo_alerta = ' . $_POST['id_tipo_alerta'] . '
     AND crap.item_type = ' . $_POST['id_tipo'] . '
     AND crup.id_planta = ' . $_POST['idPlanta'] . '
-    ND crap.id_EL = (CASE WHEN LEFT (crup.id_planta, 2) = 20 THEN 100 ELSE 101 END )
+    AND crap.id_EL = (CASE WHEN LEFT (crup.id_planta, 2) = 20 THEN 100 ELSE 101 END )
 GROUP BY 
     crup.correo
 ';

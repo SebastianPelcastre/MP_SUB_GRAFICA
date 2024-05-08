@@ -42,7 +42,8 @@ INNER JOIN
 WHERE 
 	aniosemana = ' . $semanaAlerta . '
 	AND da.id_tipo =  2 -- SUBENSAMBLES
-    AND da.id_planta NOT IN (2139, 2185, 2049)
+    AND id_EL = 100
+    --AND da.id_planta NOT IN (2139, 2185, 2049)
 GROUP BY 
 	da.id_planta,
 	cp.nombre
@@ -195,7 +196,7 @@ $query = '
         crap.id_tipo_alerta = 5
         AND crap.item_type = 2
         AND crup.id_planta IN (' . implode(',', $ids) . ')
-        ND crap.id_EL = (CASE WHEN LEFT (crup.id_planta, 2) = 20 THEN 100 ELSE 101 END )
+        AND crap.id_EL = (CASE WHEN LEFT (crup.id_planta, 2) = 20 THEN 100 ELSE 101 END )
     GROUP BY 
         crup.correo
     ';
@@ -213,30 +214,30 @@ echo '<ul>';
 // Agregamos a los destinatarios principales
 foreach ($correos as $correo) {
     echo '<li>' . $correo . '</li>';
-    // $mail->addAddress($correo);
+    $mail->addAddress($correo);
 }
 
 echo '</ul>';
 echo '<br>';
 
 // Copia a Analítica Avanzada
-// $mail->addBCC('ana.segovia@grupobimbo.com');
-// $mail->addBCC('daniel.robles@grupobimbo.com');
-// $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
-// $mail->addBCC('israel.gonzalez@grupobimbo.com');
+$mail->addBCC('ana.segovia@grupobimbo.com');
+$mail->addBCC('daniel.robles@grupobimbo.com');
+$mail->addBCC('sebastian.pelcastre@grupobimbo.com');
+$mail->addBCC('israel.gonzalez@grupobimbo.com');
 
-// if (!$mail->send()) {
-//     // $query = '
-//     //         INSERT INTO
-//     //             MKS_Datos_Complementarios.ALERTAS_EMITIDAS
-//     //         VALUES
-//     //             (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
-// } else {
-//     // $query = '
-//     //         INSERT INTO
-//     //             MKS_Datos_Complementarios.ALERTAS_EMITIDAS
-//     //         VALUES
-//     //             (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
-// }
+if (!$mail->send()) {
+    // $query = '
+    //         INSERT INTO
+    //             MKS_Datos_Complementarios.ALERTAS_EMITIDAS
+    //         VALUES
+    //             (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
+} else {
+    // $query = '
+    //         INSERT INTO
+    //             MKS_Datos_Complementarios.ALERTAS_EMITIDAS
+    //         VALUES
+    //             (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
+}
 
 //EOF

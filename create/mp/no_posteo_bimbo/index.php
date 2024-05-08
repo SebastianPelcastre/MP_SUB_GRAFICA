@@ -42,8 +42,8 @@ INNER JOIN
 WHERE 
 	aniosemana = ' . $semanaAlerta . '
 	AND da.id_tipo =  1 
-    AND id_EL = 100
-    AND da.id_planta NOT IN (2049)
+    AND id_EL = 101
+    --AND da.id_planta NOT IN (2139, 2185, 2049)
 GROUP BY 
 	da.id_planta,
 	cp.nombre
