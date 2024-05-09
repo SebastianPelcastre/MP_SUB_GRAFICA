@@ -408,7 +408,7 @@ foreach ($correos as $correo) {
 
 // Copia a Analítica Avanzada
 // $mail->addBCC('ana.segovia@grupobimbo.com');
-$mail->addBCC('daniel.robles@grupobimbo.com');
+// $mail->addBCC('daniel.robles@grupobimbo.com');
 $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
 // $mail->addBCC('israel.gonzalez@grupobimbo.com');
 

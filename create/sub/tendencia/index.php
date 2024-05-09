@@ -43,6 +43,7 @@ WHERE
     AND da.alerta = 1
     AND da.id_tipo = 2
     AND aniosemana = ' . $semanasAlerta[sizeof($semanasAlerta) - 1] . '
+    AND da.id_planta NOT IN (2049)
 GROUP BY 
     da.id_planta,
     cp.nombre';
