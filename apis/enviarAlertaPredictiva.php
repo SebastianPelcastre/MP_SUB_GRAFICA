@@ -54,7 +54,8 @@ if ($_POST['id_tipo'] == 1) {
 
 $query = '
 SELECT 
-	nombre
+	nombre, 
+    id_EL
 FROM 
 	MKS_MP_SUB.CAT_PLANTAS
 WHERE
@@ -63,8 +64,10 @@ WHERE
 $result = sqlsrv_query($conn_sql_azure, $query);
 
 $nombrePlanta = '';
+$entidadLegal = 0;
 while ($row = sqlsrv_fetch_array($result)) {
     $nombrePlanta = $row['nombre'];
+    $entidadLegal = $row['id_EL'];
 }
 
 $query = '
@@ -274,7 +277,9 @@ $cuerpoTabla = '<tbody>' . $filasTabla . '</tbody> </table>';
 
 $tablaCompleta = $encabezadoTabla . $cuerpoTabla;
 
-$correoCompleto = $globalStyles .  $encabezadoCorreo .  $mensajeAlerta . '<center>' . $tablaCompleta . '</center><br/>';
+$pieCorreo = '<center>Puedes consultar el procedimiento normativo asociado a esta iniciativa en: <a href="https://gbconnect.sharepoint.com/:b:/s/ProcedimientosNormativos/EYkmmyv1HDxCiZrmAnGaeQ8BaGxXoVRiO0z_kl7-AnJJBw?e=zyBvhN" target="_blank"><b>Procedimiento Normativo</b></a></center><br>';
+
+$correoCompleto = $globalStyles .  $encabezadoCorreo .  $mensajeAlerta . '<center>' . $tablaCompleta . '</center><br/>' . ($entidadLegal === 100 ? $pieCorreo : '');
 
 // echo $correoCompleto;
 // echo '<br/><br/>';
@@ -372,49 +377,49 @@ while ($row = sqlsrv_fetch_array($result)) {
 // Agregamos a los destinatarios principales
 foreach ($correos as $correo) {
     // echo '<li>' . $correo . '</li>';
-    // $mail->addAddress($correo);
+    $mail->addAddress($correo);
 }
 
 // echo '</ul>';
 // echo '<br>';
 
 // Copia a Analítica Avanzada
-// $mail->addBCC('ana.segovia@grupobimbo.com');
-// $mail->addBCC('daniel.robles@grupobimbo.com');
+$mail->addBCC('ana.segovia@grupobimbo.com');
+$mail->addBCC('daniel.robles@grupobimbo.com');
 $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
-// $mail->addBCC('israel.gonzalez@grupobimbo.com');
+$mail->addBCC('israel.gonzalez@grupobimbo.com');
 
 $ERROR_ENVIO = 0;
 $ENVIO_EXITOSO = 1;
 
 if (!$mail->send()) {
-    // for ($i = 0; $i < sizeof($items); $i++) {
-    //     $query = '
-    //      INSERT INTO
-    //         MKS_MP_SUB.ALERTAS_EMITIDAS_PREDICTIVA_TENDENCIA
-    //      VALUES
-    //          (' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', ' . $_POST['idPlanta'] . ', \'' . $items[$i] . '\', ' . $_POST['id_tipo_alerta'] . ', ' . $_POST['id_tipo'] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
-    //     if (!sqlsrv_query($conn_sql_azure, $query)) {
-    //         echo $query;
-    //         echo '<br />';
-    //         echo '<br />';
-    //         die(print_r(sqlsrv_errors()));
-    //     }
-    // }
+    for ($i = 0; $i < sizeof($items); $i++) {
+        $query = '
+         INSERT INTO
+            MKS_MP_SUB.ALERTAS_EMITIDAS_PREDICTIVA_TENDENCIA
+         VALUES
+             (' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', ' . $_POST['idPlanta'] . ', \'' . $items[$i] . '\', ' . $_POST['id_tipo_alerta'] . ', ' . $_POST['id_tipo'] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
+        if (!sqlsrv_query($conn_sql_azure, $query)) {
+            echo $query;
+            echo '<br />';
+            echo '<br />';
+            die(print_r(sqlsrv_errors()));
+        }
+    }
 } else {
-    // for ($i = 0; $i < sizeof($items); $i++) {
-    //     $query = '
-    //      INSERT INTO
-    //          MKS_MP_SUB.ALERTAS_EMITIDAS_PREDICTIVA_TENDENCIA
-    //      VALUES
-    //         (' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', ' . $_POST['idPlanta'] . ', \'' . $items[$i] . '\', ' . $_POST['id_tipo_alerta'] . ', ' . $_POST['id_tipo'] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
-    //     if (!sqlsrv_query($conn_sql_azure, $query)) {
-    //         echo $query;
-    //         echo '<br />';
-    //         echo '<br />';
-    //         die(print_r(sqlsrv_errors()));
-    //     }
-    // }
+    for ($i = 0; $i < sizeof($items); $i++) {
+        $query = '
+         INSERT INTO
+             MKS_MP_SUB.ALERTAS_EMITIDAS_PREDICTIVA_TENDENCIA
+         VALUES
+            (' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', ' . $_POST['idPlanta'] . ', \'' . $items[$i] . '\', ' . $_POST['id_tipo_alerta'] . ', ' . $_POST['id_tipo'] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
+        if (!sqlsrv_query($conn_sql_azure, $query)) {
+            echo $query;
+            echo '<br />';
+            echo '<br />';
+            die(print_r(sqlsrv_errors()));
+        }
+    }
 
     $mail->clearAllRecipients();
     $mail->clearAttachments();

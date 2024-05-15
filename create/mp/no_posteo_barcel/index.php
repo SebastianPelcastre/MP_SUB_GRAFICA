@@ -41,14 +41,14 @@ INNER JOIN
 	ON da.id_planta = cp.id_planta
 WHERE 
 	aniosemana = ' . $semanaAlerta . '
-	AND da.id_tipo =  2 -- SUBENSAMBLES
-    --AND da.id_planta NOT IN (2139, 2185, 2049)
+	AND da.id_tipo =  1 
     AND id_EL = 101
+    --AND da.id_planta NOT IN (2139, 2185, 2049)
 GROUP BY 
 	da.id_planta,
 	cp.nombre
 HAVING ((SUM(r_consumo_real_pesos) = 0 OR SUM(ajuste_inv_real) = 0))
-ORDER BY da.id_planta ';
+ORDER BY da.id_planta';
 
 $result = sqlsrv_query($conn_sql_azure, $query);
 
@@ -114,11 +114,11 @@ if (!empty($ids)) {
         }
     </style>';
 
-    $encabezadoCorreo = '<h1>Plantas <span class="text-red">sin posteo</span> Subensambles</h1>
+    $encabezadoCorreo = '<h1>Plantas <span class="text-red">sin posteo</span> Materias Primas</h1>
 
     <h2>Año Semana de emisión: <span class="bold">' . $semanaAlerta . '</span></h2>
 
-    <h2>Microleaks Subensambes | Consultoría de Análisis para Negocio</h2>
+    <h2>Microleaks Materias Primas | Consultoría de Análisis para Negocio</h2>
 
     <h2><span class="bold">Información con corte al Lunes a las 23:59 hrs</span></h2>
     ';
@@ -131,7 +131,9 @@ if (!empty($ids)) {
     <h3 class="text-blue">CRITERIOS DE ALERTA</h3>
     <p>Las alertas por no posteo se emiten cuando no se registre en tiempo el posteo de la planta.</p>
     ';
-    // <h3 class="bold"><span class="text-red">**NOTA</span> Información tomada el lunes a las 12:00pm con corte de domingo a sábado </h3>
+
+    //<h3 class="bold"><span class="text-red">**NOTA</span> Información tomada el martes a las 12:00pm con corte de domingo a lunes.</h3>
+
 
     $encabezadoTabla = '
     <table>
@@ -152,7 +154,7 @@ if (!empty($ids)) {
         $columnaPlanta = '<td>' . $planta['nombre'] . '</td>';
         $columnaLink = '<td><a href="' . $LOCAL_URL . '/mp_sub_grafica/portales/no_posteo/index.php?idPlanta=' . $planta['id'] . '&semanaAlerta=' . $semanaAlerta . '&fechaEmision=' . $FECHA_EMISION . '&id_tipo=1 " target="_blank">LINK</a></td>';
         $filasTabla = $filasTabla . '<tr>
-        ' . $columnaId . $columnaPlanta .  '
+        ' . $columnaId . $columnaPlanta . /*$columnaLink .*/  '
         </tr>';
     }
 
@@ -165,7 +167,7 @@ if (!empty($ids)) {
     echo '<br/><br/>';
 
     // Envío de correo
-    $subject = 'Alerta Microleak Subensambles No Posteo ' . $semanaAlerta;
+    $subject = 'Alerta Microleak Materias Primas No Posteo ' . $semanaAlerta;
     $mail = new PHPMailer\PHPMailer\PHPMailer(true);
     $mail->SetLanguage("es", '../../utils/PHPMailer/language/');
     $mail->IsSMTP();
@@ -195,7 +197,7 @@ if (!empty($ids)) {
         ON crap.item_type = ct.id_tipo
     WHERE 
         crap.id_tipo_alerta = 5
-        AND crap.item_type = 2
+        AND crap.item_type = 1
         AND crup.id_planta IN (' . implode(',', $ids) . ')
         AND crap.id_EL = (CASE WHEN LEFT (crup.id_planta, 2) = 20 THEN 100 ELSE 101 END )
     GROUP BY 
@@ -227,18 +229,37 @@ if (!empty($ids)) {
     $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
     $mail->addBCC('israel.gonzalez@grupobimbo.com');
 
+    $ERROR_ENVIO = 0;
+    $ENVIO_EXITOSO = 1;
+
     if (!$mail->send()) {
-        // $query = '
-        //         INSERT INTO
-        //             MKS_Datos_Complementarios.ALERTAS_EMITIDAS
-        //         VALUES
-        //             (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
+        // foreach ($ids as $id) {
+        //     $query = '
+        //             INSERT INTO
+        //                 MKS_MP_SU.BITACORA_ENVIOS_NO_POSTEO
+        //             VALUES
+        //                 (' . $id . ',\'' . $FECHA_EMISION . '\', ' . $semanaAlerta . ', ' . $ERROR_ENVIO . ')';
+        // }
+        // if (!sqlsrv_query($conn_sql_azure, $query)) {
+        //     echo $query;
+        //     echo '<br />';
+        //     echo '<br />';
+        //     die(print_r(sqlsrv_errors()));
+        // }
     } else {
-        // $query = '
-        //         INSERT INTO
-        //             MKS_Datos_Complementarios.ALERTAS_EMITIDAS
-        //         VALUES
-        //             (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
+        // foreach ($ids as $id) {
+        //     $query = '
+        //                 INSERT INTO
+        //                     MKS_MP_SU.BITACORA_ENVIOS_NO_POSTEO
+        //                 VALUES
+        //                     (' . $id . ',\'' . $FECHA_EMISION . '\', ' . $semanaAlerta . ', ' . $ENVIO_EXITOSO . ')';
+        // }
+        // if (!sqlsrv_query($conn_sql_azure, $query)) {
+        //     echo $query;
+        //     echo '<br />';
+        //     echo '<br />';
+        //     die(print_r(sqlsrv_errors()));
+        // }
     }
 }
 

@@ -63,8 +63,9 @@ while ($row = sqlsrv_fetch_array($result)) {
     $plantas[] = $subdata;
 };
 
+if (!empty($ids)) {
 
-$styles = '
+    $styles = '
     <style>
         h1 {
             font-weight: bolder;
@@ -113,7 +114,7 @@ $styles = '
         }
     </style>';
 
-$encabezadoCorreo = '<h1>Plantas <span class="text-red">sin posteo</span> Subensambles</h1>
+    $encabezadoCorreo = '<h1>Plantas <span class="text-red">sin posteo</span> Subensambles</h1>
 
     <h2>Año Semana de emisión: <span class="bold">' . $semanaAlerta . '</span></h2>
 
@@ -122,7 +123,7 @@ $encabezadoCorreo = '<h1>Plantas <span class="text-red">sin posteo</span> Subens
     <h2><span class="bold">Información con corte al Lunes a las 23:59 hrs</span></h2>
     ';
 
-$notasCorreo = '
+    $notasCorreo = '
     <h3 class="text-red start bold">ATENCION</h3>
     <p>No responder este correo; Esta notificación fue enviada por un sistema automatizado.</p>
     <br />
@@ -130,9 +131,9 @@ $notasCorreo = '
     <h3 class="text-blue">CRITERIOS DE ALERTA</h3>
     <p>Las alertas por no posteo se emiten cuando no se registre en tiempo el posteo de la planta.</p>
     ';
-// <h3 class="bold"><span class="text-red">**NOTA</span> Información tomada el lunes a las 12:00pm con corte de domingo a sábado </h3>
+    // <h3 class="bold"><span class="text-red">**NOTA</span> Información tomada el lunes a las 12:00pm con corte de domingo a sábado </h3>
 
-$encabezadoTabla = '
+    $encabezadoTabla = '
     <table>
             <thead>
                 <tr>
@@ -142,46 +143,48 @@ $encabezadoTabla = '
             </thead>
     ';
 
-$filasTabla = '';
+    $filasTabla = '';
 
-$columnaId = '';
-$columnaPlanta = '';
-foreach ($plantas as $planta) {
-    $columnaId = '<td>' . $planta['id'] . '</td>';
-    $columnaPlanta = '<td>' . $planta['nombre'] . '</td>';
-    $columnaLink = '<td><a href="' . $LOCAL_URL . '/mp_sub_grafica/portales/no_posteo/index.php?idPlanta=' . $planta['id'] . '&semanaAlerta=' . $semanaAlerta . '&fechaEmision=' . $FECHA_EMISION . '&id_tipo=1 " target="_blank">LINK</a></td>';
-    $filasTabla = $filasTabla . '<tr>
+    $columnaId = '';
+    $columnaPlanta = '';
+    foreach ($plantas as $planta) {
+        $columnaId = '<td>' . $planta['id'] . '</td>';
+        $columnaPlanta = '<td>' . $planta['nombre'] . '</td>';
+        $columnaLink = '<td><a href="' . $LOCAL_URL . '/mp_sub_grafica/portales/no_posteo/index.php?idPlanta=' . $planta['id'] . '&semanaAlerta=' . $semanaAlerta . '&fechaEmision=' . $FECHA_EMISION . '&id_tipo=1 " target="_blank">LINK</a></td>';
+        $filasTabla = $filasTabla . '<tr>
         ' . $columnaId . $columnaPlanta .  '
         </tr>';
-}
+    }
 
-$cuerpoTabla = '<tbody>' . $filasTabla . '</tbody></table>';
-$tablaCompleta = '<center>' . $encabezadoTabla . $cuerpoTabla . '</center>';
+    $cuerpoTabla = '<tbody>' . $filasTabla . '</tbody></table>';
+    $tablaCompleta = '<center>' . $encabezadoTabla . $cuerpoTabla . '</center>';
 
-$correoCompleto = $styles . $encabezadoCorreo . $notasCorreo . $tablaCompleta;
+    $pieCorreo = '<br><center>Puedes consultar el procedimiento normativo asociado a esta iniciativa en: <a href="https://gbconnect.sharepoint.com/:b:/s/ProcedimientosNormativos/EYkmmyv1HDxCiZrmAnGaeQ8BaGxXoVRiO0z_kl7-AnJJBw?e=zyBvhN" target="_blank"><b>Procedimiento Normativo</b></a></center>';
 
-echo $correoCompleto;
-echo '<br/><br/>';
+    $correoCompleto = $styles . $encabezadoCorreo . $notasCorreo . $tablaCompleta . $pieCorreo;
 
-// Envío de correo
-$subject = 'Alerta Microleak Subensambles No Posteo ' . $semanaAlerta;
-$mail = new PHPMailer\PHPMailer\PHPMailer(true);
-$mail->SetLanguage("es", '../../utils/PHPMailer/language/');
-$mail->IsSMTP();
-$mail->CharSet = 'UTF-8';
-$mail->Host = "smtp.office365.com";
-$mail->SMTPAuth = true;
-$mail->Port = 587; // Or 587
-$mail->Username = $account;
-$mail->Password = $password;
-$mail->SMTPSecure = 'tls';
-$mail->From = $from;
-$mail->FromName = $from_name;
-$mail->isHTML(true);
-$mail->Subject = $subject;
-$mail->Body = $correoCompleto;
+    echo $correoCompleto;
+    echo '<br/><br/>';
 
-$query = '
+    // Envío de correo
+    $subject = 'Alerta Microleak Subensambles No Posteo ' . $semanaAlerta;
+    $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+    $mail->SetLanguage("es", '../../utils/PHPMailer/language/');
+    $mail->IsSMTP();
+    $mail->CharSet = 'UTF-8';
+    $mail->Host = "smtp.office365.com";
+    $mail->SMTPAuth = true;
+    $mail->Port = 587; // Or 587
+    $mail->Username = $account;
+    $mail->Password = $password;
+    $mail->SMTPSecure = 'tls';
+    $mail->From = $from;
+    $mail->FromName = $from_name;
+    $mail->isHTML(true);
+    $mail->Subject = $subject;
+    $mail->Body = $correoCompleto;
+
+    $query = '
     SELECT
         crup.correo
     FROM
@@ -201,43 +204,44 @@ $query = '
         crup.correo
     ';
 
-$result = sqlsrv_query($conn_sql_azure, $query);
+    $result = sqlsrv_query($conn_sql_azure, $query);
 
-$correos = array();
-while ($row = sqlsrv_fetch_array($result)) {
-    $correos[] = $row['correo'];
-}
+    $correos = array();
+    while ($row = sqlsrv_fetch_array($result)) {
+        $correos[] = $row['correo'];
+    }
 
-echo '<p>Usuarios:</p>';
-echo '<ul>';
+    echo '<p>Usuarios:</p>';
+    echo '<ul>';
 
-// Agregamos a los destinatarios principales
-foreach ($correos as $correo) {
-    echo '<li>' . $correo . '</li>';
-    $mail->addAddress($correo);
-}
+    // Agregamos a los destinatarios principales
+    foreach ($correos as $correo) {
+        echo '<li>' . $correo . '</li>';
+        $mail->addAddress($correo);
+    }
 
-echo '</ul>';
-echo '<br>';
+    echo '</ul>';
+    echo '<br>';
 
-// Copia a Analítica Avanzada
-$mail->addBCC('ana.segovia@grupobimbo.com');
-$mail->addBCC('daniel.robles@grupobimbo.com');
-$mail->addBCC('sebastian.pelcastre@grupobimbo.com');
-$mail->addBCC('israel.gonzalez@grupobimbo.com');
+    // Copia a Analítica Avanzada
+    $mail->addBCC('ana.segovia@grupobimbo.com');
+    $mail->addBCC('daniel.robles@grupobimbo.com');
+    $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
+    $mail->addBCC('israel.gonzalez@grupobimbo.com');
 
-if (!$mail->send()) {
-    // $query = '
-    //         INSERT INTO
-    //             MKS_Datos_Complementarios.ALERTAS_EMITIDAS
-    //         VALUES
-    //             (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
-} else {
-    // $query = '
-    //         INSERT INTO
-    //             MKS_Datos_Complementarios.ALERTAS_EMITIDAS
-    //         VALUES
-    //             (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
+    if (!$mail->send()) {
+        // $query = '
+        //         INSERT INTO
+        //             MKS_Datos_Complementarios.ALERTAS_EMITIDAS
+        //         VALUES
+        //             (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
+    } else {
+        // $query = '
+        //         INSERT INTO
+        //             MKS_Datos_Complementarios.ALERTAS_EMITIDAS
+        //         VALUES
+        //             (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
+    }
 }
 
 //EOF
