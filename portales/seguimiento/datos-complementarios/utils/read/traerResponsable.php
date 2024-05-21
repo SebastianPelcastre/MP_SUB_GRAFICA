@@ -12,7 +12,7 @@ INNER JOIN
 	ON crup.correo_usuario  = cu.correo_usuario
 WHERE 
 	crup.id_ceve IN (' . implode(',', $id_ceve) . ')
-	AND cu.id_puesto IN (11)
+	AND cu.id_puesto IN (2)
 ';
 
 $result = sqlsrv_query($conn_sql_azure, $query);
