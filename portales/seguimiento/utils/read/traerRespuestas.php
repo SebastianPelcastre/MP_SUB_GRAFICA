@@ -47,7 +47,7 @@ INNER JOIN
 INNER JOIN
 	MKS_MP_SUB.CAT_PLANES cp
 	ON r.id_plan_accion = cp.id_plan
-INNER JOIN
+LEFT JOIN
 	MKS_MP_SUB.COMENTARIOS c
 	ON r.id = c.id_respuesta
 INNER JOIN

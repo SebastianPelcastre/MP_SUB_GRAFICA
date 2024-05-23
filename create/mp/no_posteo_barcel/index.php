@@ -233,33 +233,33 @@ if (!empty($ids)) {
     $ENVIO_EXITOSO = 1;
 
     if (!$mail->send()) {
-        // foreach ($ids as $id) {
-        //     $query = '
-        //             INSERT INTO
-        //                 MKS_MP_SU.BITACORA_ENVIOS_NO_POSTEO
-        //             VALUES
-        //                 (' . $id . ',\'' . $FECHA_EMISION . '\', ' . $semanaAlerta . ', ' . $ERROR_ENVIO . ')';
-        // }
-        // if (!sqlsrv_query($conn_sql_azure, $query)) {
-        //     echo $query;
-        //     echo '<br />';
-        //     echo '<br />';
-        //     die(print_r(sqlsrv_errors()));
-        // }
+        foreach ($ids as $id) {
+            $query = '
+                    INSERT INTO
+                        MKS_MP_SUB.BITACORA_ENVIOS_NO_POSTEO
+                    VALUES
+                        (' . $id . ',\'' . $FECHA_EMISION . '\', ' . $semanaAlerta . ', ' . $ERROR_ENVIO . ')';
+        }
+        if (!sqlsrv_query($conn_sql_azure, $query)) {
+            echo $query;
+            echo '<br />';
+            echo '<br />';
+            die(print_r(sqlsrv_errors()));
+        }
     } else {
-        // foreach ($ids as $id) {
-        //     $query = '
-        //                 INSERT INTO
-        //                     MKS_MP_SU.BITACORA_ENVIOS_NO_POSTEO
-        //                 VALUES
-        //                     (' . $id . ',\'' . $FECHA_EMISION . '\', ' . $semanaAlerta . ', ' . $ENVIO_EXITOSO . ')';
-        // }
-        // if (!sqlsrv_query($conn_sql_azure, $query)) {
-        //     echo $query;
-        //     echo '<br />';
-        //     echo '<br />';
-        //     die(print_r(sqlsrv_errors()));
-        // }
+        foreach ($ids as $id) {
+            $query = '
+                        INSERT INTO
+                            MKS_MP_SUB.BITACORA_ENVIOS_NO_POSTEO
+                        VALUES
+                            (' . $id . ',\'' . $FECHA_EMISION . '\', ' . $semanaAlerta . ', ' . $ENVIO_EXITOSO . ')';
+        }
+        if (!sqlsrv_query($conn_sql_azure, $query)) {
+            echo $query;
+            echo '<br />';
+            echo '<br />';
+            die(print_r(sqlsrv_errors()));
+        }
     }
 }
 

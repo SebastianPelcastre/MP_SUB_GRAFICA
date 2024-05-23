@@ -230,17 +230,33 @@ if (!empty($ids)) {
     $mail->addBCC('israel.gonzalez@grupobimbo.com');
 
     if (!$mail->send()) {
-        // $query = '
-        //         INSERT INTO
-        //             MKS_Datos_Complementarios.ALERTAS_EMITIDAS
-        //         VALUES
-        //             (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ERROR_ENVIO . ')';
+        foreach ($ids as $id) {
+            $query = '
+                    INSERT INTO
+                        MKS_MP_SUB.BITACORA_ENVIOS_NO_POSTEO
+                    VALUES
+                        (' . $id . ',\'' . $FECHA_EMISION . '\', ' . $semanaAlerta . ', ' . $ERROR_ENVIO . ')';
+        }
+        if (!sqlsrv_query($conn_sql_azure, $query)) {
+            echo $query;
+            echo '<br />';
+            echo '<br />';
+            die(print_r(sqlsrv_errors()));
+        }
     } else {
-        // $query = '
-        //         INSERT INTO
-        //             MKS_Datos_Complementarios.ALERTAS_EMITIDAS
-        //         VALUES
-        //             (' . $ceveAlertado['id_ceve'] . ',' . $semanasAlerta[sizeof($semanasAlerta) - 1] . ', \'' . $FECHA_EMISION . '\', ' . $ENVIO_EXITOSO . ')';
+        foreach ($ids as $id) {
+            $query = '
+                        INSERT INTO
+                            MKS_MP_SUB.BITACORA_ENVIOS_NO_POSTEO
+                        VALUES
+                            (' . $id . ',\'' . $FECHA_EMISION . '\', ' . $semanaAlerta . ', ' . $ENVIO_EXITOSO . ')';
+        }
+        if (!sqlsrv_query($conn_sql_azure, $query)) {
+            echo $query;
+            echo '<br />';
+            echo '<br />';
+            die(print_r(sqlsrv_errors()));
+        }
     }
 }
 
