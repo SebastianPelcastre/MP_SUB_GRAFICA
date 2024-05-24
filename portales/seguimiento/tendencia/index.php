@@ -1,6 +1,6 @@
 <?php
 
-require '../../../utils/conexion_sql_azure.php';
+require '../../../../utils/conexion_sql_azure.php';
 
 //Validamos que tenga sesión iniciada 
 session_start();
@@ -78,14 +78,14 @@ require './utils/read/traerRespuestasPortal.php';
             <div class="menu">
                 <ul class="menu-links">
                     <li class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Predictiva">
-                        <a href="index.php">
+                        <a href="../index.php">
                             <i class='bx bx-time-five icon'></i>
                             <span class="home-text nav-text">Predictiva</span>
                         </a>
                     </li>
 
                     <li class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Tendencia">
-                        <a href="tendencia/index.php">
+                        <a href="index.php">
                             <i class='bx bx-line-chart icon'></i>
                             <span class="home-text nav-text">Tendencia <br> (En desarrollo)</span>
                         </a>
@@ -95,7 +95,7 @@ require './utils/read/traerRespuestasPortal.php';
 
             <div class="bottom-content">
                 <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Cerrar Sesión">
-                    <a href="login/cierra_sesion.php">
+                    <a href="../login/cierra_sesion.php">
                         <i class='bx bx-log-out icon'></i>
                         <span class="home-text nav-text">Cerrar Sesión</span>
                     </a>
@@ -144,7 +144,6 @@ require './utils/read/traerRespuestasPortal.php';
                                     <table class="table display nowrap w-100" id="table">
                                         <thead class="table-light">
                                             <tr>
-
                                                 <th>PLANTA</th>
                                                 <th>NOMBRE PLANTA</th>
                                                 <th>SEMANA</th>
@@ -153,7 +152,6 @@ require './utils/read/traerRespuestasPortal.php';
                                                 <th>NOMBRE ITEM</th>
                                                 <th>PUESTO PRINCIPAL</th>
                                                 <th>CORREO PRINCIPAL</th>
-                                                <th>CAUSA</th>
                                                 <th>PLAN DE ACCIÓN</th>
                                                 <th>FECHA DE RESOLUCIÓN</th>
                                                 <th>COMENTARIO</th>
@@ -166,7 +164,6 @@ require './utils/read/traerRespuestasPortal.php';
                                             <?php
                                             $contador = 0;
                                             foreach ($respuestas as $respuesta) {
-                                                $columnaCausa = '';
                                                 $columnaPlanAccion = '';
                                                 $columnaFechaResolucion = '';
                                                 $columnaComentarios = '';
@@ -174,7 +171,7 @@ require './utils/read/traerRespuestasPortal.php';
                                                 $columnaObservaciones = '';
                                                 $respuestaParaItem = 'SIN RESPUESTA';
 
-                                                if ($respuesta['causa'] !== null && $respuesta['nombre_plan'] !== null) {
+                                                if ($respuesta['nombre_plan'] !== null) {
                                                     $coincidenciaEncontrada = false;
                                                     foreach ($seguimientos as $seguimiento) {
                                                         if ($seguimiento['id'] == $respuesta['id']) {
@@ -222,11 +219,6 @@ require './utils/read/traerRespuestasPortal.php';
                                                         </td>';
                                                     }
 
-                                                    $columnaCausa = '
-                                                    <td style="vertical-align:">
-                                                        <p>' . $respuesta['causa'] . '</p>
-                                                    </td>';
-
                                                     $columnaPlanAccion = '
                                                     <td style="vertical-align:">
                                                         <p>' . $respuesta['nombre_plan'] . '</p>
@@ -249,10 +241,6 @@ require './utils/read/traerRespuestasPortal.php';
                                                         </td>';
                                                     }
                                                 } else {
-                                                    $columnaCausa = '
-                                                    <td style="vertical-align: middle;">
-                                                        <p>' . $respuestaParaItem . '</p>
-                                                    </td>';
 
                                                     $columnaPlanAccion = '
                                                     <td style="vertical-align: middle;">
@@ -277,7 +265,6 @@ require './utils/read/traerRespuestasPortal.php';
                                                 }
                                             ?>
                                                 <tr style="white-space: nowrap">
-
                                                     <td style="vertical-align: middle;"><?php echo $respuesta['id_planta'] ?></td>
                                                     <td style="vertical-align: middle;"><?php echo $respuesta['nombre_planta'] ?></td>
                                                     <td style="vertical-align: middle;"> <input type="hidden" value="<?php echo $respuesta['id']; ?>" name="idAlerta-<?php echo $contador ?>" /><?php echo $respuesta['semana']; ?></td>
@@ -286,7 +273,6 @@ require './utils/read/traerRespuestasPortal.php';
                                                     <td style="vertical-align: middle;"><?php echo $respuesta['nombre_item'] ?></td>
                                                     <td style="vertical-align: middle;"><?php echo $respuesta['puesto'] ?></td>
                                                     <td style="vertical-align: middle;"><?php echo $respuesta['correos'] ?></td>
-                                                    <?php echo $columnaCausa ?>
                                                     <?php echo $columnaPlanAccion; ?>
                                                     <?php echo $columnaFechaResolucion; ?>
                                                     <?php echo $columnaComentarios; ?>
