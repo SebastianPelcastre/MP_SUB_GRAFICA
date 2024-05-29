@@ -87,7 +87,7 @@ require './utils/read/traerRespuestasPortal.php';
                     <li class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Tendencia">
                         <a href="index.php">
                             <i class='bx bx-line-chart icon'></i>
-                            <span class="home-text nav-text">Tendencia <br> (En desarrollo)</span>
+                            <span class="home-text nav-text">Tendencia</span>
                         </a>
                     </li>
                 </ul>
