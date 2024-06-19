@@ -227,7 +227,6 @@ if (!empty($ids)) {
     $mail->addBCC('ana.segovia@grupobimbo.com');
     $mail->addBCC('daniel.robles@grupobimbo.com');
     $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
-    $mail->addBCC('israel.gonzalez@grupobimbo.com');
 
     if (!$mail->send()) {
         foreach ($ids as $id) {
@@ -236,12 +235,12 @@ if (!empty($ids)) {
                         MKS_MP_SUB.BITACORA_ENVIOS_NO_POSTEO
                     VALUES
                         (' . $id . ',\'' . $FECHA_EMISION . '\', ' . $semanaAlerta . ', ' . $ERROR_ENVIO . ')';
-        }
-        if (!sqlsrv_query($conn_sql_azure, $query)) {
-            echo $query;
-            echo '<br />';
-            echo '<br />';
-            die(print_r(sqlsrv_errors()));
+            if (!sqlsrv_query($conn_sql_azure, $query)) {
+                echo $query;
+                echo '<br />';
+                echo '<br />';
+                die(print_r(sqlsrv_errors()));
+            }
         }
     } else {
         foreach ($ids as $id) {
@@ -250,12 +249,12 @@ if (!empty($ids)) {
                             MKS_MP_SUB.BITACORA_ENVIOS_NO_POSTEO
                         VALUES
                             (' . $id . ',\'' . $FECHA_EMISION . '\', ' . $semanaAlerta . ', ' . $ENVIO_EXITOSO . ')';
-        }
-        if (!sqlsrv_query($conn_sql_azure, $query)) {
-            echo $query;
-            echo '<br />';
-            echo '<br />';
-            die(print_r(sqlsrv_errors()));
+            if (!sqlsrv_query($conn_sql_azure, $query)) {
+                echo $query;
+                echo '<br />';
+                echo '<br />';
+                die(print_r(sqlsrv_errors()));
+            }
         }
     }
 }
