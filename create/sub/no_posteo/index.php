@@ -33,6 +33,7 @@ $query = '
 SELECT
 da.id_planta, cp.nombre,
 SUM(r_consumo_real_pesos) r_consumo_real_pesos,
+SUM(r_consumo_wip_pesos) r_consumo_wip_pesos,
 SUM(ajuste_inv_real) ajuste_inv_real
 FROM 
 	MKS_MP_SUB.DATOS_ALERTAS da
@@ -47,8 +48,8 @@ WHERE
 GROUP BY 
 	da.id_planta,
 	cp.nombre
-HAVING ((SUM(r_consumo_real_pesos) = 0 OR SUM(ajuste_inv_real) = 0))
-ORDER BY da.id_planta ';
+    HAVING (((SUM(r_consumo_real_pesos) = 0 AND (SUM(r_consumo_wip_pesos) = 0 )) OR SUM(ajuste_inv_real) = 0))
+    ORDER BY da.id_planta';
 
 $result = sqlsrv_query($conn_sql_azure, $query);
 
@@ -227,6 +228,7 @@ if (!empty($ids)) {
     $mail->addBCC('ana.segovia@grupobimbo.com');
     $mail->addBCC('daniel.robles@grupobimbo.com');
     $mail->addBCC('sebastian.pelcastre@grupobimbo.com');
+    // $mail->addBCC('israel.gonzalez@grupobimbo.com');
 
     if (!$mail->send()) {
         foreach ($ids as $id) {
