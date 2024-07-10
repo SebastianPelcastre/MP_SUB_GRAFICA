@@ -185,13 +185,16 @@ if (!empty($ids)) {
     $mail->Body = $correoCompleto;
 
     $query = '
-    SELECT
+    SELECT  
         crup.correo
     FROM
+        MKS_MP_SUB.CAT_USUARIOS cu 
+    INNER JOIN 
         MKS_MP_SUB.CAT_RELACION_USUARIOS_PLANTAS crup
+        ON cu.correo = crup.correo 
     INNER JOIN 
         MKS_MP_SUB.CAT_RELACION_ALERTA_PUESTOS crap
-        ON crup.id_puesto = crap.id_puesto
+        ON cu.id_puesto = crap.id_puesto
     INNER JOIN 
         MKS_MP_SUB.CAT_TIPO ct
         ON crap.item_type = ct.id_tipo
@@ -200,6 +203,7 @@ if (!empty($ids)) {
         AND crap.item_type = 1
         AND crup.id_planta IN (' . implode(',', $ids) . ')
         AND crap.id_EL = (CASE WHEN LEFT (crup.id_planta, 2) = 20 THEN 100 ELSE 101 END )
+        AND cu.activo = 1
     GROUP BY 
         crup.correo
     ';

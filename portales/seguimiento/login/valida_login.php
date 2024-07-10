@@ -34,14 +34,16 @@ if (isset($_POST['no_colaborador']) && isset($_POST['correo'])) {
     if (sqlsrv_has_rows($resultUsr)) {
         $qry_planta_usuario = '
         SELECT 
-        	id_planta
+        	crup.id_planta
         FROM 
             MKS_MP_SUB.CAT_RELACION_USUARIOS_PLANTAS crup
+        INNER JOIN 
+            MKS_MP_SUB.CAT_USUARIOS cu
         WHERE 
-        	correo = \'' . $correo . '\'
-            AND id_puesto IN (3,4,9,12)
+        	crup.correo = \'' . $correo . '\'
+            AND cu.id_puesto IN (3,4,9,12)
         GROUP BY
-        	id_planta';
+        	crup.id_planta';
 
         $result = sqlsrv_query($conn_sql_azure, $qry_planta_usuario);
 

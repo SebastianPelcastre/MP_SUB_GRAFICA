@@ -77,7 +77,7 @@ INNER JOIN (
 		ON crup.correo = cu.correo 
 	WHERE 
 		crup.id_planta IN (' . implode(',', $id_planta) . ')
-		AND crup.id_puesto IN (1,2)
+		AND cu.id_puesto IN (1,2)
 	GROUP BY
 		crup.id_planta
 ) crup
@@ -101,7 +101,7 @@ INNER JOIN (
 		ON crup.correo = cu.correo 
 	WHERE 
 		crup.id_planta IN (' . implode(',', $id_planta) . ')
-		AND crup.id_puesto IN (3,4)
+		AND cu.id_puesto IN (3,4)
 	GROUP BY
 		crup.id_planta
 ) up

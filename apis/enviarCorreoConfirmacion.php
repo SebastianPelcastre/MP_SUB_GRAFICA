@@ -202,17 +202,24 @@ if ($idTipo === 1) {
 }
 
 $query = '
-SELECT DISTINCT 
-	crup.correo 
-FROM 
-	MKS_MP_SUB.CAT_RELACION_ALERTA_PUESTOS crap 
+SELECT DISTINCT
+    crup.correo
+FROM
+ 	MKS_MP_SUB.CAT_USUARIOS cu 
 INNER JOIN 
-	MKS_MP_SUB.CAT_RELACION_USUARIOS_PLANTAS crup 
-	ON crup.id_puesto = crap.id_puesto 
+    MKS_MP_SUB.CAT_RELACION_USUARIOS_PLANTAS crup
+    ON cu.correo = crup.correo 
+INNER JOIN 
+    MKS_MP_SUB.CAT_RELACION_ALERTA_PUESTOS crap
+    ON cu.id_puesto = crap.id_puesto
+INNER JOIN 
+    MKS_MP_SUB.CAT_TIPO ct
+    ON crap.item_type = ct.id_tipo
 WHERE 	
-	crap.id_puesto IN (' . $puestos . ',10)
+	cu.id_puesto IN (' . $puestos . ',10)
 	AND crup.id_planta = ' . $idPlanta . '
-	AND crap.item_type = ' . $idTipo;
+	AND crap.item_type = ' . $idTipo . '
+    AND cu.activo = 1';
 
 $result = sqlsrv_query($conn_sql_azure, $query);
 
