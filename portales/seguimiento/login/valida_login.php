@@ -39,6 +39,7 @@ if (isset($_POST['no_colaborador']) && isset($_POST['correo'])) {
             MKS_MP_SUB.CAT_RELACION_USUARIOS_PLANTAS crup
         INNER JOIN 
             MKS_MP_SUB.CAT_USUARIOS cu
+            ON crup.correo = cu.correo 
         WHERE 
         	crup.correo = \'' . $correo . '\'
             AND cu.id_puesto IN (3,4,9,12)
