@@ -43,7 +43,7 @@ INNER JOIN (
 		SELECT
 			c.id AS id_ceve,
 			da.semana,
-			\'PREDIVTIVA\' AS tipo_alerta,
+			\'PREDICTIVA\' AS tipo_alerta,
 		    g.id AS id_grupo,
 		    g.nombre AS nombre_grupo,
 		    da.id_razon,

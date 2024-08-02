@@ -76,7 +76,7 @@ if (isset($_POST['no_colaborador']) && isset($_POST['correo'])) {
             FROM
                 MKS_Datos_Complementarios.USUARIOS u 
             WHERE
-                correo_usuario = \'' . $correo . '\' AND id_puesto IN (2,3)
+                correo_usuario = \'' . $correo . '\' AND id_puesto IN (2,3,18)
             ';
 
             $result = sqlsrv_query($conn_sql_azure, $query);

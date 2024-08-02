@@ -7,25 +7,29 @@ const tabla = new DataTable('#table', {
     top1: {
         searchPanes:{
           cascadePanes:true,
-          initCollapsed: true
+          initCollapsed: true,
+          orderable: false
         }
     }
 },
 columnDefs: [
   {
       searchPanes: {
-          show: false
+          show: false, 
+          orderable: false
       },
       targets: [0, 4, 6, 7, 8, 11, 12]
   },
   {
     searchPanes: {
-        show: true
+        show: true,
+        orderable: false
     },
     targets: [2, 3, 1, 5, 9]
   },
   {
     searchPanes:{
+      orderable: false,
       show: true,
       header: 'ESTATUS',
       options:[{
@@ -53,6 +57,7 @@ columnDefs: [
 ],
   language: {
     searchPanes: {
+      orderable: false,
       title: {
         _: "Filtros Seleccionados - %d",
         0: "Sin Filtros Seleccionados",
